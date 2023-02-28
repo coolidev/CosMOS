@@ -1,0 +1,25 @@
+<svg id="Manage_Project_Details_-_Unselected" data-name="Manage Project Details - Unselected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.77 51.26">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2d2d2d;
+        stroke: #e14748;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: #232323;
+        stroke: #e14848;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" x="0.5" y="0.5" width="45.77" height="50.26" rx="5.88"/>
+  <g id="Pencil_Shapes" data-name="Pencil Shapes">
+    <path class="cls-2" d="M88.07,102.17,89.69,95,106.53,78.2a.75.75,0,0,1,1.07,0l4.78,5a.76.76,0,0,1,0,1.06l-16.9,16.9Z" transform="translate(-78.44 -62.55)"/>
+    <path class="cls-2" d="M109.11,76.2l5.55,5.62a.68.68,0,0,0,1,0l2.66-2.62a.68.68,0,0,0,0-1l-5.47-5.54a.69.69,0,0,0-.95,0l-2.74,2.55A.69.69,0,0,0,109.11,76.2Z" transform="translate(-78.44 -62.55)"/>
+  </g>
+</svg>

@@ -1,0 +1,18 @@
+<svg id="Load_Project_-_Unselected" data-name="Load Project - Unselected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.77 51.26">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2d2d2d;
+        stroke: #e14748;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: #e14748;
+        opacity: 0.93;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" x="0.5" y="0.5" width="45.77" height="50.26" rx="5.88"/>
+  <path id="File_shape" data-name="File shape" class="cls-2" d="M116.49,79.05H101.86V76.89a1.34,1.34,0,0,0-1.34-1.34H88.86a1.34,1.34,0,0,0-1.34,1.34v2.94a1.36,1.36,0,0,0,0,.29,1.27,1.27,0,0,0,0,.28V98.24a1.34,1.34,0,0,0,1.35,1.35h27.62a1.34,1.34,0,0,0,1.34-1.35V80.4A1.35,1.35,0,0,0,116.49,79.05Z" transform="translate(-78.44 -62.55)"/>
+</svg>

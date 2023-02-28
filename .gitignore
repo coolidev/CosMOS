@@ -102,3 +102,24 @@ dist
 
 # TernJS port file
 .tern-port
+
+database/Schema/.vs/
+database/Schema/CaesarModelResults/.vs/
+database/Schema/CaesarModelResults/bin/
+database/Schema/CaesarModelResults/obj/
+database/Schema/CaesarModelResults/CaesarModelResults.dbmdl
+database/Schema/CaesarModelResults/CaesarModelResults.jfm
+database/Schema/CaesarModelResults.build/.vs/
+database/Schema/CaesarModelResults.build/bin/
+database/Schema/CaesarModelResults.build/obj/
+front-new/package-lock.json
+testAPI/package-lock.json
+testAPI/dist/
+testAPI/node_modules/
+node_modules
+back/package-lock.json
+front/package-lock.json
+back/GMAT
+__pycache__/
+sims/
+data/

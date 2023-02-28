@@ -1,0 +1,26 @@
+<svg id="Close_Project_-_Unselected" data-name="Close Project - Unselected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.77 51.26">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2d2d2d;
+        stroke: #e14748;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #e14848;
+        stroke-linecap: round;
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" x="0.5" y="0.5" width="45.77" height="50.26" rx="5.88"/>
+  <g id="X_shape" data-name="X shape">
+    <line class="cls-2" x1="11.59" y1="13.32" x2="35.97" y2="37.71"/>
+    <line class="cls-2" x1="35.73" y1="13.57" x2="11.34" y2="37.95"/>
+  </g>
+</svg>

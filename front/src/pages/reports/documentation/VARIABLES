@@ -1,0 +1,22 @@
+$$MISSIONNAME$$
+    Mission name of current project
+$$NETWORKNAME$$
+    Name of the network currently selected
+$$MISSIONDESCRIPTION$$
+    User entered description of project mission
+$$NASAFORMALTITLE$$
+    Inserts a full title page using a formal NASA template
+$$SIGNATUREPAGE$$
+    Inserts a generic signature page that contains blue text for later completion by user
+$$REPORTNAME$$
+    Name of the report (specified in the project template)
+$$PAGEBREAK$$
+    Inserts a page break. This may be used to force a page break following a component
+$$ANTENNALINKSUMMARY$$
+    Inserts an antenna link summary table
+$$DTEDOWNLINKBUDGET$$
+    Inserts a link budget for all selected antennas for a DTE downlink configuration
+$$FREQUENCYBAND$$
+    Currently selected Frequency Band
+$$CHART$$
+    Inserts a generic plotly chart (for testing purposes)

@@ -1,0 +1,38 @@
+<svg id="History_-_Selected" data-name="History - Selected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45.77 50.26">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-5 {
+        fill: #e14748;
+      }
+
+      .cls-2, .cls-4, .cls-5 {
+        stroke: #fff;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        stroke-width: 1.5px;
+      }
+
+      .cls-3 {
+        fill: #fff;
+        opacity: 0.93;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke-linecap: round;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" width="45.77" height="50.26" rx="5.88"/>
+  <path id="Paper" class="cls-2" d="M33.5,162.82H49.29a1.31,1.31,0,0,1,.93.39l7.54,7.54a1.31,1.31,0,0,1,.39.93v21.91a.65.65,0,0,1-.65.65h-24a.65.65,0,0,1-.65-.65l0-30.12A.65.65,0,0,1,33.5,162.82Z" transform="translate(-21.88 -154.33)"/>
+  <path id="Paper_fold" data-name="Paper fold" class="cls-3" d="M47.93,165.85v7a.53.53,0,0,0,.53.53h6.81a.54.54,0,0,0,.54-.53v-.57a.53.53,0,0,0-.16-.38l-6.43-6.43a.57.57,0,0,0-.37-.16h-.38A.54.54,0,0,0,47.93,165.85Z" transform="translate(-21.88 -154.33)"/>
+  <line id="Writing_1" data-name="Writing 1" class="cls-4" x1="14.89" y1="31.03" x2="31.02" y2="31.03"/>
+  <g id="Pencil_Shapes" data-name="Pencil Shapes">
+    <path class="cls-5" d="M47.17,191.77l.84-3.68,8.68-8.68a.4.4,0,0,1,.56,0L59.71,182a.38.38,0,0,1,0,.54L51,191.24Z" transform="translate(-21.88 -154.33)"/>
+    <path class="cls-5" d="M57.09,179.11,60,182a.36.36,0,0,0,.51,0l1.39-1.39a.36.36,0,0,0,0-.51L59,177.25a.36.36,0,0,0-.5,0l-1.43,1.35A.37.37,0,0,0,57.09,179.11Z" transform="translate(-21.88 -154.33)"/>
+  </g>
+  <line id="Writing_1-2" data-name="Writing 1" class="cls-4" x1="14.89" y1="23.81" x2="31.02" y2="23.81"/>
+</svg>

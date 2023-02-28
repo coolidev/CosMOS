@@ -1,0 +1,29 @@
+<svg id="New_Project_-_Selected" data-name="New Project - Selected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45.77 50.26">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e14748;
+      }
+
+      .cls-2, .cls-3 {
+        fill: none;
+        stroke: #232323;
+        stroke-linecap: round;
+        stroke-width: 3px;
+      }
+
+      .cls-2 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3 {
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" width="45.77" height="50.26" rx="5.88"/>
+  <g id="Plus_sign" data-name="Plus sign">
+    <line class="cls-2" x1="9.07" y1="24.7" x2="37.36" y2="24.7"/>
+    <line class="cls-3" x1="23.22" y1="10.84" x2="23.22" y2="39.13"/>
+  </g>
+</svg>

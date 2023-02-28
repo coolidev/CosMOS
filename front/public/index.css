@@ -1,0 +1,223 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+*:focus {
+  outline: none !important;
+}
+
+.slider-control {
+  margin: 5px;
+}
+
+.no-met {
+  color: red;
+  font-weight: bold;
+}
+
+#app-container {
+  display: flex;
+}
+
+#input-panel {
+  margin: 10px;
+  flex: 1;
+}
+
+.results-section > * {
+  padding: 2px 4px;
+}
+
+.results-section-title {
+  font-family: sans-serif;
+  background-color: rgb(94, 114, 228);
+  color: white;
+  padding: 5px;
+}
+
+#results-panel,
+.table {
+  margin: 0;
+  flex: 1;
+  border-spacing: 0px;
+}
+
+#results-panel td {
+  padding: 5px;
+}
+
+#results-panel tr:first-child td {
+  border-top: 1px solid black;
+}
+
+#results-panel tr:last-child td {
+  border-bottom: 1px solid black;
+}
+
+#results-panel td:first-child {
+  border-left: 1px solid black;
+}
+
+#results-panel td:last-child {
+  border-right: 1px solid black;
+}
+
+td.spacer {
+  border-left-style: hidden;
+  border-right-style: hidden;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  background-color: white;
+}
+
+#results-panel tr.header-row td {
+  font-family: sans-serif;
+  background-color: rgb(94, 114, 228);
+  color: white;
+}
+
+.antenna-label {
+  padding-left: 60px !important;
+}
+
+#notes-panel {
+  margin: 10px;
+  flex: 1;
+}
+
+.results-section {
+  margin: 10px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 0px;
+}
+
+.notes-item {
+  padding: 7px;
+}
+
+.table {
+  border: 1px solid #dee2e6;
+  margin-bottom: 0.5rem;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 100;
+  box-shadow: 0 0 1px 0 #dee2e6;
+}
+
+#paramsFile {
+  display: none;
+}
+
+.react-tel-input .form-control {
+  width: 100% !important;
+}
+
+.react-tel-input .form-control {
+  padding-top: 3.5vh !important;
+  padding-bottom: 3.5vh !important;
+}
+
+a:hover {
+  text-decoration: none !important;
+}
+
+.css-df17o1 {
+  position: fixed !important;
+}
+
+.customized-result-panel-overlay .css-df17o1 {
+  height: 86vh;
+  width: 90%;
+  margin: 5%;
+}
+
+.dx-row.dx-data-row.dx-row-lines.dx-selection td {
+  background-color: #fff !important;
+}
+
+.dx-row.dx-header-row {
+  background-color: #ddd;
+}
+
+.MuiTableCell-stickyHeader {
+  z-index: 0 !important;
+}
+
+.MuiDialog-paper {
+  position: absolute !important;
+}
+
+.modebar {
+  display: none !important;
+}
+
+.viewer-sidebar-tabs {
+  display: none !important;
+}
+
+.overlay_visualizer_custom > ._loading_overlay_overlay.css-df17o1 {
+  position: absolute !important;
+}
+
+.customized-menu-bar
+  > .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded {
+  left: 0 !important;
+  right: -3% !important;
+  border-radius: 0;
+  padding-bottom: 100px !important;
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2);
+}
+
+.customized-menu-bar {
+  right: -3% !important;
+}
+
+#customized-setting-menu
+  > .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded {
+  right: 0 !important;
+}
+
+.customized-git-dialog .MuiDialogContent-root {
+  padding: 0 !important;
+}
+
+.customized-gantt-chart-table {
+  counter-reset: rowNumber;
+}
+
+.spectrum-chart-item::before {
+  content: attr(data-start);
+}
+
+.spectrum-chart-item::after {
+  content: attr(data-end);
+  position: absolute;
+  top: 0;
+  right: 20px;
+}
+
+.App {
+  max-width: 728px;
+  margin: 4rem auto;
+}
+
+.js-plotly-plot .plotly .main-svg {
+  overflow: visible;
+}
+
+.js-plotly-plot .plotly .main-svg .legend {
+  transform: translate(150px, 440px);
+}

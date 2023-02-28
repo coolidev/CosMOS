@@ -1,0 +1,27 @@
+<svg id="Satellite_Icon_-_Networks_Menu" data-name="Satellite Icon - Networks Menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63.09 63.89">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #e34747;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        stroke-width: 2px;
+      }
+
+      .cls-3 {
+        fill: #e34747;
+      }
+    </style>
+  </defs>
+  <ellipse class="cls-1" cx="32.24" cy="33.28" rx="28.88" ry="28.81"/>
+  <ellipse class="cls-2" cx="31.54" cy="31.94" rx="30.54" ry="30.94"/>
+  <path class="cls-3" d="M99.39,120.43l-5-5a6,6,0,0,1,4.54-1.71,7.71,7.71,0,0,1,7.13,7,6,6,0,0,1-1.57,4.59Z" transform="translate(-74.85 -79.75)"/>
+  <circle class="cls-3" cx="22.55" cy="42.59" r="1.04"/>
+  <polygon class="cls-3" points="22.46 42.8 28.09 41.26 23.94 37.16 22.46 42.8"/>
+  <rect class="cls-3" x="105.48" y="100.75" width="10.35" height="17.72" rx="1.78" transform="translate(37.97 -125.88) rotate(46.07)"/>
+  <rect class="cls-3" x="109.99" y="118.67" width="18.39" height="9.01" rx="1.78" transform="translate(47.15 -127.95) rotate(45)"/>
+  <rect class="cls-3" x="87.76" y="96.47" width="18.44" height="9.01" rx="1.78" transform="translate(24.95 -118.75) rotate(45)"/>
+</svg>

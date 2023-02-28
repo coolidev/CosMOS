@@ -1,0 +1,20 @@
+<svg id="Algorithm_Description_Doc_-_Unselected" data-name="Algorithm Description Doc - Unselected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.77 51.26">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2d2d2d;
+        stroke: #e14748;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #e14848;
+        stroke-linejoin: round;
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" x="0.5" y="0.5" width="45.77" height="50.26" rx="5.88"/>
+  <polyline id="Symbol" class="cls-2" points="35.57 11.66 11.23 11.66 29.86 26.33 10.98 40.07 35.82 40.07"/>
+</svg>

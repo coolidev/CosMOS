@@ -1,0 +1,26 @@
+<svg id="Ground_station_group_icon" data-name="Ground station group icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63.09 63.89">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #e34747;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        stroke-width: 2px;
+      }
+
+      .cls-3 {
+        fill: #e34747;
+      }
+    </style>
+  </defs>
+  <ellipse class="cls-1" cx="32.24" cy="33.28" rx="28.88" ry="28.81"/>
+  <ellipse class="cls-2" cx="31.54" cy="31.94" rx="30.54" ry="30.94"/>
+  <path class="cls-3" d="M106.05,118.81l8.84,10.85c.36.44,0,1-.7,1H94.12c-.67,0-1.06-.61-.68-1l9.73-10.88A2,2,0,0,1,106.05,118.81Z" transform="translate(-75.56 -80.46)"/>
+  <path class="cls-3" d="M114.92,103.09l11.88,13.39a.85.85,0,0,1-.09,1.23A15.91,15.91,0,0,1,115,120.89c-9.68-1.07-17.69-10-17.75-19.77a16,16,0,0,1,4.37-11.31.84.84,0,0,1,1.23,0Z" transform="translate(-75.56 -80.46)"/>
+  <circle class="cls-3" cx="44.97" cy="17.92" r="2.77"/>
+  <polygon class="cls-3" points="45.25 17.37 30.03 20.46 40.32 32.1 45.25 17.37"/>
+  <rect class="cls-3" x="15.85" y="51.26" width="26.26" height="1.99" rx="0.93"/>
+</svg>

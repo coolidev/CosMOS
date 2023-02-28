@@ -1,0 +1,34 @@
+<svg id="Users_Guide_-_Selected" data-name="Users Guide - Selected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45.77 50.26">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #e14748;
+      }
+
+      .cls-2 {
+        stroke: #2d2d2d;
+      }
+
+      .cls-2, .cls-4 {
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .cls-3 {
+        fill: #2d2e2d;
+        opacity: 0.93;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke: #2d2e2d;
+        stroke-linecap: round;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" width="45.77" height="50.26" rx="5.88"/>
+  <path id="Paper" class="cls-2" d="M90.56,71.54h15.79a1.34,1.34,0,0,1,.93.38l7.54,7.55a1.31,1.31,0,0,1,.39.93v21.91a.65.65,0,0,1-.65.64h-24a.65.65,0,0,1-.65-.64l0-30.12A.65.65,0,0,1,90.56,71.54Z" transform="translate(-78.94 -63.05)"/>
+  <path id="Paper_fold" data-name="Paper fold" class="cls-3" d="M105,74.57v7a.53.53,0,0,0,.53.53h6.81a.54.54,0,0,0,.54-.53V81a.52.52,0,0,0-.16-.37l-6.43-6.43a.52.52,0,0,0-.37-.16h-.38A.52.52,0,0,0,105,74.57Z" transform="translate(-78.94 -63.05)"/>
+  <line id="Writing_1" data-name="Writing 1" class="cls-4" x1="14.89" y1="31.03" x2="31.02" y2="31.03"/>
+  <line id="Writing_1-2" data-name="Writing 1" class="cls-4" x1="14.89" y1="23.81" x2="31.02" y2="23.81"/>
+</svg>

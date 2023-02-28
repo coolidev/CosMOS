@@ -1,0 +1,16 @@
+<svg id="Information_Icon" data-name="Information Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.18 30.18">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e14748;
+      }
+
+      .cls-2 {
+        fill: #eaebef;
+      }
+    </style>
+  </defs>
+  <circle class="cls-1" cx="15.09" cy="15.09" r="15.09"/>
+  <rect class="cls-2" x="104.44" y="109.35" width="3.13" height="10.19" rx="0.79" transform="translate(-88.69 -98.73) rotate(1.07)"/>
+  <rect class="cls-2" x="104.57" y="104.01" width="3.24" height="3.17" rx="0.71" transform="matrix(1, 0.02, -0.02, 1, -88.86, -98.73)"/>
+</svg>

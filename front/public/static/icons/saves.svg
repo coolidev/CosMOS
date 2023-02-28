@@ -1,0 +1,52 @@
+<svg id="History" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.77 51.26">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #2d2d2d;
+      }
+
+      .cls-1, .cls-3, .cls-5, .cls-6 {
+        stroke: #e14748;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3, .cls-5, .cls-6 {
+        fill: none;
+      }
+
+      .cls-3 {
+        stroke-linecap: round;
+        stroke-width: 2px;
+      }
+
+      .cls-4 {
+        fill: #e14748;
+      }
+
+      .cls-5, .cls-6 {
+        stroke-width: 0.75px;
+      }
+
+      .cls-6 {
+        stroke-dasharray: 2.89 2.89;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" x="0.5" y="0.5" width="45.77" height="50.26" rx="5.88"/>
+  <circle id="Background_clock" data-name="Background clock" class="cls-2" cx="22.88" cy="26.39" r="16.56"/>
+  <g id="Arrow_Path" data-name="Arrow Path">
+    <g>
+      <path class="cls-3" d="M156.2,99.13a16.52,16.52,0,0,1,10-.18,16.67,16.67,0,1,1-20.89,19.91" transform="translate(-138.51 -88.79)"/>
+      <polygon class="cls-4" points="16.09 5.41 20.6 14.83 13.64 12.37 16.09 5.41"/>
+    </g>
+  </g>
+  <line id="Writing_2" data-name="Writing 2" class="cls-3" x1="22.32" y1="19.8" x2="22.32" y2="28.7"/>
+  <line id="Writing_2-2" data-name="Writing 2" class="cls-3" x1="31.39" y1="28.75" x2="22.49" y2="28.75"/>
+  <g id="Dash_Path" data-name="Dash Path">
+    <g>
+      <path class="cls-5" d="M160.79,131.82a14.72,14.72,0,0,1-1.49-.13" transform="translate(-138.51 -88.79)"/>
+      <path class="cls-6" d="M156.48,131.07a16.61,16.61,0,0,1-11.63-16.52c.36-8.3,5.45-14.28,14.08-15.72" transform="translate(-138.51 -88.79)"/>
+      <path class="cls-5" d="M160.37,98.64c.49-.06,1-.09,1.5-.12" transform="translate(-138.51 -88.79)"/>
+    </g>
+  </g>
+</svg>

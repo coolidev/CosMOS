@@ -1,0 +1,48 @@
+<svg id="Mission_-_unselected" data-name="Mission - unselected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.77 50.6">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f0f1f3;
+        stroke: #e14748;
+      }
+
+      .cls-1, .cls-2, .cls-4 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke: #e14848;
+      }
+
+      .cls-2, .cls-3 {
+        stroke-linecap: round;
+      }
+
+      .cls-3, .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        stroke-linejoin: round;
+        stroke-width: 0.75px;
+      }
+
+      .cls-5 {
+        fill: #e14848;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" x="0.5" y="0.5" width="45.77" height="49.6" rx="5.88"/>
+  <path id="RF_-_1" data-name="RF - 1" class="cls-2" d="M153.64,58.52a5.91,5.91,0,0,1-5.46-2.21,6,6,0,0,1-1.27-4.13" transform="translate(-137.81 -21.09)"/>
+  <polygon id="Dish_Middle" data-name="Dish Middle" class="cls-3" points="14.49 32.39 19.45 31.04 15.79 27.41 14.49 32.39"/>
+  <path id="Dish" class="cls-4" d="M155,50.9l-4.75-4.69a6.19,6.19,0,0,1,4.51-1.83A6.94,6.94,0,0,1,161.55,51a6.2,6.2,0,0,1-1.7,4.57Z" transform="translate(-137.81 -21.09)"/>
+  <circle id="Dish_Middle_-_circle" data-name="Dish Middle - circle" class="cls-5" cx="14.57" cy="32.2" r="0.92"/>
+  <rect id="Middle_-_Body" data-name="Middle - Body" class="cls-4" x="159.73" y="33.11" width="10.08" height="16.49" rx="1.78" transform="translate(-57.56 -127.09) rotate(46.07)"/>
+  <rect id="Wing_2_-_Right" data-name="Wing 2 - Right" class="cls-4" x="163.86" y="48.77" width="16.88" height="7.95" rx="1.78" transform="translate(-50.05 -127.48) rotate(45)"/>
+  <path id="RF_-_1-2" data-name="RF - 1" class="cls-2" d="M152.61,62.79a8.86,8.86,0,0,1-10-9.42" transform="translate(-137.81 -21.09)"/>
+  <rect id="Wing_1_-_Left" data-name="Wing 1 - Left" class="cls-4" x="144.71" y="29.62" width="16.88" height="7.95" rx="1.78" transform="translate(-69.19 -119.55) rotate(45)"/>
+</svg>

@@ -1,0 +1,22 @@
+<svg id="Algorithm_Description_Doc_Icon_-_unselected" data-name="Algorithm Description Doc Icon - unselected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.77 51.26">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f0f1f3;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #e14748;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke-linejoin: round;
+        stroke-width: 3px;
+      }
+    </style>
+  </defs>
+  <rect id="Icon_Button" data-name="Icon Button" class="cls-1" x="0.5" y="0.5" width="45.77" height="50.26" rx="5.88"/>
+  <polyline id="Symbol" class="cls-2" points="35.57 11.66 11.23 11.66 29.86 26.33 10.98 40.07 35.82 40.07"/>
+</svg>

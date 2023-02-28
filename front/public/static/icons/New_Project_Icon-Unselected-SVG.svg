@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.77 51.26">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e14748;
+      }
+
+      .cls-2, .cls-3, .cls-5, .cls-6 {
+        fill: none;
+        stroke-linecap: round;
+        stroke-width: 3px;
+      }
+
+      .cls-2, .cls-3 {
+        stroke: #232323;
+      }
+
+      .cls-2, .cls-4, .cls-5 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3, .cls-6 {
+        stroke-linejoin: round;
+      }
+
+      .cls-4 {
+        fill: #2d2d2d;
+        stroke: #e14748;
+      }
+
+      .cls-5, .cls-6 {
+        stroke: #e34747;
+      }
+    </style>
+  </defs>
+  <g id="New_Project_-_Selected" data-name="New Project - Selected">
+    <rect id="Icon_Button" data-name="Icon Button" class="cls-1" x="0.5" y="0.5" width="45.77" height="50.26" rx="5.88"/>
+    <g id="Plus_sign" data-name="Plus sign">
+      <line class="cls-2" x1="9.57" y1="25.2" x2="37.86" y2="25.2"/>
+      <line class="cls-3" x1="23.72" y1="11.34" x2="23.72" y2="39.63"/>
+    </g>
+  </g>
+  <g id="New_Project_-_Unselected" data-name="New Project - Unselected">
+    <rect id="Icon_Button-2" data-name="Icon Button" class="cls-4" x="0.5" y="0.5" width="45.77" height="50.26" rx="5.88"/>
+    <g id="Plus_sign-2" data-name="Plus sign">
+      <line class="cls-5" x1="9.57" y1="25.2" x2="37.86" y2="25.2"/>
+      <line class="cls-6" x1="23.72" y1="11.34" x2="23.72" y2="39.63"/>
+    </g>
+  </g>
+</svg>
