@@ -26,9 +26,9 @@ const pdfjsVersion = packageJson.dependencies['pdfjs-dist'];
 
 export const PDFViewerADD: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
   const classes = useStyles();
-  const files = importAll(
-    require['context']('../../../../public/static/pdf/add', false, /\.(pdf)$/)
-  );
+  // const files = importAll(
+  //   require['context']('../../../../public/static/pdf/add', false, /\.(pdf)$/)
+  // );
   const handleClose = () => onClose();
   return (
     <div className={classes.root}>
@@ -41,7 +41,7 @@ export const PDFViewerADD: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
         <div style={{height:'80vh'}}>
           <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}>
             <Viewer
-              fileUrl={files[0]?.default}
+              // fileUrl={files[0]?.default}
               defaultScale={1.5}
               plugins={createPlugins()}
             />
@@ -54,9 +54,9 @@ export const PDFViewerADD: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
 
 export const PDFViewerGuide: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
   const classes = useStyles();
-  const files = importAll(
-    require['context']('../../../../public/static/pdf/guide', false, /\.(pdf)$/)
-  );
+  // const files = importAll(
+  //   require['context']('../../../../public/static/pdf/guide', false, /\.(pdf)$/)
+  // );
   const handleClose = () => onClose();
   return (
     <div className={classes.root}>
@@ -69,7 +69,7 @@ export const PDFViewerGuide: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
         <div style={{height:'80vh'}}>
           <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}>
             <Viewer
-              fileUrl={files[0]?.default}
+              // fileUrl={files[0]?.default}
               plugins={createPlugins()}
               defaultScale={1.5}
             />
@@ -82,11 +82,11 @@ export const PDFViewerGuide: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
 
 export const PDFViewerErgodic: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
   const classes = useStyles();
-  const files = importAll(
-    require['context']('../../../../public/static/pdf/add', false, /\.(pdf)$/)
-  );
+  // const files = importAll(
+  //   require['context']('../../../../public/static/pdf/add', false, /\.(pdf)$/)
+  // );
   const handleClose = () => onClose();
-  const file = files?.find(e => e.default.includes('ergodic_theory_rfcov'));
+  // const file = files?.find(e => e.default.includes('ergodic_theory_rfcov'));
   return (
     <div className={classes.root}>
       <DialogBox
@@ -99,7 +99,7 @@ export const PDFViewerErgodic: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
         <div style={{height:'80vh'}}>
           <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}>
             <Viewer
-              fileUrl={file.default}
+              // fileUrl={file.default}
               plugins={createPlugins()}
               defaultScale={1.5}
               initialPage={0}
