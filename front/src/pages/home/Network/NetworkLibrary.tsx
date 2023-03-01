@@ -55,6 +55,7 @@ import { CheckBox, Template } from 'devextreme-react';
 import { AttrValue } from 'src/components/Mission/CommServicesDef';
 import { updateNetworkList } from 'src/slices/networkList';
 import { Item } from 'devextreme-react/tag-box';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface NetworkLibraryProps {
   state: State;
@@ -441,7 +442,7 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
           }}
         >
           <FontAwesomeIcon
-            icon={faInfoCircle}
+            icon={faInfoCircle as IconProp}
             style={{
               color: theme.palette.grey[400]
             }}
@@ -457,7 +458,7 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
           }}
         >
           <FontAwesomeIcon
-            icon={faCalculator}
+            icon={faCalculator as IconProp}
             size="sm"
             style={{
               color: theme.palette.grey[400]

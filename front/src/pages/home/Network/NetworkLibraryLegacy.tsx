@@ -34,6 +34,7 @@ import { getModCodForStation } from 'src/utils/misc';
 import { updateNetworkDetailsLoader } from 'src/slices/networkLibrary';
 import { AttrValue } from 'src/components/Mission/CommServicesDef';
 import { updateNetworkList } from 'src/slices/networkList';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface NetworkLibraryProps {
   state: State;
@@ -925,7 +926,7 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
           headerCellRender={() => (
             <div data-filter={true} style={{ padding: 0, margin: 0 }}>
               <FontAwesomeIcon
-                icon={faFilter}
+                icon={faFilter as IconProp}
                 style={{
                   color: theme.palette.primary.main
                 }}

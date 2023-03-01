@@ -247,7 +247,7 @@ const NewProject: FC<NewProjectProps> = ({
                 </Grid>
                 {errors.submit && (
                   <Box mt={3}>
-                    <FormHelperText error>{errors.submit}</FormHelperText>
+                    <FormHelperText error>{errors.submit.toString()}</FormHelperText>
                   </Box>
                 )}
                 <Box p={2} display="flex">

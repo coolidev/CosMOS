@@ -65,6 +65,7 @@ import {
   computeSteerableSize
 } from 'src/algorithms/antennas';
 import { getGNSSAvailability } from 'src/algorithms/nav';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface HeaderProps {
   state: State;
@@ -578,7 +579,7 @@ const Header: FC<HeaderProps> = ({
                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                   >
                     <FontAwesomeIcon
-                      icon={faThumbtack}
+                      icon={faThumbtack as IconProp}
                       style={{ color: '#e14748' }}
                       size="sm"
                       className={

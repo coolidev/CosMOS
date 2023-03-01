@@ -121,7 +121,7 @@ const PasswordReset: FC<PasswordResetProps> = ({
           />
           {errors.submit && (
             <Box mt={3}>
-              <FormHelperText error>{errors.submit}</FormHelperText>
+              <FormHelperText error>{errors.submit.toString()}</FormHelperText>
             </Box>
           )}
           <Box my={3}>

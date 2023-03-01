@@ -24,6 +24,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'src/store';
 import Heatmap from './Heatmap';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface RegressionProps {
   state: State[];
@@ -158,7 +159,7 @@ const Regression: FC<RegressionProps> = ({
       {state.length === 1 && <Grid item md={1}>
         <Typography component="p">
         <Tooltip id='quality' title={`Regression Quality: ${QUALITY_INDICATORS[state[0].qualityIndicators[metricType]]}`}>
-          <div className={qualityClass}>{(qualityState === 'High')?<CheckCircleIcon className={qualityClass}/>:(qualityState === 'Medium'?<FontAwesomeIcon icon={faMinusCircle} className={qualityClass} size={'lg'}/>:(qualityState === 'Low'?<CancelIcon className={qualityClass}/>:<HelpCircle className={qualityClass}/>))}</div>
+          <div className={qualityClass}>{(qualityState === 'High')?<CheckCircleIcon className={qualityClass}/>:(qualityState === 'Medium'?<FontAwesomeIcon icon={faMinusCircle as IconProp} className={qualityClass} size={'lg'}/>:(qualityState === 'Low'?<CancelIcon className={qualityClass}/>:<HelpCircle className={qualityClass}/>))}</div>
         </Tooltip>
         </Typography>
       </Grid>}

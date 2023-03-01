@@ -22,6 +22,7 @@ import { TagBox } from 'devextreme-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { Filterer } from 'src/utils/filterer';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface NetworkProps {
   state: State;
@@ -98,7 +99,7 @@ const Network: FC<NetworkProps> = ({
         {/* These tabs are temporarily added to gain access to platforms. Remove with new table */}
         <IconButton size="small" onClick={() => {setOpenFilter(true)}}>
           <FontAwesomeIcon
-                icon={faFilter}
+                icon={faFilter as IconProp}
                 style={{
                   color: theme.palette.primary.main,
                   padding: '2px'

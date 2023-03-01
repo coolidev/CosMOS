@@ -40,11 +40,11 @@ export const PDFViewerADD: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
       >
         <div style={{height:'80vh'}}>
           <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}>
-            <Viewer
+            {/* <Viewer
               // fileUrl={files[0]?.default}
               defaultScale={1.5}
               plugins={createPlugins()}
-            />
+            /> */}
           </Worker>
         </div>
       </DialogBox>
@@ -68,11 +68,11 @@ export const PDFViewerGuide: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
       >
         <div style={{height:'80vh'}}>
           <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}>
-            <Viewer
+            {/* <Viewer
               // fileUrl={files[0]?.default}
               plugins={createPlugins()}
               defaultScale={1.5}
-            />
+            /> */}
           </Worker>
         </div>
       </DialogBox>
@@ -98,12 +98,12 @@ export const PDFViewerErgodic: FC<PDFViewerProps> = ({ isOpen, onClose }) => {
         
         <div style={{height:'80vh'}}>
           <Worker workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.js`}>
-            <Viewer
+            {/* <Viewer
               // fileUrl={file.default}
               plugins={createPlugins()}
               defaultScale={1.5}
               initialPage={0}
-            />
+            /> */}
           </Worker>
         </div>
       </DialogBox>

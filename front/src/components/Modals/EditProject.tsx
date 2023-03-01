@@ -272,7 +272,7 @@ const EditProject: FC<EditProjectProps> = ({ open, onOpen, onModal }) => {
                   </Grid>
                   {errors.submit && (
                     <Box mt={3}>
-                      <FormHelperText error>{errors.submit}</FormHelperText>
+                      <FormHelperText error>{errors.submit.toString()}</FormHelperText>
                     </Box>
                   )}
                   <Box p={2} mt={2} display="flex">

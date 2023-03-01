@@ -19,6 +19,7 @@ interface DialogBoxProps {
   isOpen: boolean;
   title: string;
   className?: any;
+  children?: any;
   style?: any;
   classes?: any;
   onClose: (event?: any) => void;

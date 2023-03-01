@@ -24,6 +24,7 @@ import type { Theme } from 'src/theme';
 import { Filter, Filterer } from 'src/utils/filterer';
 import { SearchOption } from 'src/types/details';
 import { getModCodForStation } from 'src/utils/misc';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 
 interface StationLibraryProps {
@@ -562,7 +563,7 @@ const StationLibrary: FC<StationLibraryProps> = ({
           width="5%"
           headerCellRender={() => 
           <FontAwesomeIcon 
-            icon={faFilter} 
+            icon={faFilter as IconProp} 
             style={{
               color: theme.palette.primary.main
             }}

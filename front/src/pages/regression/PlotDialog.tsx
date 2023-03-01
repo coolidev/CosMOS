@@ -36,6 +36,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { HelpCircle } from 'react-feather';
 import Heatmap from './Heatmap';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface PlotDialogProps {
   state: State[];
@@ -386,7 +387,7 @@ const PlotDialog: FC<PlotDialogProps> = ({
                         <CheckCircleIcon className={qualityClass} />
                       ) : qualityState === 'Medium' ? (
                         <FontAwesomeIcon
-                          icon={faMinusCircle}
+                          icon={faMinusCircle as IconProp}
                           className={qualityClass}
                           size={'lg'}
                         />
