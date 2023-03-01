@@ -23,7 +23,7 @@ import {
 } from '@material-ui/core';
 import axios from 'src/utils/axios';
 import { useAuth, useSMS } from 'src/hooks/useAuth';
-import { LogoLight, LogoDark } from 'src/components/Logo';
+
 import SaveIcon from '@material-ui/icons/Save';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
@@ -42,7 +42,7 @@ import { convertStateToSave } from 'src/pages/home';
 import { version } from 'src/releaseVersion';
 import ManageAccounts from '../ManageAccounts';
 import type { Theme } from 'src/theme';
-import { THEMES } from 'src/utils/constants/general';
+
 import Settings from './Settings';
 import { PlayCircleFilled } from '@material-ui/icons';
 import {
@@ -297,7 +297,7 @@ const Header: FC<HeaderProps> = ({
       }
     };
     fetchComparisons();
-  }, [state.fetchComparisons]);
+  }, [state.fetchComparisons, dispatch, onState]);
 
   const logout = () => {
     setAuthTokens('');

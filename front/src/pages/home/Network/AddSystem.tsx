@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from 'react';
-import { Grid, Button, TextField, Select, MenuItem } from '@material-ui/core';
+import { Grid, Button, TextField } from '@material-ui/core';
 import axios from 'src/utils/axios';
 import DialogBox from 'src/components/DialogBox';
 import { SystemType } from 'src/types/system';

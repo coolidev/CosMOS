@@ -159,7 +159,7 @@ const DataTagBox: FC<DataTagBoxProps> = ({ event, attrValues, platformAttrValues
 
   useEffect (() => {
     setPrevValue(event.data.key.value);
-  }, [])
+  }, [setPrevValue, event.data.key.value])
 
   const handleChange = (e) => {
     const type = typeof e.value;

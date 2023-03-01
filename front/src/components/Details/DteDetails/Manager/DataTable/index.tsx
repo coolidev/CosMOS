@@ -3,8 +3,8 @@ import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.material.blue.light.compact.css';
 import DataGrid, { Column, Editing } from 'devextreme-react/data-grid';
 import axios from 'src/utils/axios';
-import { useSelector } from 'src/store';
-import { SubSection, UpdatedAttribute } from 'src/types/details';
+
+import { SubSection } from 'src/types/details';
 import DataTagBox from './DataTagBox';
 import { convertIntToStandards } from 'src/algorithms/network-library';
 import DialogAlert from 'src/components/DialogAlert';

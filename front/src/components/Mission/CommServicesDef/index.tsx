@@ -20,9 +20,9 @@ import axios from 'src/utils/axios';
 import { TooltipList } from 'src/utils/constants/tooltips';
 import { isNull } from 'underscore';
 import { useDispatch, useSelector } from 'src/store';
-import { updateResults } from 'src/slices/results';
+
 import { FilteringSelection } from 'src/pages/home/QuickAccess/Mission';
-import TagBox from 'devextreme-react/tag-box';
+
 import { Autocomplete } from '@material-ui/lab';
 
 interface ConstraintsProps {

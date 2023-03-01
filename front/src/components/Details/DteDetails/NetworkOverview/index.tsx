@@ -72,7 +72,6 @@ const NetworkOverview: FC<NetworkOverviewProps> = ({dataSource, isAdmin, network
     const [uploadDisabled, setUploadDisabled] = useState(true);
     const [progress, setProgress] = useState<number>(null);
     const [uploadComplete, setUploadComplete] = useState(false);
-    const [newImage, setNewImage] = useState<string>();
     const [detailsEditDiag, setDetailsEditDiag] = useState<boolean>(false);
     const [newName, setNewName] = useState<string>(name)
     const [newDetails, setNewDetails] = useState<string>(details);
@@ -159,6 +158,7 @@ const NetworkOverview: FC<NetworkOverviewProps> = ({dataSource, isAdmin, network
               <img
                 src={`data:image/png;base64,${base64Image}`}
                 style={{ width: '100%', paddingTop: '5vh' }}
+                alt={`base64Image`}
               />
             ):
               <img src={'/static/images/defaultNetwork.png'} alt="Logo" style={{ width: '100%', paddingTop: '5vh' }}/>

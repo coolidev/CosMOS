@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { FC } from 'react';
-import { useSelector } from 'src/store';
+
 import _ from 'underscore';
 import {
   Grid,
@@ -11,8 +11,7 @@ import {
   MenuItem,
   Typography,
   makeStyles,
-  Theme,
-  Tab
+  Theme
 } from '@material-ui/core';
 import TreeView from '@material-ui/lab/TreeView';
 import {
@@ -29,7 +28,7 @@ import AddStation from './AddStation';
 import AddAntenna from './AddAntenna';
 import AddBand from './AddBand';
 import AddModDemod from './AddModDemod';
-import { TabPanel, Tabs } from 'devextreme-react';
+import { Tabs } from 'devextreme-react';
 import ConnectivityPanel from './ConnectivityPanel';
 import axios from 'src/utils/axios';
 
@@ -170,7 +169,6 @@ const Manager: FC<ManagerProps> = ({
   const [connectivitySource, setConnectivitySource] = useState<ConnectivitySource[]>([]);
   const [connectionChangeFlag, setConnectionChangeFlag] = useState<boolean>(false);
   const [relationHoldID, setRelationHoldID] = useState<number>(0);
-  const [reloadFlag, setReloadFlag] = useState<boolean>(true);
 
   const classes = useStyles();
 
@@ -189,7 +187,7 @@ const Manager: FC<ManagerProps> = ({
       }
     };
     fetchData();
-  }, [])
+  }, [dataSource.id])
 
   // useEffect(() => {
   //   const values = results.map((item) => item.section_name);
@@ -427,7 +425,7 @@ const Manager: FC<ManagerProps> = ({
     if(currentPanelTab === -1){
       setCurrentPanelTab(1);
     }
-  }, [connectivitySource])
+  }, [connectivitySource, setCurrentPanelTab])
 
   return (
     <Grid item md={12} className={classes.root}>

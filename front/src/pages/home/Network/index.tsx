@@ -1,19 +1,13 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState } from 'react';
 import {
   Box,
-  Tabs,
-  Tab,
   IconButton,
-  Typography,
   makeStyles,
   useTheme
 } from '@material-ui/core';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import FiberManualRecordOutlinedIcon from '@material-ui/icons/FiberManualRecordOutlined';
-import NetworkLibrary from './NetworkLibrary'; //remove 'Legacy' to connect to new table
-import StationLibrary from './StationLibrary';
+import NetworkLibrary from './NetworkLibrary';
 import type { ICollapsed, State } from 'src/pages/home';
 import type { ISave } from 'src/types/preference';
 import type { Theme } from 'src/theme';
@@ -34,11 +28,6 @@ interface NetworkProps {
   visible: boolean;
   resultsCollapsed: boolean;
 }
-
-// const tabs = [
-//   { name: 'networks', label: 'Networks' },
-//   { name: 'stations', label: 'Platforms' },
-// ];
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {},
@@ -70,7 +59,6 @@ const Network: FC<NetworkProps> = ({
   const classes = useStyles();
   const { zoom } = useSelector((state) => state.zoom);
   const [currentTab, setCurrentTab] = useState<string>('networks');
-  const [stationCount, setFilterCount] = useState<number>(0);
   const [selectedNetworks, setSelectedNetworks] = useState<string[]>([]);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [myFilterer, setMyFilterer] = useState<Filterer>(new Filterer([]));
@@ -167,53 +155,6 @@ const Network: FC<NetworkProps> = ({
           }}
           
         />
-      {/* <Tabs
-          value={currentTab}
-          onChange={handleChange}
-          className={classes.tabs}
-          TabIndicatorProps={{ className: classes.indicator }}
-          classes={{
-            root: classes.tab
-          }}
-        >
-          {tabs.map((tab) => (
-            <Tab
-              key={tab.name}
-              label={
-                <Box display="flex" alignItems="center" justifyContent="center">
-                  {currentTab === tab.name && isCollapsed !== 'down' ? (
-                    <FiberManualRecordIcon
-                      color="primary"
-                      style={{ fontSize: '0.8rem' }}
-                    />
-                  ) : (
-                    <FiberManualRecordOutlinedIcon
-                      color="primary"
-                      style={{ fontSize: '0.8rem' }}
-                    />
-                  )}
-                  <Box flexGrow={1} mr={2} />
-                  <Typography
-                    variant="body1"
-                    style={{ fontWeight: 600 }}
-                    color="textPrimary"
-                  >
-                    {tab.name === 'stations' && stationCount > 0
-                      ? tab.label //+ ` (${stationCount})`
-                      : tab.label}
-                  </Typography>
-                </Box>
-              }
-              value={tab.name}
-              classes={{
-                root: classes.tab
-              }}
-              onClick={() =>
-                isCollapsed === 'down' ? onCollapsed(null) : null
-              }
-            />
-          ))}
-        </Tabs> */}
         {/* END OF SECTION */}
         <Box flexGrow={1} />
         <Box mr={2}>

@@ -1,6 +1,5 @@
 import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
 import { Typography, IconButton } from '@material-ui/core';
-import { Input } from '@material-ui/icons';
 import {
   fade,
   withStyles,
@@ -12,10 +11,6 @@ import TreeItem, { TreeItemProps } from '@material-ui/lab/TreeItem';
 import Collapse from '@material-ui/core/Collapse';
 import { useSpring, animated } from 'react-spring'; // web.cjs is required for IE 11 support
 import { TransitionProps } from '@material-ui/core/transitions';
-import { Button } from 'devextreme-react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 type StyledTreeItemProps = TreeItemProps & {
   labelText: string;

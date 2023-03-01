@@ -1,12 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'src/store';
-import {
-  updateResults,
-  updateFrequencyBandOptions,
-  updateAntennaOptions,
-  updateModCodOptions
-} from 'src/slices/results';
 import DataGrid, { Column } from 'devextreme-react/data-grid';
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.material.blue.light.compact.css';
@@ -16,14 +10,11 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import axios from 'src/utils/axios';
 import type { Station } from 'src/types/system';
 import type { ICollapsed, State } from 'src/pages/home';
-import SelectionAlert from './SelectionAlert';
 import type { GroundStationFilters, ISave } from 'src/types/preference';
-import { StationFilterModal } from 'src/components/Modals';
 import { THEMES } from 'src/utils/constants/general';
 import type { Theme } from 'src/theme';
 import { Filter, Filterer } from 'src/utils/filterer';
 import { SearchOption } from 'src/types/details';
-import { getModCodForStation } from 'src/utils/misc';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 
@@ -124,13 +115,10 @@ const StationLibrary: FC<StationLibraryProps> = ({
 }) => {
   const classes = useStyles();
   const [results, setResults] = useState<Station[]>();
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-  const [alertMessage, setAlertMessage] = useState({ title: '', message: '' });
   const [open, setOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<GroundStationFilters>(initialFilters);
   const [source, setSoure] = useState<Station[]>(results);
   const [options, setOptions] = useState<IOptions>(initialOptions);
-  // const [checked, setChecked] = useState<number[]>([]);
   const dispatch = useDispatch();
   const theme = useTheme<Theme>();
   const [myFilterer, setMyFilterer] = useState<Filterer>(new Filterer([]));
@@ -210,215 +198,6 @@ const StationLibrary: FC<StationLibraryProps> = ({
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   if (!source) return;
-
-  //   const data = source
-  //     .filter((item) =>
-  //       filters.name !== ''
-  //         ? item.name?.toLowerCase().includes(filters.name.toLowerCase())
-  //         : true
-  //     )
-  //     .filter((item) =>
-  //       filters.networks !== 'none' && filters.networks !== ''
-  //         ? item.networks?.split(', ')?.includes(filters.networks)
-  //         : true
-  //     )
-  //     .filter((item) =>
-  //       filters.location !== 'none' && filters.location !== ''
-  //         ? item.location?.split(', ')?.includes(filters.location)
-  //         : true
-  //     )
-  //     .filter((item) =>
-  //       filters.supportedFrequencies !== 'none' &&
-  //       filters.supportedFrequencies !== ''
-  //         ? item.supportedFrequencies
-  //           ?.split(', ')
-  //           ?.includes(filters.supportedFrequencies)
-  //         : true
-  //     );
-  //   setResults(data);
-  //   if (networkSelections.length > 0 && filters.networks !== 'none') {
-  //     setCount(data.length);
-  //   } else {
-  //     setCount(0);
-  //   }
-  // }, [filters, source]);
-
-  // useEffect(() => {
-  //   if (results && networkSelections.length > 0) {
-  //     //results is the overall list
-  //     //update filter to selected network
-
-
-  //     if(myFilterer.getFilters().has('networks')) {
-  //       myFilterer.removeFilter('networks');
-  //     }
-
-  //     const newWorkingFilter = 
-  //     {
-  //       filterName: "Network",
-  //       filterParam: networkSelections[0]?.toString(),
-  //       filterFunction: (val : any) => {
-  //         {
-  //           let networks;
-  //           if(networkSelections === null || networkSelections.length === 0){
-  //             networks = ""
-  //           } else {
-  //             networks = networkSelections[0];
-  //           }
-  //           if (networks.length === 0) {
-  //             networks = ""
-  //           }
-  //           networks = networks.toLowerCase();
-        
-  
-  //             if(networks === 'ksat'){
-  //               let vals = val.networks.split(',')
-  //               for(let j = 0; j < vals.length; j++){
-  //                 if(vals[j].toLowerCase().includes(networks) && vals[j] !== 'KSAT Lite'){
-  //                   return true;
-  //                 } 
-  //               }
-  //               return false;
-  //             }
-  //             if (val.networks.toLowerCase().includes(networks)) return true;
-    
-  //             return false;
-  //         };
-  //       }
-  //     }
-      
-  //     myFilterer.addFilter('networks', newWorkingFilter);
-  //     handleFilterChange();
-  //     setCount(myFilterer.getFilteredList().length);
-  //   } else {
-
-  //     if(myFilterer.getFilters().has('networks')) {
-  //       myFilterer.removeFilter('networks');
-  //     }
-  //     setCount(0);
-  //     handleFilterChange();
-  //   }
-    
-  // }, [networkSelections]);
-
-  // const handleContext = async (value) => {
-  //   // Do not allow combinations of relays and DTEs in the selection list. 
-  //   if (state.networkType === 'relay') {
-  //     setAlertMessage({
-  //       title: `Invalid Selection`,
-  //       message: 'You cannot combine DTEs and relay networks at this time.'
-  //     });
-  //     setIsAlertOpen(true);
-  //     return;
-  //   }
-
-  //   // Do not allow a station to be selected if it is already in the
-  //   // selection list. 
-  //   if (state.selectedItems.find(item => item.id === value.id)) {
-  //     setAlertMessage({
-  //       title: `Invalid Selection`,
-  //       message: 'This station is already selected.'
-  //     });
-  //     setIsAlertOpen(true);
-  //     return;
-  //   }
-
-  //   // Do not allow a station to be selected if the mission type is terrestrial. 
-  //   if (!state.parameters.isOrbital) {
-  //     setAlertMessage({
-  //       title: `Invalid Selection`,
-  //       message: 'A DTE network cannot service a terrestrial user. Please select a relay network or update your mission parameters.'
-  //     });
-  //     setIsAlertOpen(true);
-  //     return;
-  //   }
-
-  //   // Currently, ground station modeled data points only extend up
-  //   // to 1000 km. If the user selects a DTE while the user altitude 
-  //   // is greater than 1000 km, notify the user of the modeling limitation. 
-  //   if (state.parameters.altitude > 1000) {
-  //     setAlertMessage({
-  //       title: `Warning`,
-  //       message: `Currently, modeled data points for ground stations only extend up to 1000 km. For accurate results, decrease the altitude of your satellite, or download our STK models for these ground stations, and run an analysis for your user.`
-  //     });
-  //     setIsAlertOpen(true);
-  //     // Do not return! This is a valid selection, we just want to warn the user. 
-  //   }
-
-  //   // Set the max altitude to 1000 km. Modeled data points currently
-  //   // only extend up to 1000 km, and attempting predictions beyond
-  //   // this point may lead to inaccurate results. 
-  //   onBounds('altitude', 'max', 1000);
-
-  //   // Set the network type. 
-  //   !state.networkType && onState('networkType', 'dte');
-
-  //   // Clear results returned from last API call. 
-  //   onState('isDataLoaded', false);
-  //   dispatch(updateResults());
-
-  //   // Set frequency band, antenna, and mod/cod options. 
-  //   const response = await axios.get<any>('/getModCodOptions', {
-  //     params: {
-  //       id: value.id,
-  //       networkType: 'dte',
-  //       antennaId: 0, // Only relevant for ground stations
-  //       frequencyBandId: 0 // Only relevant for ground stations
-  //     }
-  //   });
-  //   dispatch(updateFrequencyBandOptions(value.id, response.data.frequencyBandOptions));
-  //   dispatch(updateAntennaOptions(value.id, response.data.antennaOptions));
-  //   dispatch(updateModCodOptions(value.id, response.data.modCodOptions));
-
-  //   // let finMod = state.commsSpecs.commsPayloadSpecs.modulation;
-  //   // let finCod = state.commsSpecs.commsPayloadSpecs.coding;
-  //   // // let finModName = "Auto-Select";
-  //   // // let finCodName = "Auto-Select";
-  //   // let optimized = false;
-
-  //   // if(finMod === -1 && finCod === -1) {
-  //   //   //AUTO SELECT
-  //   //   optimized = true;
-
-  //   // } else {
-
-  //   //   if(finMod === -1) {
-  //   //     //select mod to first avail
-  //   //     finMod = response.data.modCodOptions.find(e => e.codingId === finCod)?.modulationId ?? 0;
-  //   //   } else if (finCod === -1) {
-  //   //     //select cod to first avail
-  //   //     finCod = response.data.modCodOptions.find(e => e.modulationId===finMod)?.codingId ?? 0;
-  //   //   }
-
-  //   // }
-
-  //   let {finMod,finCod,optimized} = getModCodForStation(response.data.modCodOptions, state.commsSpecs.commsPayloadSpecs.modulation, state.commsSpecs.commsPayloadSpecs.coding)
-
-
-  //   // Update the items in the selection list. 
-  //   value = {
-  //     ...value,
-  //     antennaId: response.data.selectedAntennaId,
-  //     antennaName: response.data.selectedAntennaName,
-  //     modulationId : finMod,
-  //     codingId : finCod,
-  //     optimizedModCod : optimized
-  //   };
-
-  //   if(state.commsSpecs.freqBand !== 0 && response.data.frequencyBandOptions.find(e => e.id === state.commsSpecs.freqBand)) {
-  //     value.frequencyBandId = state.commsSpecs.freqBand;
-  //   } else {
-  //     value.frequencyBandId = response.data.frequencyBandOptions[0].id;
-  //   }
-  //   onState('selectedItems', [...state.selectedItems, value]);
-
-  //   onState('isLastSave', false);
-  //   onState('isMarkedForComparison', false);
-  //   onState('isLastAnalysis', false);
-  // };
-
   const handleOpen = (evt?, reason?) => {
     if (reason === 'backdropClick') return;
     setOpen(!open)
@@ -426,13 +205,6 @@ const StationLibrary: FC<StationLibraryProps> = ({
 
   const handleCellClick = (event) => {
     event.columnIndex === 6 && handleOpen();
-    // if (event.event.ctrlKey) {
-    //   // checked.includes(event.data.id)
-    //     /*?*/ setChecked(checked.filter((item) => item !== event.data.id));
-    //   //   : setChecked((prevState) => [...prevState, event.data.id]);
-    // } else {
-    //   setChecked([event.data.id]);
-    // }
   }
   const handleFilter = (values): void => setFilters(values);
 
@@ -465,7 +237,6 @@ const StationLibrary: FC<StationLibraryProps> = ({
     <div className={/*visible ? */classes.root /*: classes.hide*/}>
       <DataGrid
         className={classes.table}
-        //style={{ maxHeight: isCollapsed === 'up' ? (window.screen.availHeight / zoom) * 0.8 : (window.screen.availHeight / zoom) * 0.36  }}
         dataSource={results}
         showBorders={false}
         showRowLines={true}
@@ -473,34 +244,6 @@ const StationLibrary: FC<StationLibraryProps> = ({
         scrolling={{ mode: 'infinite' }}
         wordWrapEnabled={true}
         onCellClick={handleCellClick}
-
-        //Turn on for on click color change for ground stations
-        // onRowPrepared={(event) => {
-        //   if (event.rowT</div>pe === 'data' && checked.includes(event.data.id))
-        //     if(theme.name == THEMES.DARK){
-        //       event.rowElement.style['background'] = "#5e5e5e"; //theme.palette.primary.main;
-        //       event.rowElement.style['color'] = "white";
-        //       event.rowElement.style['font-weight'] =  "bold";
-        //       event.rowElement.style['font-size'] =  `${event.rowElement.style['font-size'] + 1}px`;
-        //     } else {
-        //       event.rowElement.style['background'] = theme.palette.primary.main;
-        //       event.rowElement.style['font-weight'] =  "bold";
-        //       event.rowElement.style['font-size'] =  `${event.rowElement.style['font-size'] + 1}px`;
-        //     }
-
-        // }}
-        // onContextMenuPreparing={(e) => {
-        //   if (e.row?.data && !state.loading) {
-        //     e.items = [
-        //       {
-        //         text: 'Select',
-        //         onClick: () => handleContext(e.row.data)
-        //       }
-        //     ];
-        //   } else {
-        //     e.items = [];
-        //   }
-        // }}
       >
         <Column
           dataField="picture"
@@ -570,25 +313,6 @@ const StationLibrary: FC<StationLibraryProps> = ({
           />}
         />
       </DataGrid>
-      {/* {isAlertOpen && (
-          <SelectionAlert 
-            isOpen={isAlertOpen}
-            onOpen={() => setIsAlertOpen(!isAlertOpen)}
-            message={alertMessage}
-          />
-        )}
-        <StationFilterModal
-          open={open}
-          filterer = {myFilterer}
-          filters={filters}
-          source = {filterSource}
-          options={options}
-          onOpen={handleOpen}
-          onClear={handleclear}
-          onFilters={handleFilter}
-          onFilterChange={handleFilterChange}
-          state={state}
-        /> */}
     </div>
   );
 };

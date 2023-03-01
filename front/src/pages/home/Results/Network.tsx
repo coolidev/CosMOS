@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
-import { NetworkPanel, Modulation } from 'src/components/Results';
+import { NetworkPanel } from 'src/components/Results';
 import type { State } from 'src/pages/home';
 import { Theme } from 'src/theme';
 
@@ -39,13 +39,6 @@ const Network: FC<NetworkProps> = ({
             onBounds = {onBounds}
           />
         </Grid>
-        {/* <Grid item xs = {12}>
-          <Modulation 
-            state={state}
-            onState={onState}
-            onBounds={onBounds}
-          />
-        </Grid> */}
       </Grid>
     </div>
   );

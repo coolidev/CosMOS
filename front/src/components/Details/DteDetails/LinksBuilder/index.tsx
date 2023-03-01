@@ -9,13 +9,12 @@ import {
 	Radio,
 	TextField,
 } from "@material-ui/core";
-import { CheckBox } from "devextreme-react";
+
 import { FC, useEffect, useState } from "react";
 import axios from "src/utils/axios";
 import { LinkProps } from "../LinksList";
 import {Theme} from 'src/theme'
 import { ConnectivitySource as RelationshipSource } from "../Manager";
-import { forEach } from "cypress/types/lodash";
 
 interface LinksBuilderProps {
 	networkId: number
@@ -105,11 +104,6 @@ const LinksBuilder: FC<LinksBuilderProps> = ({
         setRelationshipSource(response.data)
       }
 
-			const linkParams = {
-				// linkId: linkId,
-				networkId: networkId,
-				// userId: userId
-			};
 			const linkResponse = await axios.post<LinkProps[]>('/getLinks', params);
 
 			if (linkResponse.data) {
@@ -119,7 +113,7 @@ const LinksBuilder: FC<LinksBuilderProps> = ({
 			}
     };
     initializeData();
-  }, [])
+  }, [networkId])
 
 	const handleFilter = () => {
 		setFilter(!filter)
@@ -174,6 +168,7 @@ const LinksBuilder: FC<LinksBuilderProps> = ({
 						break;
 					}
 				}
+				return id
 			});
 			setEstablishedRelations(data);
 			clearSelection();
@@ -271,6 +266,7 @@ const LinksBuilder: FC<LinksBuilderProps> = ({
 			linkSegments.push({
 				'connectionId': one.id
 			})
+			return one
 		})
 		let platformId = establishedRelations[0]?.platform_src_id;
 		let antennaId = establishedRelations[0]?.antenna_src_id

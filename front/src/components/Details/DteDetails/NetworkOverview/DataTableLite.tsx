@@ -1,10 +1,8 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.material.blue.light.compact.css';
 import DataGrid, { Column, Editing } from 'devextreme-react/data-grid';
 import axios from 'src/utils/axios';
-import { useSelector } from 'src/store';
-import { convertIntToStandards } from 'src/algorithms/network-library';
 import DialogAlert from 'src/components/DialogAlert';
 import DataTagBoxLite from './DataTagBoxLite';
 import { NetworkAttr } from '.';

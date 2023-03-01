@@ -3,9 +3,9 @@ import { FC, useEffect, useState } from 'react';
 import {
   colors,
   makeStyles,
-  useTheme
+  // useTheme
 } from '@material-ui/core';
-import { useDispatch, useSelector } from 'src/store';
+import { useSelector } from 'src/store';
 import { useWindowSize } from 'src/utils/util';
 import {
   CompareHeader,
@@ -87,7 +87,7 @@ export const NAV_AND_TRACKING_NAME = 'Nav and Tracking';
 
 const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
   const size = useWindowSize();
-  const theme = useTheme<Theme>();
+  // const theme = useTheme<Theme>();
   const [status, setStatus] = useState(initialStatus);
   const [source, setSource] = useState<IComparisonType>();
 

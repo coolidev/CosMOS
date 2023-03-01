@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import TextBox from 'devextreme-react/text-box';
 
 interface DataTagBoxLiteProps {
@@ -21,7 +21,7 @@ const DataTagBoxLite: FC<DataTagBoxLiteProps> = ({event, setPrevValue}) => {
 
   useEffect (() => {
     setPrevValue(event.data.key.value);
-  }, [])
+  }, [setPrevValue, event.data.key.value])
 
   const handleChange = (e) => {
     event.data.setValue(e.value); 

@@ -122,7 +122,7 @@ const LinksList: FC<LinksListProps> = ({
 			}
     };
     initializeData();
-  }, [])
+  }, [networkId])
 
 	useEffect(() => {
     const fetchData = async () => {
@@ -143,7 +143,7 @@ const LinksList: FC<LinksListProps> = ({
 			}
     };
     fetchData();
-  }, [isUpdated])
+  }, [isUpdated, networkId])
 
 	const IconLeftAccordionSummary = withStyles({
     expandIcon: {

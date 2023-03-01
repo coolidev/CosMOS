@@ -43,9 +43,6 @@ import LoadingSPAnalysis from 'src/components/LoadingSPAnalysis';
 import { EARTH_RADIUS_km } from 'src/utils/constants/physical';
 import { resetConnection } from 'src/slices/webSocket';
 import { updateSocketId } from 'src/utils/ws';
-import { TagBox } from 'devextreme-react';
-import { updateNetworkDetailsLoader } from 'src/slices/networkLibrary';
-import { updateComparisonIds } from 'src/slices/pinnedResults';
 
 export interface IResults {
   dataRate_kbps: number;
@@ -406,14 +403,6 @@ const initialBounds = {
   },
 };
 
-// const initialVisModel: VisualizerModel = {
-//   userSatellite: null,
-//   userGroundStation: null,
-//   relayNetwork: null,
-//   geoNetwork: null,
-//   groundStations: null
-// }
-
 const Home: FC = () => {
   const dispatch = useDispatch();
   const theme = useTheme<Theme>();
@@ -443,8 +432,6 @@ const Home: FC = () => {
   const { setSMSTokens } = useSMS();
   const history = useHistory();
   const [introVisible, setIntroVisible] = useState(localStorage.getItem('introPopCheckbox') === 'true');
-  // const isChecked = localStorage.getItem('introPopCheckbox') === 'true';
-  // const [checked, setChecked] = useState(isChecked);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [analyticsPct, setAnalyticsPct] = useState(0);
@@ -454,111 +441,12 @@ const Home: FC = () => {
   const [orbitPropPct, setOrbitPropPct] = useState(0);
   const [geoRFVisibilityPct, setGeoRFVisibilityPct] = useState(0);
   const [statAnalysisPct, setStatAnalysisPct] = useState(0);
-  // const [dbUpdatePct, setDbUpdatePct] = useState(0);
   const [dataFetchPct, setDataFetchPct] = useState(0);
   const [socketMessage, setSocketMessage] = useState('');
   const[hideLoading, setHideLoading] = useState(false);
 
-  // const [visualizerModel, updateVisualizerModel] = useState<VisualizerModel>(initialVisModel);
-  const [selectedPlatformIds, updateSelectedPlatformIds] = useState<number[]>([]);
-
   let cores = 0; 
   let coresDone = 0;
-
-  // useEffect(() => {
-  //   if(!state.parameters.isOrbital){ //terrestrial
-  //     updateVisualizerModel({...visualizerModel,
-  //       userGroundStation: {
-  //         id: 0,
-  //         name: 'User Station',
-  //         latitude: state.parameters.latitude,
-  //         longitude: state.parameters.longitude,
-  //         altitude: 0,
-  //         minElevationAngle: 5
-  //       },
-  //       userSatellite: null
-  //     }
-  //     );
-  //     }
-  //     else{ //orbital
-  //       updateVisualizerModel({...visualizerModel, 
-  //         userSatellite: 
-  //         {
-  //           id: 0,
-  //           name: "User Satellite",
-  //           inclination: state.parameters.inclination,
-  //           altitude: state.parameters.altitude,
-  //           eccentricity: state.parameters.eccentricity,
-  //           raan: state.parameters.raan,
-  //           trueAnomaly: state.parameters.trueAnomaly,
-  //           argumentOfPerigee: state.parameters.argumentOfPerigee
-  //         },
-  //         userGroundStation: null
-  //       });
-  //     }
-  // },[state.parameters]);
-
-  useEffect(() => {
-    console.log(selectedPlatformIds);
-  },[selectedPlatformIds]);
-
-  // useEffect(() => {
-  //   console.log(visualizerModel);
-  // },[visualizerModel]);
-
-  // useEffect(() => {
-  //   if(state.selectedItems.length > 0){
-  //     const updatedList: number[] = state.selectedItems.map((item) => {return item.id})?.filter((elem, idx, self) => {return idx === self.indexOf(elem)});
-  //     let deletedIds: number[] = [];
-  //     let newIds: number[] = [];
-  //     let existingIds: number[] = [];
-
-  //     updatedList.forEach((platformId) => {
-  //       if(selectedPlatformIds.indexOf(platformId) === -1){
-  //         newIds.push(platformId);
-  //       }else{
-  //         existingIds.push(platformId);
-  //       }
-  //     });
-
-  //     selectedPlatformIds.forEach((platform) => {
-  //       if(updatedList.indexOf(platform) === -1){
-  //         deletedIds.push(platform);
-  //       }
-  //     });
-
-  //     updateSelectedPlatformIds(newIds?.concat(existingIds));
-
-  //     let tmpModels: GroundStationInfo[] = [];
-  //     tmpModels.push(...visualizerModel?.groundStations?.filter((item) => {return deletedIds.indexOf(item.id) === -1}) ?? []);
-
-  //     newIds.forEach(async (stationId)=>{
-  //       const response = await axios.post('/getStationParams', {groundStationId: stationId});
-  //       tmpModels.push({
-  //         id: stationId,
-  //         name: state?.selectedItems?.filter((item) => {return item.id === stationId})[0].name,
-  //         latitude: response.data[0]?.latitude ?? 0,
-  //         longitude: response.data[0]?.longitude ?? 0,
-  //         altitude: response.data[0]?.altitude ?? 0,
-  //         minElevationAngle: response.data[0]?.minimumElevAngle ?? 5
-  //       });
-  //     updateVisualizerModel({...visualizerModel,
-  //       groundStations: tmpModels
-  //       })
-  //     });
-  //   }else{
-  //     if(visualizerModel.groundStations){
-  //       updateVisualizerModel({...visualizerModel, groundStations: null});
-  //       updateSelectedPlatformIds([]);
-  //     }
-  //     if(visualizerModel.geoNetwork){
-  //       updateVisualizerModel({...visualizerModel, geoNetwork: null});
-  //     }
-  //     if(visualizerModel.relayNetwork){
-  //       updateVisualizerModel({...visualizerModel, relayNetwork: null});
-  //     }
-  //   }
-  // },[state.selectedItems]);
 
   useEffect(() => {
     handleBounds('endYear', 'min', state.constraints.launchYear);
@@ -1116,31 +1004,7 @@ const Home: FC = () => {
               }}
             >
              	visualizer
-              {/* <Visualizer
-                state={state}
-                height={
-                  isCollapsed === 'down'
-                    ? (window.screen.availHeight / zoom) * 0.785
-                    : isCollapsed === 'up'
-                    ? 0
-                    : (window.screen.availHeight / zoom) * 0.485
-                }
-              /> */}
             </Box>
-            {/* <TagBox
-              dataSource={['QPSK','8 PSK','PSK','16 PSK','Hi']}
-              //defaultValue={values}
-              valueExpr="id"
-              displayExpr="name"
-              showSelectionControls={false}
-              maxDisplayedTags={3}
-              showMultiTagOnly={true}
-              applyValueMode="instantly"
-              searchEnabled={false}
-              onValueChanged={()=>{}}
-              width="200px"
-              showDataBeforeSearch={true}
-            /> */}
             <Box style={{ backgroundColor: theme.palette.background.dark }}>
               <Network
                 state={state}

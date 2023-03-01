@@ -5,7 +5,6 @@ import { FC } from "react";
 import { ConnectivitySource } from "..";
 import { SubSection } from 'src/types/details';
 import CousinConnection from './CousinConnection';
-import { any } from 'cypress/types/bluebird';
 
 interface ConnectivityPanelProps {
   id: number;

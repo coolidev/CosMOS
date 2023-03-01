@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Button, Dialog, DialogContent, DialogTitle, Grid, IconButton, makeStyles, Theme } from "@material-ui/core";
 import { CheckBox } from "devextreme-react";
 import { FC } from "react";
-import { ConnectivitySource } from "..";
 import { Close as CloseIcon } from '@material-ui/icons';
 import axios from 'src/utils/axios';
 

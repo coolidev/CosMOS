@@ -11,7 +11,6 @@ import {
   Icon,
   Tooltip,
   Box,
-  Checkbox,
   InputAdornment,
 } from '@material-ui/core';
 import { FC, useEffect, useState } from 'react';
@@ -28,13 +27,11 @@ import { isNull } from 'underscore';
 import { TooltipList } from 'src/utils/constants/tooltips';
 import { THEMES } from 'src/utils/constants/general';
 import DialogBox from 'src/components/DialogBox';
-import { ArrowLeft, FilterListSharp } from '@material-ui/icons';
 import { getCoverage } from 'src/algorithms/coverage';
 import { getOptimalModCod } from 'src/algorithms/link-optimization';
 import { calculateMaxAchievableDataRate } from 'src/algorithms/link';
 import { ModCodOption } from 'src/types/evaluation';
 import { FilteringSelection } from 'src/pages/home/QuickAccess/Mission';
-import TagBox from 'devextreme-react/tag-box';
 import { Autocomplete } from '@material-ui/lab';
 
 export interface CommsPayloadSpecsDialogProps {
@@ -264,7 +261,6 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
   const [parabolicCalc, setParabolicCalc] = useState<boolean>(false);
   const [helixCalc, setHelixCalc] = useState<boolean>(false);
   const [gainCalcNotes, setGainCalcNotes] = useState<string>('');
-  const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
   const [options, setOptions] = useState(initialOptions);
   const [modCods, setModCods] = useState(null);
@@ -272,7 +268,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
   const [codings, setCodings] = useState<Attribute[]>([]);
   const { performancePanel, modCodOptions } = useSelector(state => state.results);
   const [selectedLength, setSelectedLength] = useState<number>(-1);
-  // const isNoSelectMode: boolean = state.selectedItems.length <= 0;
+  
   const {coding, frequencyBands, modulation, polarization} = useSelector((state) => state.networkList);
   const [codeRateOptions_codeType, setCodingRateOptions_codeType] = useState<number[]>([]);
   const [modulationOptions_codeType, setModulationOptions_codeType] = useState<number[]>([]);
@@ -284,22 +280,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.selectedItems.length]);
-  // useEffect(() => {
-  //   console.log('select Mode: ',isNoSelectMode, ' length: ', state.selectedItems.length.toString());
-  // },[]);
   
-  // useEffect(() => {
-  //   console.log('checking...');
-  //   console.log('current Mode: ',isNoSelectMode, ' new length: ', state.selectedItems.length.toString());
-  //   if(state.selectedItems.length > 0 && isNoSelectMode){
-  //     console.log('refreshing...');
-  //     refresh();
-  //   }else if(state.selectedItems.length <= 0 && !isNoSelectMode){
-  //     console.log('refreshing...');
-  //     refresh();
-  //   }
-  // },[state.selectedItems]);
-
   function launchGainCalc() {
     setGainCalcOptions(false);
     if (gainCalcId === 0) {
@@ -724,8 +705,8 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
   }
 
   const makePolarizationList = () => {
-    return filteredPolarizationList.map((option) => {
-      return <MenuItem value={option.id} disabled = {option.disabled}>{option.name}</MenuItem>;
+    return filteredPolarizationList.map((option, idx) => {
+      return <MenuItem key={idx} value={option.id} disabled = {option.disabled}>{option.name}</MenuItem>;
     })
   }
 
@@ -1227,128 +1208,6 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
               />
             </Grid>
 
-        {/* <Grid item md={12}>
-          <Typography
-            variant="body1"
-            component="p"
-            color="textPrimary"
-            className={classes.header}
-          >
-            Antenna
-          </Typography>
-        </Grid> */}
-            {/* <Grid item md={1}>
-              <Radio
-                name="checkedShow"
-                size="small"
-                checked={state.commsSpecs.commsPayloadSpecs.gainOn}
-                onChange={() => {
-                  onState('commsSpecs', {
-                    ...state.commsSpecs,
-                    commsPayloadSpecs: {
-                      ...state.commsSpecs.commsPayloadSpecs,
-                      gainOn: !state.commsSpecs.commsPayloadSpecs.gainOn
-                    }
-                  });
-                }}
-                disabled={state.commsSpecs.commsPayloadSpecs.minEIRPFlag || state.loading}
-              />
-            </Grid>
-            <Grid item md={6}>
-              <Tooltip title={TooltipList.gain}>
-                <Typography
-                  variant="body1"
-                  component="p"
-                  style={{ paddingLeft: '8px' }}
-                  color={
-                    state.commsSpecs.commsPayloadSpecs.gainOn &&
-                    !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                      ? 'textPrimary'
-                      : 'textSecondary'
-                  }
-                >
-                  Gain (dBi)
-                </Typography>
-              </Tooltip>
-            </Grid>
-            <Grid item md={5}>
-              <TextField
-                name="gain"
-                value={
-                  state.commsSpecs.commsPayloadSpecs.gainOn &&
-                  !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                    ? state.commsSpecs.commsPayloadSpecs.gain
-                    : ''
-                }
-                onBlur={handleClick}
-                fullWidth
-                InputProps={{
-                  inputComponent: CustomNumberFormat,
-                  disableUnderline: true,
-                  inputProps: {
-                    className:
-                      state.commsSpecs.commsPayloadSpecs.gainOn &&
-                      !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                        ? classes.input
-                        : classes.disabledInput,
-                    min: bounds.gain.min,
-                    max: bounds.gain.max
-                  }
-                }}
-                disabled={
-                  !state.commsSpecs.commsPayloadSpecs.gainOn ||
-                  state.commsSpecs.commsPayloadSpecs.minEIRPFlag ||
-                  state.loading
-                }
-                onKeyPress={(ev) => {
-                  if (ev.key === 'Enter') {
-                    handleClick(ev);
-                  }
-                }}
-              />
-              <Tooltip
-                title={'Gain Calculator'}
-                placement="top-start"
-                classes={{ tooltip: classes.tooltip }}
-                style={{
-                  position: 'absolute',
-                  top: 195,
-                  right: 8
-                }}
-              >
-                <IconButton
-                  size="small"
-                  onClick={() => setGainCalcOptions(true)}
-                  disabled={
-                    !state.commsSpecs.commsPayloadSpecs.gainOn ||
-                    state.commsSpecs.commsPayloadSpecs.minEIRPFlag || 
-                    state.loading
-                  }
-                >
-                  <Icon
-                    style={{
-                      textAlign: 'center',
-                      overflow: 'visible',
-                      paddingBottom: '20px'
-                    }}
-                  >
-                    <img
-                      alt="calculate"
-                      src="/static/icons/calculator.svg"
-                      style={{
-                        height: (window.screen.availHeight / zoom) * 0.027,
-                        paddingBottom: '10px',
-                        opacity:
-                          state.commsSpecs.commsPayloadSpecs.gainOn &&
-                          !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                            ? 1
-                            : 0.5
-                      }}
-                    />
-                  </Icon>
-                </IconButton>
-              </Tooltip>
-            </Grid> */}
         <Grid item md={5}>
           <Tooltip title={TooltipList.polarizationType}>
             <Typography className={classes.text}>
@@ -1357,53 +1216,6 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
           </Tooltip>
         </Grid>
         <Grid item md={7}>
-          {/* 
-          {state.commsSpecs.commsPayloadSpecs.polarizationType === -1?
-          <FormControl variant="filled" size="small" fullWidth className={classes.select}>
-            <Select
-              name="polarizationType"
-              variant="outlined"
-              data-filter-network="true"
-              value={state.commsSpecs.commsPayloadSpecs.polarizationType}
-              color="primary"
-              onChange={handleClick}
-              disabled={state.loading}
-              fullWidth
-            >
-              <MenuItem value={-1}>---</MenuItem>
-              {makePolarizationList()}
-            </Select>
-          </FormControl>
-          :
-            <TagBox          
-            style = {{
-              borderRadius: '4px',
-              boxShadow: '0px 0px 0px #c0c0c0', 
-            }}          
-            dataSource={polarizationOptions} //data set          
-            value = {[polarizationOptions.filter((entry) => {return entry.id === state.commsSpecs.commsPayloadSpecs.polarizationType})[0]?.name]} //selected items from dataset          
-            showSelectionControls={true}
-            showMultiTagOnly={true}
-            applyValueMode="instantly"          
-            searchEnabled={false}
-            stylingMode="outlined"          
-            activeStateEnabled= {false}
-            deferRendering= {false}
-            openOnFieldClick= {false}
-            id="filter-name"          
-            onValueChanged={
-              (component) => {
-                if(component.value.length < 1){
-                  onState('commsSpecs', { ...state.commsSpecs, commsPayloadSpecs: {...state.commsSpecs.commsPayloadSpecs, polarizationType: -1}});
-                  let newFilterSelectionOrder = filterSelectionOrder;
-                  let index = newFilterSelectionOrder.indexOf(FilteringSelection.POLARIZATION);
-                  newFilterSelectionOrder.splice(index, 1);
-                  setFilterSelectionOrder(newFilterSelectionOrder);
-                }      
-              }
-            }
-            />
-          } */}
           <Autocomplete
               options={polarizationOptions}
               getOptionDisabled = {(option) => option.disabled}
@@ -1481,113 +1293,6 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
             }}
           />
         </Grid>
-        {/* <Grid item md={12}>
-          <Typography
-            variant="body1"
-            component="p"
-            color="textPrimary"
-            className={classes.header}
-          >
-            RF Front End
-          </Typography>
-        </Grid> */}
-            {/* <Grid item md={6}>
-              <Tooltip title={TooltipList.transmitterPower}>
-                <Typography
-                  variant="body1"
-                  component="p"
-                  color={
-                    state.commsSpecs.commsPayloadSpecs.gainOn &&
-                    !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                      ? 'textPrimary'
-                      : 'textSecondary'
-                  }
-                >
-                  {'Transmitter Power (dBW)'}
-                </Typography>
-              </Tooltip>
-            </Grid>
-            <Grid item md={5}>
-              <TextField
-                name="transmitterPower"
-                value={
-                  state.commsSpecs.commsPayloadSpecs.gainOn &&
-                  !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                    ? state.commsSpecs.commsPayloadSpecs.transmitterPower
-                    : ''
-                }
-                onBlur={handleClick}
-                fullWidth
-                InputProps={{
-                  inputComponent: CustomNumberFormat,
-                  disableUnderline: true,
-                  inputProps: {
-                    className:
-                      state.commsSpecs.commsPayloadSpecs.gainOn &&
-                      !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                        ? classes.input
-                        : classes.disabledInput,
-                    min: bounds.transmitterPower.min,
-                    max: bounds.transmitterPower.max
-                  }
-                }}
-                disabled={
-                  !state.commsSpecs.commsPayloadSpecs.gainOn ||
-                  state.commsSpecs.commsPayloadSpecs.minEIRPFlag ||
-                  state.loading
-                }
-                onKeyPress={(ev) => {
-                  if (ev.key === 'Enter') {
-                    handleClick(ev);
-                  }
-                }}
-              />
-            </Grid> */}
-            {/* <Grid item md={5}>
-              <Tooltip title={TooltipList.passiveLosses}>
-                <Typography
-                  className={classes.text}
-                >
-                  {'Passive Losses (dB)'}
-                </Typography>
-              </Tooltip>
-            </Grid>
-            <Grid item md={7}>
-              <TextField
-                name="passiveLoss"
-                value={
-                  state.commsSpecs.commsPayloadSpecs.gainOn &&
-                  !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                    ? state.commsSpecs.commsPayloadSpecs.passiveLoss
-                    : ''
-                }
-                onBlur={handleClick}
-                fullWidth
-                InputProps={{
-                  inputComponent: CustomNumberFormat,
-                  disableUnderline: true,
-                  inputProps: {
-                    className:
-                      state.commsSpecs.commsPayloadSpecs.gainOn &&
-                      !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                        ? classes.input
-                        : classes.disabledInput,
-                    min: bounds.passiveLoss.min,
-                    max: bounds.passiveLoss.max
-                  }
-                }}
-                disabled={
-                  !state.commsSpecs.commsPayloadSpecs.gainOn ||
-                  state.commsSpecs.commsPayloadSpecs.minEIRPFlag || 
-                  state.loading
-                }
-                onKeyPress={(ev) => {
-                  if (ev.key === 'Enter') {
-                    handleClick(ev);
-                  }
-                }}
-              />
-            </Grid> */}
         <Grid item md={5}>
           <Tooltip title={TooltipList.otherLosses}>
             <Typography className = {classes.text}>
@@ -1629,55 +1334,6 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
             </Tooltip>
           </Grid>
           <Grid item md={7}>
-            {/* {state.commsSpecs.commsPayloadSpecs.modulation === -1?
-            <FormControl variant="filled" size="small" fullWidth className={classes.select}>
-              <Select
-                name="modulation"
-                variant="outlined"
-                data-filter-network="true"
-                color="primary"
-                value={state.commsSpecs.commsPayloadSpecs.modulation}
-                onChange={handleClick}
-                disabled={state.loading}
-                fullWidth
-              >
-                <MenuItem value={-1}>---</MenuItem>
-                {filteredModList.map((option) => {
-                  return <MenuItem value={option.id} disabled = {option.disabled}>{option.name}</MenuItem>;
-                })}
-              </Select>
-            </FormControl>
-            :
-            <TagBox          
-            style = {{
-              borderRadius: '4px',
-              boxShadow: '0px 0px 0px #c0c0c0', 
-            }}          
-            dataSource={modulationOptions} //data set          
-            value = {[modulationOptions.filter((entry) => {return entry.id === state.commsSpecs.commsPayloadSpecs.modulation})[0]?.name]} //selected items from dataset          
-            showSelectionControls={true}
-            showMultiTagOnly={true}
-            applyValueMode="instantly"          
-            searchEnabled={false}
-            stylingMode="outlined"          
-            activeStateEnabled= {false}
-            deferRendering= {false}
-            openOnFieldClick= {false}
-            id="filter-name"          
-            onValueChanged={
-              (component) => {
-                if(component.value.length < 1){
-                  onState('commsSpecs', { ...state.commsSpecs, commsPayloadSpecs: {...state.commsSpecs.commsPayloadSpecs, modulation: -1}});
-                  let newFilterSelectionOrder = filterSelectionOrder;
-                  let index = newFilterSelectionOrder.indexOf(FilteringSelection.MODULATION);
-                  newFilterSelectionOrder.splice(index, 1);
-                  setFilterSelectionOrder(newFilterSelectionOrder);
-                }      
-              }
-            }
-            
-            />
-            } */}
             <Autocomplete
               options={filteredModList}
               getOptionDisabled = {(option) => option.disabled}
@@ -1713,8 +1369,8 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
                 disabled={state.loading}
                 fullWidth
               >
-                {filteredCodingTypeOptions.map((option) => {
-                  return <MenuItem value={option.id} disabled = {option.disabled}>{option.name}</MenuItem>;
+                {filteredCodingTypeOptions.map((option, idx) => {
+                  return <MenuItem key={idx} value={option.id} disabled = {option.disabled}>{option.name}</MenuItem>;
                 })}
               </Select>
             </FormControl>
@@ -1727,54 +1383,6 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
             </Tooltip>
           </Grid>
           <Grid item md={7}>
-            {/* {state.commsSpecs.commsPayloadSpecs.coding === -1?
-            <FormControl variant="filled" size="small" fullWidth className={classes.select}>
-              <Select
-                name="coding"
-                variant="outlined"
-                data-filter-network="true"
-                color="primary"
-                value={state.commsSpecs.commsPayloadSpecs.coding}
-                onChange={handleClick}
-                disabled={state.loading}
-                fullWidth
-              >
-                <MenuItem value={-1}>---</MenuItem>
-                {filteredCodingOptions.map((option) => {
-                  return <MenuItem value={option.id} disabled = {option.disabled}>{option.name}</MenuItem>;
-                })}
-              </Select>
-            </FormControl>
-            :
-            <TagBox          
-            style = {{
-              borderRadius: '4px',
-              boxShadow: '0px 0px 0px #c0c0c0', 
-            }}          
-            dataSource={codingOptions} //data set          
-            value = {[codingOptions.filter((entry) => {return entry.id === state.commsSpecs.commsPayloadSpecs.coding})[0]?.name]} //selected items from dataset          
-            showSelectionControls={true}
-            showMultiTagOnly={true}
-            applyValueMode="instantly"          
-            searchEnabled={false}
-            stylingMode="outlined"          
-            activeStateEnabled= {false}
-            deferRendering= {false}
-            openOnFieldClick= {false}
-            id="filter-name"          
-            onValueChanged={
-              (component) => {
-                if(component.value.length < 1){
-                  onState('commsSpecs', { ...state.commsSpecs, commsPayloadSpecs: {...state.commsSpecs.commsPayloadSpecs, coding: -1}});
-                  let newFilterSelectionOrder = filterSelectionOrder;
-                  let index = newFilterSelectionOrder.indexOf(FilteringSelection.CODING_RATE);
-                  newFilterSelectionOrder.splice(index, 1);
-                  setFilterSelectionOrder(newFilterSelectionOrder);
-                }      
-              }
-            }
-            />
-            } */}
             <Autocomplete
               options={filteredCodingOptions}
               getOptionDisabled = {(option) => option.disabled}
@@ -1792,111 +1400,6 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
             />
           </Grid>
         </>
-         {/* :
-         <>
-          <Grid item md={2}>
-            <Checkbox
-              color="primary"
-              style={{
-                color: `${theme.palette.primary.main} `
-              }}
-              checked={
-                state.selectedItems.find(
-                  (item) => item.id === state.radioButtonSelectionId
-                )?.optimizedModCod ?? false
-              }
-              onChange={handleCheck}
-              disabled={state.radioButtonSelectionId === 0 || state.loading}
-            />
-          </Grid>
-          <Grid item md={10}>
-            <Typography variant="body1" component="p" color="textPrimary">
-              {'Auto-Selected Modulation & Coding'}
-            </Typography>
-          </Grid>
-          <Grid item md={5}>
-            <Typography className = {classes.text}>
-              Modulation
-            </Typography>
-          </Grid>
-          <Grid item md={7}>
-            <FormControl variant="outlined" size="small" fullWidth className={classes.select}>
-              <Select
-                name="modulation"
-                variant="outlined"
-                value={options.modulation}
-                onChange={handleOption}
-                disabled={
-                  state.selectedItems.find(
-                    (item) => item.id === state.radioButtonSelectionId
-                  )?.optimizedModCod || 
-                  state.radioButtonSelectionId === 0 ||
-                  state.loading
-                }
-                fullWidth
-              >
-                <MenuItem value={0} disabled>
-                  <em>Auto-Select</em>
-                </MenuItem>
-                {filteredModList.map((item) => (
-                  <MenuItem value={item.id} key={item.id} disabled = {item.disabled}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item md={5}>
-            <Typography className = {classes.text}>
-              Coding
-            </Typography>
-          </Grid>
-          <Grid item md={7}>
-            <FormControl variant="outlined" size="small" fullWidth className={classes.select}>
-              <Select
-                name="coding"
-                variant="outlined"
-                value={options.coding}
-                onChange={handleOption}
-                disabled={
-                  state.selectedItems.find(
-                    (item) => item.id === state.radioButtonSelectionId
-                  )?.optimizedModCod || 
-                  state.radioButtonSelectionId === 0 ||
-                  state.loading
-                }
-                fullWidth
-              >
-                <MenuItem value={0} disabled>
-                  <em>Auto-Select</em>
-                </MenuItem>
-                {codings.map((item) => (
-                  <MenuItem value={item.id} key={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </>
-        } */}
-        {/* <Grid item md = {4}>
-          <Button 
-            onClick={() => close()}
-            variant={'contained'}
-            color={'primary'}
-            size="small"
-            style={{
-              color:
-                theme.name === THEMES.LIGHT
-                  ? '#fff'
-                  : theme.palette.text.primary
-            }}
-          >
-            <ArrowLeft/> {'Back'}
-          </Button>
-      </Grid>
-      <Grid item md={8}/> */}
     </Grid>
     </Box>
 
@@ -2095,90 +1598,3 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
 };
 
 export default CommsPayloadSpecDialog;
-
-/* <Grid container alignItems="center" spacing={2}>
-        <Grid item md={12}>
-          <Typography  style={{ width: '100%', fontSize: '11pt', fontWeight: 'bold'}}>
-            Comms Payload Specifications
-          </Typography>
-        </Grid>
-        <Grid item md={12}/>
-        <Grid item md={1} />
-        <Grid item md={5}>
-          <Button
-            name="minEIRP"
-            variant={
-              !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                ? 'outlined'
-                : 'contained'
-            }
-            color={
-              state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                ? 'primary'
-                : 'inherit'
-            }
-            className={classes.box}
-            onClick={() => {
-              onState('commsSpecs', {
-                ...state.commsSpecs,
-                commsPayloadSpecs: {
-                  ...state.commsSpecs.commsPayloadSpecs,
-                  minEIRPFlag: true
-                }
-              });
-            }}
-            style={{
-              color:
-                theme.name === THEMES.LIGHT
-                  ? !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                    ? '#000'
-                    : '#fff'
-                  : theme.palette.text.primary
-            }}
-            size="small"
-            fullWidth
-            // disabled={state.loading}
-          >
-            Min EIRP
-          </Button>
-        </Grid>
-        <Grid item md={5}>
-          <Button
-            name="linkCalc"
-            variant={
-              state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                ? 'outlined'
-                : 'contained'
-            }
-            color={
-              !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                ? 'primary'
-                : 'inherit'
-            }
-            className={classes.box}
-            onClick={() => {
-              onState('commsSpecs', {
-                ...state.commsSpecs,
-                commsPayloadSpecs: {
-                  ...state.commsSpecs.commsPayloadSpecs,
-                  minEIRPFlag: false
-                }
-              });
-            }}
-            style={{
-              color:
-                theme.name === THEMES.LIGHT
-                  ? state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                    ? '#000'
-                    : '#fff'
-                  : theme.palette.text.primary
-            }}
-            size="small"
-            fullWidth
-            disabled={state.loading}
-          >
-            Link Calc
-          </Button>
-        </Grid>
-        <Grid item md={1} />
-      </Grid> */

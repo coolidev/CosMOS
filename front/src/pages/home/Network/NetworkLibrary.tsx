@@ -7,36 +7,26 @@ import {
   updateFrequencyBandOptions,
   updateAntennaOptions
 } from 'src/slices/results';
-import clsx from 'clsx';
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.material.blue.light.compact.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalculator,
-  faFilter,
   faInfoCircle
 } from '@fortawesome/free-solid-svg-icons';
 import {
-  Backdrop,
-  Box,
-  Checkbox,
-  CircularProgress,
-  Grid,
   IconButton,
-  LinearProgress,
   makeStyles,
   useTheme
 } from '@material-ui/core';
 import axios from 'src/utils/axios';
-import type { Relay, Dte, System, Station } from 'src/types/system';
+import type { Station } from 'src/types/system';
 import { DteDetails } from 'src/components/Details';
 import type { ICollapsed, State } from 'src/pages/home';
 import type { ModCodOption } from 'src/types/evaluation';
 import SelectionAlert from './SelectionAlert';
 import type { ISave, NetworkFilters } from 'src/types/preference';
 import { NetworkFilterModal } from 'src/components/Modals';
-import { exploreImages as images } from 'src/utils/assets';
-import { FREQ_FILTERING_OPTIONS as Options } from 'src/utils/constants/network-library';
 import { useSelector } from 'src/store';
 import AddSystem from './AddSystem';
 import type { Theme } from 'src/theme';
@@ -54,7 +44,6 @@ import React from 'react';
 import { CheckBox, Template } from 'devextreme-react';
 import { AttrValue } from 'src/components/Mission/CommServicesDef';
 import { updateNetworkList } from 'src/slices/networkList';
-import { Item } from 'devextreme-react/tag-box';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface NetworkLibraryProps {
@@ -98,10 +87,10 @@ const initialFilters: NetworkFilters = {
   scanAgreement: 'none'
 };
 
-const initialOptions: IOptions = {
-  supportedFrequencies: [],
-  location: []
-};
+// const initialOptions: IOptions = {
+//   supportedFrequencies: [],
+//   location: []
+// };
 
 export type TService = {
   antennaId: number;
@@ -303,8 +292,7 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
   const [alertMessage, setAlertMessage] = useState({ title: '', message: '' });
   const [filters, setFilters] = useState<NetworkFilters>(initialFilters);
   const [filterSource, setFilterSource] = useState<SearchOption[]>([]);
-  // const [options, setOptions] = useState<IOptions>(initialOptions);
-  const { isEngineer } = useSelector((state) => state.user);
+
   const [newSystem, setNewSystem] = useState<boolean>(false);
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
@@ -314,9 +302,7 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
   );
   const [modulationOptions, setModulationOptions] = useState<AttrValue[]>([]);
   const [freqBandOptions, setFreqBandOptions] = useState<AttrValue[]>([]);
-  const { coding, frequencyBands, modulation, polarization } = useSelector(
-    (state) => state.networkList
-  );
+
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
@@ -532,7 +518,9 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
             networkId: network?.id ?? 0
           });
         });
+        return idx
       });
+      return idx
     });
 
     setData(root);
@@ -547,7 +535,7 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
       let data: TNetwork[] = response.data.sort((a, b) =>
         a.system.localeCompare(b.system)
       );
-      let temp: IOptions = initialOptions;
+      // let temp: IOptions = initialOptions;
       const root: TListItem[] = [];
       let currId = 0;
       data.map((network: TNetwork, idx: number) => {
@@ -602,7 +590,9 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
               networkId: network?.id
             });
           });
+          return idx
         });
+        return idx
       });
 
       setData(root);
@@ -762,19 +752,6 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   let selected: string[] = [];
-  //   checked.forEach((selection) => {
-  //     let currVal: System[] = results.filter(
-  //       (entry: System) => entry.id === selection && entry.type === 'dte'
-  //     );
-  //     if (currVal.length > 0) {
-  //       selected = selected.concat(currVal[0].system);
-  //     }
-  //   });
-  //   setSelectedDTEs(selected);
-  // }, [checked]);
-
   useEffect(() => {
     const shell = async () => {
       if (firstLoad && state.selectedItems.length > 0) {
@@ -828,39 +805,6 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
   useEffect(() => {
     setNetworks(selectedDTEs);
   }, [selectedDTEs]);
-
-  // useEffect(() => {
-  //   if (!source) return;
-
-  //   const data = source
-  //     .filter((item) =>
-  //       filters.name !== ''
-  //         ? item.system.toLowerCase().includes(filters.name.toLowerCase())
-  //         : true
-  //     )
-  //     .filter((item) =>
-  //       filters.operationalYear !== 0 && filters.operationalYear
-  //         ? item.year <= filters.operationalYear
-  //         : true
-  //     )
-  //     .filter((item) =>
-  //       filters.type !== 'none' && filters.type !== ''
-  //         ? item.type === filters.type
-  //         : true
-  //     )
-  //     .filter((item) =>
-  //       filters.location !== 'none' && filters.location !== ''
-  //         ? item.location.split(', ').includes(filters.location)
-  //         : true
-  //     )
-  //     .filter((item) =>
-  //       filters.supportedFrequencies !== 'none' &&
-  //       filters.supportedFrequencies !== ''
-  //         ? item.freqBands.split(', ').includes(filters.supportedFrequencies)
-  //         : true
-  //     );
-  //   setResults(data);
-  // }, [filters, source]);
 
   const handleDbClick = (event): void => {
     event?.data.type === 'relay' && handlePanel('relay', event.data.id);
@@ -1002,28 +946,6 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
       updateModCodOptions(value.platformId, response.data.modCodOptions)
     );
 
-    // let finMod = state.commsSpecs.commsPayloadSpecs.modulation;
-    // let finCod = state.commsSpecs.commsPayloadSpecs.coding;
-    // // let finModName = "Auto-Select";
-    // // let finCodName = "Auto-Select";
-    // let optimized = false;
-
-    // if(finMod === -1 && finCod === -1) {
-    //   //AUTO SELECT
-    //   optimized = true;
-
-    // } else {
-
-    //   if(finMod === -1) {
-    //     //select mod to first avail
-    //     finMod = response.data.modCodOptions.find(e => e.codingId === finCod)?.modulationId ?? 0;
-    //   } else if (finCod === -1) {
-    //     //select cod to first avail
-    //     finCod = response.data.modCodOptions.find(e => e.modulationId===finMod)?.codingId ?? 0;
-    //   }
-
-    // }
-
     let { finMod, finCod, optimized } = getModCodForStation(
       response.data.modCodOptions,
       state.commsSpecs.commsPayloadSpecs.modulation,
@@ -1050,11 +972,6 @@ const NetworkLibrary: FC<NetworkLibraryProps> = ({
           : null
     };
 
-    // if(state.commsSpecs.freqBand !== 0 && response.data.frequencyBandOptions.find(e => e.id === state.commsSpecs.freqBand)) {
-    //   finalValue.frequencyBandId = state.commsSpecs.freqBand;
-    // } else {
-    //   finalValue.frequencyBandId = response.data.frequencyBandOptions[0].id;
-    // }
     onState('selectedItems', [...state.selectedItems, finalValue]);
 
     onState('isLastSave', false);
