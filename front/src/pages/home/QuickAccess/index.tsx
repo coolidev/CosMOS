@@ -53,12 +53,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     justifyContent: "left",
     padding: "5px",
+    paddingLeft: '1rem',
     gap: "1px",
 
     background: "#E34747",
     boxShadow: "0px 4px 14px rgba(0, 0, 0, 0.1)",
     borderRadius: "8px 8px 0px 0px",
 
+    textAlign: 'left',
     fontFamily: 'Roboto',
     fontStyle: "normal",
     fontSize: "24px",

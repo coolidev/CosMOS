@@ -93,10 +93,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {},
   box: {
     backgroundColor: theme.palette.background.light,
-    marginTop: theme.spacing(6),
-    border: `1px solid ${theme.palette.border.main}`,
+    border: `2px solid ${theme.palette.border.main}`,
     overflowY: 'scroll',
-    borderRadius: 6
+    borderRadius: 0
   },
   description: {
     backgroundColor: colors.grey[400],
@@ -131,14 +130,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.border.main
   },
   button: {
-    border: `1px solid ${theme.palette.border.main} !important`,
-    color: `${theme.palette.text.primary} !important`,
-    backgroundColor: theme.palette.background.main
+    border: 'none !important',
+    borderRadius: '0 0 8px 8px',
+    color: `#FFFFFF !important`,
+    backgroundColor: '#E34747'
   },
   buttonDisabled: {
-    border: `1px solid ${theme.palette.border.opposite} !important`,
-    color: `${theme.palette.text.secondary} !important`,
-    backgroundColor: theme.palette.background.paper
+    border: 'none !important',
+    borderRadius: '0 0 8px 8px',
+    color: `#FFFFFF !important`,
+    backgroundColor: '#E34747'
   }
 }));
 
@@ -651,8 +652,8 @@ const Reports: FC<ReportProps> = ({
             <Fragment key={i}>
               <ListItem
                 style={{
-                  paddingTop: 0,
-                  paddingBottom: 0
+                  paddingTop: '0.5rem',
+                  paddingBottom: '0.5rem'
                 }}
               >
                 <Radio
@@ -694,7 +695,7 @@ const Reports: FC<ReportProps> = ({
           </Typography>
         </CardContent>
       </Card> */}
-        <Box mb={2} mt={6}>
+        <Box mb={2}>
           <Button
             variant={'outlined'}
             disabled={
