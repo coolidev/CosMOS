@@ -20,14 +20,14 @@ export const PANEL_RATIO = {
   // width: 100% of screen width
   // height: 90% of screen height
     [SIDE_MENU]: {
-      width: 5,
+      width: 4,
     },
     [INPUT_PANEL]: {
       width: 25,
       minimized_width: 0,
     },
     [MAIN_PANEL]: { // main panel includes visualizer and network panels
-      width: 40,
+      width: 44,
     },
       [VISUALIZER_PANEL]: {
         // width: 100% of main panel
@@ -46,7 +46,7 @@ export const PANEL_RATIO = {
       minimized_width: 0,
     },
     [TAB_MENU]: {
-      width: 5,
+      width: 2,
     }
 }
 

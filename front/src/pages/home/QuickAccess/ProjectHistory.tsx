@@ -99,13 +99,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   button: {
     border: 'none !important',
-    borderRadius: '0 0 8px 8px',
+    borderRadius: '0px',
     color: `#FFFFFF !important`,
     backgroundColor: '#E34747'
   },
   buttonDisabled: {
     border: 'none !important',
-    borderRadius: '0 0 8px 8px',
+    borderRadius: '0px',
     color: `#FFFFFF !important`,
     backgroundColor: '#E34747'
   },
