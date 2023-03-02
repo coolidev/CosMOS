@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, useContext, useEffect} from 'react';
 import clsx from 'clsx';
 import {
   Box,
@@ -19,9 +19,10 @@ import type { Theme } from 'src/theme';
 import { THEMES } from 'src/utils/constants/general';
 import { useSelector } from 'src/store';
 import AnalysisOverview from './AnalysisOverview';
+import { INPUT_PANEL, MINIMUM, NORMAL, PANEL_RATIO, RESULT_PANEL, SIDE_MENU, TAB_MENU } from 'src/utils/basic';
+import { PanelContext } from 'src/providers/panel';
 
 interface ResultsProps {
-  width: number;
   resultTab: string;
   collapsed: boolean;
   state: State;
@@ -42,11 +43,18 @@ const tabs = [
 ];
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    display: 'flex'
+  resultRoot: {
+    overflow: 'auto',
+    width: `${PANEL_RATIO[RESULT_PANEL].width}%`,
+    height: '100%',
   },
   tabs: {
-    backgroundColor: theme.palette.background.main
+    backgroundColor: theme.palette.background.main,
+    width: `${PANEL_RATIO[TAB_MENU].width}%`,
+    height: '100%',
+    '& > div > div': {
+      height: '100%'
+    }
   },
   tab: {
     '& span': {
@@ -79,7 +87,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Results: FC<ResultsProps> = ({
-  width,
   state,
   bounds,
   resultTab,
@@ -91,20 +98,29 @@ const Results: FC<ResultsProps> = ({
   onBounds,
   onError,
 }) => {
+  const { input_panel, result_panel, handlePanel } = useContext(PanelContext)
   const classes = useStyles();
   const { zoom } = useSelector((state) => state.zoom);
   const theme = useTheme<Theme>();
 
-  const handleChange = (event, newValue) => onResultTab(newValue);
+  const handleChange = (event, newValue) => onResultTab(resultTab !== newValue ? newValue : '');
+
+  useEffect(() => {
+    if (resultTab !== '') {
+      handlePanel(RESULT_PANEL, NORMAL);
+    } else {
+      handlePanel(RESULT_PANEL, MINIMUM);
+    }
+  }, [resultTab, handlePanel])
 
   return (
-    <div className={classes.root} style={{ height: '100%'}}>
+    <>
       <Box
-        className={clsx(classes.selected, collapsed && classes.hide)}
+        // className={clsx(classes.selected, collapsed && classes.hide)}
+        className={classes.resultRoot}
         style={{
-          width: width - (window.screen.availHeight / zoom) * 0.03,
-          overflowX: 'hidden',
-          overflowY: 'hidden'
+          backgroundColor: theme.palette.background.main,
+          width: `${resultTab === 'compare' ? (100 - (PANEL_RATIO[SIDE_MENU].width + PANEL_RATIO[TAB_MENU].width + (input_panel === MINIMUM ? PANEL_RATIO[INPUT_PANEL].minimized_width : PANEL_RATIO[INPUT_PANEL].width))) : (result_panel === MINIMUM ? PANEL_RATIO[RESULT_PANEL].minimized_width : PANEL_RATIO[RESULT_PANEL].width)}%`
         }}
       >
         <AnalysisOverview
@@ -121,7 +137,6 @@ const Results: FC<ResultsProps> = ({
         
         <Analytics
           state={state}
-          parentWidth={width - (window.screen.availHeight / zoom) * 0.03}
           onState={onState}
           visible={resultTab === 'analytics' && !collapsed}
         />
@@ -144,7 +159,6 @@ const Results: FC<ResultsProps> = ({
         value={resultTab}
         onChange={handleChange}
         className={classes.tabs}
-        style={{ width: (window.screen.availHeight / zoom) * 0.03 }}
         TabIndicatorProps={{ className: classes.indicator }}
       >
         {tabs.map((tab) => (
@@ -182,13 +196,13 @@ const Results: FC<ResultsProps> = ({
             value={tab.name}
             className={classes.tab}
             style={{
-              height: (window.screen.availHeight / zoom) * 0.215
+              height: '25%'
             }}
             // disabled={tab.name !== 'network' && !state.isDataLoaded}
           />
         ))}
       </Tabs>
-    </div>
+    </>
   );
 };
 

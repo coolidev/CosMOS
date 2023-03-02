@@ -6,12 +6,14 @@ import {
   Box,
   makeStyles,
   Tooltip,
-  useTheme
+  useTheme,
+  Grid
 } from '@material-ui/core';
 import { PDFViewerGuide } from '../pdf-view-panel';
 import type { Theme } from 'src/theme';
 import { THEMES } from 'src/utils/constants/general';
 import { useSelector } from 'src/store';
+import { PANEL_RATIO, SIDE_MENU } from 'src/utils/basic';
 
 interface SideBarProps {
   currentTab: string;
@@ -20,6 +22,14 @@ interface SideBarProps {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+    justifyContent: 'center',
+    overflow: 'hidden',
+    width: `${PANEL_RATIO[SIDE_MENU].width}%`,
+    height: '100%',
+    margin: 0,
+    textAlign: 'center'
+  },
+  rootBox: {
     height: '100%',
     margin: 0,
     textAlign: 'center'
@@ -43,18 +53,20 @@ const SideBar: FC<SideBarProps> = ({ currentTab, onCurrentTab }) => {
   const theme = useTheme<Theme>();
 
   const handleChangeTab = (event): void =>
-    onCurrentTab(event.currentTarget.name);
+    onCurrentTab(currentTab === event.currentTarget.name ? '' : event.currentTarget.name);
 
   const [guideView, setGuideView] = useState<boolean>(false);
 
   return (
-    <>
+    <Grid
+      className={classes.root}
+    >
       <Box
         mx={1.5}
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        className={classes.root}
+        className={classes.rootBox}
         paddingBottom='20px'
       >
         <Box
@@ -189,7 +201,7 @@ const SideBar: FC<SideBarProps> = ({ currentTab, onCurrentTab }) => {
         </Tooltip>
       </Box>
       <PDFViewerGuide isOpen={guideView} onClose={() => setGuideView(false)} />
-    </>
+    </Grid>
   );
 };
 

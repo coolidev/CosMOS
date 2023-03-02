@@ -4,7 +4,8 @@ import HomeView from 'src/pages/home';
 import LoadingScreen from 'src/components/LoadingScreen';
 import AuthGuard from 'src/components/AuthGuard';
 import GuestGuard from 'src/components/GuestGuard';
-import MainLayout from './layouts/MainLayout';
+// import MainLayout from './layouts/MainLayout';
+import HomeLayout from './layouts/HomeLayout';
 
 type Routes = {
   exact?: boolean;
@@ -96,7 +97,7 @@ const routes: Routes = [
   {
     path: '*',
     guard: AuthGuard,
-    layout: MainLayout,
+    layout: HomeLayout,
     routes: [
       {
         exact: true,

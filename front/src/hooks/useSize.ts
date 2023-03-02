@@ -29,4 +29,20 @@ const useWindowSize = () => {
   return windowSize;
 };
 
+export const useFullScreen = () => {
+  const [isFull, setIsFull] = useState<boolean>(window.outerWidth >= window.screen.width - 6 && window.outerHeight > window.screen.availHeight - 20);
+
+  const checkIsFull = () => {
+    setIsFull(window.outerWidth >= window.screen.width - 6 && window.outerHeight > window.screen.availHeight - 20)
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setTimeout(checkIsFull, 250);
+    });
+  }, []);
+
+  return isFull
+}
+
 export default useWindowSize;

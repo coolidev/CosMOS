@@ -38,16 +38,13 @@ const initialStatus: Status = {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    maxHeight: '93vh',
+    height: '100%',
     overflowX: 'hidden',
     overflowY: 'auto',
     backgroundColor: theme.palette.component.main
   },
   hide: {
     display: 'none',
-    maxHeight: '93vh',
-    overflowX: 'hidden',
-    overflowY: 'auto'
   },
   dialog: {
     maxWidth: '500px',
@@ -256,29 +253,29 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
     return value;
   }
 
-  useEffect(() => {
-    size.width > 1200 &&
-      status.isSize &&
-      setStatus((prevState) => ({
-        ...prevState,
-        isSize: false,
-        perPage: status.perPage + 2
-      }));
+  // useEffect(() => {
+  //   size.width > 1200 &&
+  //     status.isSize &&
+  //     setStatus((prevState) => ({
+  //       ...prevState,
+  //       isSize: false,
+  //       perPage: status.perPage + 2
+  //     }));
 
-    size.width <= 1200 &&
-      !status.isSize &&
-      setStatus((prevState) => ({
-        ...prevState,
-        isSize: true,
-        perPage: status.perPage - 2
-      }));
+  //   size.width <= 1200 &&
+  //     !status.isSize &&
+  //     setStatus((prevState) => ({
+  //       ...prevState,
+  //       isSize: true,
+  //       perPage: status.perPage - 2
+  //     }));
 
-    setStatus((prevState) => ({
-      ...prevState,
-      width: (size.width - 0.15 * size.width - 420) / 6 + 'px'
-    }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [size]);
+  //   setStatus((prevState) => ({
+  //     ...prevState,
+  //     width: (size.width - 0.15 * size.width - 420) / 6 + 'px'
+  //   }));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [size]);
 
   //This inevitably large and nasty function will convert the neat Comparison Results object into the
   //obtuse structre required to make the comparison panel work

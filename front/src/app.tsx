@@ -14,6 +14,9 @@ import routes, { renderRoutes } from 'src/routes';
 import { THEMES } from 'src/utils/constants/general';
 import useMaximized from './hooks/useMaximized';
 import Alert from './pages/home/Alert';
+import { RatioContextProvider } from './providers/ratio';
+import { ZoomContextProvider } from './providers/zoom';
+import { PanelContextProvider } from './providers/panel';
 
 const App = () => {
   const isMaximized = useMaximized();
@@ -97,27 +100,33 @@ const App = () => {
         </style>
       </Helmet>
       <ThemeProvider theme={theme}>
-        <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-          <SMSContext.Provider
-            value={{ smsTokens, setSMSTokens: setSMSAuthTokens }}
-          >
-            <ChangePasswordContext.Provider
-              value={{
-                changePasswordTokens,
-                setChangePassword: setChangePasswordTokens
-              }}
-            >
-              <ChangePasswordSMSContext.Provider
-                value={{
-                  smsPasswordTokens,
-                  setSMSPassword: setSMSPasswordTokens
-                }}
+        <RatioContextProvider>
+          <ZoomContextProvider>
+            <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+              <SMSContext.Provider
+                value={{ smsTokens, setSMSTokens: setSMSAuthTokens }}
               >
-                <HashRouter>{renderRoutes(routes)}</HashRouter>
-              </ChangePasswordSMSContext.Provider>
-            </ChangePasswordContext.Provider>
-          </SMSContext.Provider>
-        </AuthContext.Provider>
+                <ChangePasswordContext.Provider
+                  value={{
+                    changePasswordTokens,
+                    setChangePassword: setChangePasswordTokens
+                  }}
+                >
+                  <ChangePasswordSMSContext.Provider
+                    value={{
+                      smsPasswordTokens,
+                      setSMSPassword: setSMSPasswordTokens
+                    }}
+                  >
+                    <PanelContextProvider>
+                      <HashRouter>{renderRoutes(routes)}</HashRouter>
+                    </PanelContextProvider>
+                  </ChangePasswordSMSContext.Provider>
+                </ChangePasswordContext.Provider>
+              </SMSContext.Provider>
+            </AuthContext.Provider>
+          </ZoomContextProvider>
+        </RatioContextProvider>
       </ThemeProvider>
       </>
     : <Alert browser={sBrowser}/>

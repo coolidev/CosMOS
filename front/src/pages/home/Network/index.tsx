@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import {
   Box,
   IconButton,
@@ -17,6 +17,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { Filterer } from 'src/utils/filterer';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { PanelContext } from 'src/providers/panel';
+import { MAXIMUM, MINIMUM, NETWORK_PANEL, NORMAL, VISUALIZER_PANEL } from 'src/utils/basic';
 
 interface NetworkProps {
   state: State;
@@ -30,7 +32,10 @@ interface NetworkProps {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {},
+  root: {
+    width: '100%',
+    height: '100%'
+  },
   hide: {
     display: 'none'
   },
@@ -55,6 +60,8 @@ const Network: FC<NetworkProps> = ({
   visible,
   resultsCollapsed
 }) => {
+  const { network_panel, handlePanel } = useContext(PanelContext)
+
   const theme = useTheme<Theme>();
   const classes = useStyles();
   const { zoom } = useSelector((state) => state.zoom);
@@ -65,22 +72,32 @@ const Network: FC<NetworkProps> = ({
   const [filterFlag, setFilterFlag] = useState<boolean>(false);
   const [filterNameList,setFilterNameList] = useState<string[]>([]);
 
-  const handleChange = (event, newValue) => {
-    setCurrentTab(newValue);
-  };
+  const handleMin = () => {
+    if (network_panel === MAXIMUM) {
+      handlePanel(NETWORK_PANEL, NORMAL);
+      handlePanel(VISUALIZER_PANEL, NORMAL);
+    }
+    if (network_panel === NORMAL || network_panel === '') {
+      handlePanel(NETWORK_PANEL, MINIMUM);
+      handlePanel(VISUALIZER_PANEL, MAXIMUM);
+    }
+  }
 
-  const handleUpClick = (): void => onCollapsed(!isCollapsed ? 'up' : null);
-
-  const handleDownClick = (): void => onCollapsed(!isCollapsed ? 'down' : null);
+  const handlePlus = () => {
+    if (network_panel === MINIMUM) {
+      handlePanel(NETWORK_PANEL, NORMAL);
+      handlePanel(VISUALIZER_PANEL, NORMAL);
+    }
+    if (network_panel === NORMAL || network_panel === '') {
+      handlePanel(NETWORK_PANEL, MAXIMUM);
+      handlePanel(VISUALIZER_PANEL, MINIMUM);
+    }
+  }
 
   return (
     <div
-      className={visible ? classes.root : classes.hide}
+      className={classes.root}
       style={{
-        minHeight:
-          isCollapsed === 'up'
-            ? (window.screen.availHeight / zoom) * 0.855
-            : isCollapsed !== 'down' && (window.screen.availHeight / zoom) * 0.38
       }}
     >
       <Box display="flex" alignItems="center" style={{paddingLeft: '10px'}}>
@@ -160,40 +177,40 @@ const Network: FC<NetworkProps> = ({
         <Box mr={2}>
           <IconButton
             style={{ padding: 0 }}
-            onClick={handleUpClick}
-            disabled={isCollapsed === 'up'}
+            onClick={handlePlus}
+            disabled={network_panel === MAXIMUM}
             id={"upButton"}
           >
             <ArrowDropUpIcon fontSize="large" color="primary" />
           </IconButton>
           <IconButton
             style={{ padding: 0 }}
-            onClick={handleDownClick}
-            disabled={isCollapsed === 'down'}
+            onClick={handleMin}
+            disabled={network_panel === MINIMUM}
             id={"downButton"}
           >
             <ArrowDropDownIcon fontSize="large" color="primary" />
           </IconButton>
         </Box>
       </Box>
-        <Box>
-          <NetworkLibrary
-            state={state}
-            cache={cache}
-            isCollapsed={isCollapsed}
-            onState={onState}
-            onBounds={onBounds}
-            visible={currentTab === 'networks'} //this should be true with updates
-            setNetworks={setSelectedNetworks}
-            resultsCollapsed={resultsCollapsed}
-            myFilterer = {myFilterer}
-            setMyFilterer = {setMyFilterer}
-            setFilterNameList = {setFilterNameList}
-            resetFilterFlag = {filterFlag}
-            filterPanelOpen={openFilter}
-            closeFilterPanel={()=>setOpenFilter(false)}
-          />
-        </Box>        
+      <Box>
+        <NetworkLibrary
+          state={state}
+          cache={cache}
+          isCollapsed={isCollapsed}
+          onState={onState}
+          onBounds={onBounds}
+          visible={currentTab === 'networks'} //this should be true with updates
+          setNetworks={setSelectedNetworks}
+          resultsCollapsed={resultsCollapsed}
+          myFilterer = {myFilterer}
+          setMyFilterer = {setMyFilterer}
+          setFilterNameList = {setFilterNameList}
+          resetFilterFlag = {filterFlag}
+          filterPanelOpen={openFilter}
+          closeFilterPanel={()=>setOpenFilter(false)}
+        />
+      </Box>        
     </div>
   );
 };

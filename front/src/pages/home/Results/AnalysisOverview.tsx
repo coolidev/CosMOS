@@ -330,7 +330,7 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
   }
 
   return (
-    <Grid container justifyContent="center" alignItems="center" spacing={1}>
+    <Grid container justifyContent="center" alignItems="center">
       <Box
         mt={2}
         ml={2}

@@ -66,6 +66,7 @@ import {
 } from 'src/algorithms/antennas';
 import { getGNSSAvailability } from 'src/algorithms/nav';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { HEADER, PANEL_RATIO } from 'src/utils/basic';
 
 interface HeaderProps {
   state: State;
@@ -84,12 +85,13 @@ interface HeaderProps {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    margin: theme.spacing(3, 3, 3, 3),
-    paddingTop: '8vh'
+    overflow: "hidden",
+    height: `${PANEL_RATIO[HEADER].height}%`,
+    width: '100%',
   },
   toolbar: {
-    minHeight: '7.2vh',
-    backgroundColor: theme.palette.background.header
+    backgroundColor: theme.palette.background.header,
+    height: '100%',
   },
   link: {
     textDecoration: 'none',
@@ -495,7 +497,7 @@ const Header: FC<HeaderProps> = ({
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar className={classes.root} position='relative'>
       <Toolbar className={classes.toolbar}>
         <Box display="flex" alignItems="center" width="100%">
           <IconButton

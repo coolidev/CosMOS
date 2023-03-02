@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { Box, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
 import { updatePreference } from 'src/slices/preference';
 import { useSelector, useDispatch } from 'src/store';
@@ -10,6 +10,8 @@ import Reports from 'src/pages/reports';
 import { updateResults } from 'src/slices/results';
 import type { Theme } from 'src/theme';
 import { parseComma } from 'src/utils/util';
+import { INPUT_PANEL, MINIMUM, NORMAL, PANEL_RATIO } from 'src/utils/basic';
+import { PanelContext } from 'src/providers/panel';
 
 interface QuickAccessProps {
   currentTab: string;
@@ -38,7 +40,10 @@ const tabs = {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    margin: theme.spacing(5)
+    overflow: "auto",
+    color: 'white',
+    width: `${PANEL_RATIO[INPUT_PANEL].width}%`,
+    height: '100%'
   },
   divider: {
     backgroundColor: theme.palette.border.main
@@ -73,12 +78,22 @@ const QuickAccess: FC<QuickAccessProps> = ({
   networkPanelStatus,
   resultPanelCollapsed,
 }) => {
+  const { input_panel, handlePanel } = useContext(PanelContext);
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const [source, setSource] = useState<ISave[]>([]);
   const { preference } = useSelector((state) => state.preference);
   const { project } = useSelector((state) => state.project);
   const [saveCount, setSaveCount] = useState<number>(0);
+
+  useEffect(() => {
+    if (currentTab !== '') {
+      handlePanel(INPUT_PANEL, NORMAL);
+    } else {
+      handlePanel(INPUT_PANEL, MINIMUM);
+    }
+  }, [currentTab, handlePanel])
 
   useEffect(() => {
     // Whenever the current project or the object containing all projects
@@ -201,12 +216,13 @@ const QuickAccess: FC<QuickAccessProps> = ({
     <div
       className={classes.root}
       style={{
-        overflowY: currentTab === 'mission' ? 'scroll' : 'auto',
-        height: currentTab === 'report' ? '100%' : '95%',
-        overflowX: 'hidden',
+        width: `${input_panel === MINIMUM ? PANEL_RATIO[INPUT_PANEL].minimized_width : PANEL_RATIO[INPUT_PANEL].width}%`
+        // overflowY: currentTab === 'mission' ? 'scroll' : 'auto',
+        // height: currentTab === 'report' ? '100%' : '95%',
+        // overflowX: 'hidden',
       }}
     >
-      <Grid container justifyContent="center" spacing={3}>
+      <Grid container justifyContent="center">
         <Grid item md={12}>
           <Box>
             <Typography

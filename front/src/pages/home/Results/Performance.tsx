@@ -45,15 +45,12 @@ interface PerformanceProps {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    maxHeight: '93vh',
+    height: '100%',
     overflowX: 'hidden',
     overflowY: 'auto'
   },
   hide: {
     display: 'none',
-    maxHeight: '93vh',
-    overflowX: 'hidden',
-    overflowY: 'auto'
   }
 }));
 
@@ -553,12 +550,12 @@ const Performance: FC<PerformanceProps> = ({
 
   return (
     <div className={visible ? classes.root : classes.hide}>
+      <Grid container>
         <Grid item md={12}>
           <Grid
             container
             justifyContent="flex-start"
             alignItems="flex-start"
-            spacing={1}
           >
             <ResultGroup title="Performance">
               <PerformanceSection
@@ -593,6 +590,7 @@ const Performance: FC<PerformanceProps> = ({
             </ResultGroup>
           </Grid>
         </Grid>
+      </Grid>
     </div>
   );
 };

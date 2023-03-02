@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'src/utils/axios';
-import { Box, Grid, useTheme } from '@material-ui/core';
+import { Box, Grid, makeStyles, useTheme } from '@material-ui/core';
 import useSettings from 'src/hooks/useSettings';
 import { useAuth, useSMS } from 'src/hooks/useAuth';
 import { Welcome } from 'src/components/Modals';
@@ -30,7 +30,7 @@ import SideBar from './SideBar';
 import QuickAccess from './QuickAccess';
 import Results from './Results';
 import Network from './Network';
-// import Visualizer from './VisualizerLegacy';
+import Visualizer from './VisualizerLegacy';
 import DialogAlert from 'src/components/DialogAlert';
 import LoadingAnalysis from 'src/components/LoadingAnalysis';
 import ConfirmDialog from 'src/components/ConfirmDialog';
@@ -43,6 +43,17 @@ import LoadingSPAnalysis from 'src/components/LoadingSPAnalysis';
 import { EARTH_RADIUS_km } from 'src/utils/constants/physical';
 import { resetConnection } from 'src/slices/webSocket';
 import { updateSocketId } from 'src/utils/ws';
+import { HEADER, MAIN_PANEL, MAXIMUM, MINIMUM, PANEL_RATIO, VISUALIZER_PANEL, NETWORK_PANEL, SIDE_MENU, INPUT_PANEL, RESULT_PANEL, TAB_MENU } from 'src/utils/basic';
+import { PanelContext } from 'src/providers/panel';
+
+const useStyles = makeStyles<Theme>((theme) => ({
+  panel: {
+    height: `${100 - PANEL_RATIO[HEADER].height}%`
+  },
+  mainPanel: {
+    width: `${PANEL_RATIO[MAIN_PANEL].width}%`
+  }
+}))
 
 export interface IResults {
   dataRate_kbps: number;
@@ -443,7 +454,13 @@ const Home: FC = () => {
   const [statAnalysisPct, setStatAnalysisPct] = useState(0);
   const [dataFetchPct, setDataFetchPct] = useState(0);
   const [socketMessage, setSocketMessage] = useState('');
-  const[hideLoading, setHideLoading] = useState(false);
+  const [hideLoading, setHideLoading] = useState(false);
+
+  const [mainPanelWidth, setMainPanelWidth] = useState(40);
+
+  const { visualizer_panel, network_panel, result_panel, input_panel } = useContext(PanelContext)
+
+  const classes = useStyles();
 
   let cores = 0; 
   let coresDone = 0;
@@ -633,6 +650,19 @@ const Home: FC = () => {
     if (!collapsed) return;
     state.selectedItems.length > 0 && setCollapsed(false);
   }, [state.selectedItems]);
+
+  useEffect(() => {
+    const newWidth = 100
+            - (PANEL_RATIO[SIDE_MENU].width
+              + (input_panel !== MINIMUM
+                ? PANEL_RATIO[INPUT_PANEL].width
+                : PANEL_RATIO[INPUT_PANEL].minimized_width)
+              + (result_panel !== MINIMUM
+                ? PANEL_RATIO[RESULT_PANEL].width
+                : PANEL_RATIO[RESULT_PANEL].minimized_width)
+              + PANEL_RATIO[TAB_MENU].width)
+    setMainPanelWidth(newWidth)
+  }, [input_panel, result_panel])
 
   const handleCurrentTab = (value: string): void => setCurrentTab(value);
 
@@ -923,195 +953,162 @@ const Home: FC = () => {
   
   return (
     <>
-      <Box>
-        <Header
-          state={state}
+      <Header
+        state={state}
+        cache={cache}
+        onOpen={() => setOpen(true)}
+        onCache={handleCache}
+        onState={handleState}
+        resultTab = {resultTab}
+        handleResultTab = {handleResultTab}
+        collapsed = {collapsed}
+        setCollapsed = {setCollapsed}
+        setWizardIndex = {setWizardIndex}
+        hideLoading = {hideLoading}
+        setHideLoading = {setHideLoading}
+      />
+      <NavBar onClose={() => setOpen(false)} open={isOpen} openIntro={() => {setIntroVisible(!introVisible)}} loading = {state.loading} />
+      <Grid
+        container
+        className={classes.panel}
+      >
+        <SideBar
+          currentTab={currentTab}
+          onCurrentTab={handleCurrentTab}
+        />
+        <QuickAccess
+          currentTab={currentTab}
           cache={cache}
-          onOpen={() => setOpen(true)}
+          state={state}
+          bounds={bounds}
+          onBounds = {handleBounds}
+          setWizardIndex = {setWizardIndex}
           onCache={handleCache}
           onState={handleState}
-          resultTab = {resultTab}
-          handleResultTab = {handleResultTab}
-          collapsed = {collapsed}
-          setCollapsed = {setCollapsed}
+          networkPanelStatus={isCollapsed}
+          resultPanelCollapsed={collapsed}
+        />
+        {resultTab !== 'compare' && <Grid
+          item
+          className={classes.mainPanel}
+          style={{
+            width: `${mainPanelWidth}%`,
+            height: '100%'
+          }}
+        >
+          <Box
+            style={{
+              backgroundColor: theme.palette.background.light,
+              height: `${visualizer_panel === MINIMUM ?
+                `${(100) * PANEL_RATIO[VISUALIZER_PANEL].minimized_height}%` :
+                (visualizer_panel === MAXIMUM ?
+                  `${(100) * PANEL_RATIO[VISUALIZER_PANEL].maximuzed_height}%` :
+                  `${(100) * PANEL_RATIO[VISUALIZER_PANEL].height}%`
+                )}`
+            }}
+          >
+            <Visualizer
+              state={state}
+              height={visualizer_panel === MINIMUM ?
+                (window.innerHeight * 0.9) * PANEL_RATIO[VISUALIZER_PANEL].minimized_height :
+                (visualizer_panel === MAXIMUM ?
+                  (window.innerHeight * 0.9) * PANEL_RATIO[VISUALIZER_PANEL].maximuzed_height :
+                  (window.innerHeight * 0.9) * PANEL_RATIO[VISUALIZER_PANEL].height
+                )}
+            />
+          </Box>
+          <Box
+            style={{
+              backgroundColor: theme.palette.background.dark,
+              height: `${network_panel === MINIMUM ?
+                `${(100) * PANEL_RATIO[NETWORK_PANEL].minimized_height}%` :
+                (network_panel === MAXIMUM ?
+                  `${(100) * PANEL_RATIO[NETWORK_PANEL].maximuzed_height}%` :
+                  `${(100) * PANEL_RATIO[NETWORK_PANEL].height}%`
+                )}`
+            }}
+          >
+            <Network
+              state={state}
+              cache={cache}
+              isCollapsed={isCollapsed}
+              onState={handleState}
+              onBounds={handleBounds}
+              onCollapsed={handleCollapse}
+              visible={
+                resultTab !== 'compare' ||
+                (resultTab === 'compare' && collapsed)
+              }
+              resultsCollapsed={collapsed}
+            />
+          </Box>
+        </Grid>}
+        <Results
+          state={state}
+          bounds={bounds}
+          collapsed={collapsed}
+          resultTab={resultTab}
+          wizardIndex = {wizardIndex}
           setWizardIndex = {setWizardIndex}
+          onResultTab={handleResultTab}
+          onState={handleState}
+          onBounds={handleBounds}
+          onError={handleError}
+          />
+      </Grid>
+      {isLoading && <LoadingOverlay isLoading={true} status='Loading Workspace...' progress={0}/> }
+      {introVisible && !isLoading && <Introduction close={() => {setIntroVisible(false)}}/> }
+      {(settings.isLogin || project === 'null' || !projectExists) && !introVisible && !isLoading && (
+        <Welcome onConfirm={() => setProjectExists(true)} />
+      )}
+      {isAlertOpen && (
+        <DialogAlert
+          isOpen={isAlertOpen}
+          onOpen={() => setIsAlertOpen(!isAlertOpen)}
+          title={state.alertMessage.title}
+          message={state.alertMessage.message}
+        />
+      )}
+      {isSaveViewOpen && (
+        <ConfirmDialog
+          isOpen={isSaveViewOpen}
+          isLoading={isSavingNetwork}
+          onOpen={() => setIsSaveViewOpen(!isSaveViewOpen)}
+          onLoading={() => saveNetwork()}
+          onState={handleState}
+        />
+      )}
+      {(state.loading && !state.pointSync) && (
+        <LoadingAnalysis
+          isLoading={state.loading}
+          status={status}
+          state={state}
+          onState = {handleState}
+          progress={progress}
+          analyticsPct={analyticsPct}
+          perfPct={performancePct}
+          comparePct={comparePct}
+          linkPct={linkPct}
           hideLoading = {hideLoading}
           setHideLoading = {setHideLoading}
         />
-        <NavBar onClose={() => setOpen(false)} open={isOpen} openIntro={() => {setIntroVisible(!introVisible)}} loading = {state.loading} />
-        <Grid
-          container
-          justifyContent="center"
-          style={{
-            width: window.screen.availWidth / zoom,
-            minHeight: (window.screen.availHeight / zoom) * 0.82
-          }}
-        >
-          <Grid
-            item
-            style={{
-              width: (window.screen.availHeight / zoom) * 0.06,
-              backgroundColor: theme.palette.background.dark
-            }}
-          >
-            <SideBar
-              currentTab={currentTab}
-              onCurrentTab={handleCurrentTab}
-            />
-          </Grid>
-          <Grid
-            item
-            style={{
-              width: (window.screen.availHeight / zoom) * 0.42,
-              backgroundColor: theme.palette.background.main,
-              height: window.screen.availHeight *(.885/zoom)
-            }}
-          >
-            <QuickAccess
-              currentTab={currentTab}
-              cache={cache}
-              state={state}
-              bounds={bounds}
-              onBounds = {handleBounds}
-              setWizardIndex = {setWizardIndex}
-              onCache={handleCache}
-              onState={handleState}
-              networkPanelStatus={isCollapsed}
-              resultPanelCollapsed={collapsed}
-            />
-          </Grid>
-          <Grid
-            item
-            style={{
-              width: collapsed
-                ? window.screen.availWidth / zoom -
-                  (window.screen.availHeight / zoom) * 0.51
-                : resultTab !== 'compare'
-                ? window.screen.availWidth / zoom -
-                  (window.screen.availHeight / zoom) * 0.96
-                : 0
-            }}
-          >
-            <Box
-              style={{
-                backgroundColor: theme.palette.background.light,
-                minHeight:
-                  isCollapsed === 'down'
-                    ? (window.screen.availHeight / zoom) * 0.785
-                    : isCollapsed === 'up'
-                    ? 0 
-                    : (window.screen.availHeight / zoom) * 0.485
-              }}
-            >
-             	visualizer
-            </Box>
-            <Box style={{ backgroundColor: theme.palette.background.dark }}>
-              <Network
-                state={state}
-                cache={cache}
-                isCollapsed={isCollapsed}
-                onState={handleState}
-                onBounds={handleBounds}
-                onCollapsed={handleCollapse}
-                visible={
-                  resultTab !== 'compare' ||
-                  (resultTab === 'compare' && collapsed)
-                }
-                resultsCollapsed={collapsed}
-              />
-            </Box>
-          </Grid>
-          <Grid
-            item
-            style={{
-              backgroundColor: theme.palette.background.main,
-              width:
-                resultTab === 'compare'
-                  ? collapsed
-                    ? (window.screen.availHeight / zoom) * 0.03
-                    : window.screen.availWidth / zoom -
-                      (window.screen.availHeight / zoom) * 0.48
-                  : collapsed
-                  ? (window.screen.availHeight / zoom) * 0.03
-                  : (window.screen.availHeight / zoom) * 0.48
-            }}
-          >
-            <Results
-              width={resultTab === 'compare'
-                ? collapsed
-                  ? (window.screen.availHeight / zoom) * 0.03
-                  : window.screen.availWidth / zoom -
-                  (window.screen.availHeight / zoom) * 0.48
-                : collapsed
-                  ? (window.screen.availHeight / zoom) * 0.03
-                  : (window.screen.availHeight / zoom) * 0.48}
-              state={state}
-              bounds={bounds}
-              collapsed={collapsed}
-              resultTab={resultTab}
-              wizardIndex = {wizardIndex}
-              setWizardIndex = {setWizardIndex}
-              onResultTab={handleResultTab}
-              onState={handleState}
-              onBounds={handleBounds}
-              onError={handleError}
-              />
-          </Grid>
-        </Grid>
-        {isLoading && <LoadingOverlay isLoading={true} status='Loading Workspace...' progress={0}/> }
-        {introVisible && !isLoading && <Introduction close={() => {setIntroVisible(false)}}/> }
-        {(settings.isLogin || project === 'null' || !projectExists) && !introVisible && !isLoading && (
-          <Welcome onConfirm={() => setProjectExists(true)} />
-        )}
-        {isAlertOpen && (
-          <DialogAlert
-            isOpen={isAlertOpen}
-            onOpen={() => setIsAlertOpen(!isAlertOpen)}
-            title={state.alertMessage.title}
-            message={state.alertMessage.message}
-          />
-        )}
-        {isSaveViewOpen && (
-          <ConfirmDialog
-            isOpen={isSaveViewOpen}
-            isLoading={isSavingNetwork}
-            onOpen={() => setIsSaveViewOpen(!isSaveViewOpen)}
-            onLoading={() => saveNetwork()}
-            onState={handleState}
-          />
-        )}
-        {(state.loading && !state.pointSync) && (
-          <LoadingAnalysis
-            isLoading={state.loading}
-            status={status}
-            state={state}
-            onState = {handleState}
-            progress={progress}
-            analyticsPct={analyticsPct}
-            perfPct={performancePct}
-            comparePct={comparePct}
-            linkPct={linkPct}
-            hideLoading = {hideLoading}
-            setHideLoading = {setHideLoading}
-          />
-        )}
-        {(state.loading && (state.pointSync || state.parametric)) && (
-          <LoadingSPAnalysis
-            isLoading={state.loading}
-            status={status}
-            progress={progress}
-            onState = {handleState}
-            orbitPropPct= {orbitPropPct}
-            geoRFVisibilityPct= {geoRFVisibilityPct}
-            statAnalysisPct= {statAnalysisPct}
-            dataFetchPct= {dataFetchPct}
-            socketMessage = {socketMessage}
-            hideLoading = {hideLoading}
-            setHideLoading = {setHideLoading}
-            state= {state}
-          />
-        )}
-      </Box>
+      )}
+      {(state.loading && (state.pointSync || state.parametric)) && (
+        <LoadingSPAnalysis
+          isLoading={state.loading}
+          status={status}
+          progress={progress}
+          onState = {handleState}
+          orbitPropPct= {orbitPropPct}
+          geoRFVisibilityPct= {geoRFVisibilityPct}
+          statAnalysisPct= {statAnalysisPct}
+          dataFetchPct= {dataFetchPct}
+          socketMessage = {socketMessage}
+          hideLoading = {hideLoading}
+          setHideLoading = {setHideLoading}
+          state= {state}
+        />
+      )}
     </>
   );
 };

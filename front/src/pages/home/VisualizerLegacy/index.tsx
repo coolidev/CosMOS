@@ -8,11 +8,13 @@ import type { State } from 'src/pages/home';
 
 interface VisualizerProps {
     state: State;
-    height: number;
+    height: string | number;
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
-    root: {},
+    root: {
+        height: '100%'
+    },
     iframe: {
         width: '100%',
         border: '1px solid #000',
@@ -178,7 +180,7 @@ const Visualizer: FC<VisualizerProps> = ({
                 src={initialUrl} 
                 ref={visualizerRef} 
                 className={classes.iframe}
-                style={{  height }}
+                style={{ height }}
             ></iframe>}
         </div>
     );

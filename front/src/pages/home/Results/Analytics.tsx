@@ -80,7 +80,7 @@ interface AnalyticsTraces {
 
 interface AnalyticsProps {
   state: State;
-  parentWidth: number;
+  // parentWidth: number;
   visible: boolean;
   onState: (name: string, value: any) => void;
 }
@@ -112,7 +112,7 @@ const PLOT_TITLES = {
 const Analytics: FC<AnalyticsProps> = ({
   state,
   visible,
-  parentWidth,
+  // parentWidth,
   onState
 }) => {
   const theme = useTheme<Theme>();
@@ -594,10 +594,6 @@ const Analytics: FC<AnalyticsProps> = ({
   };
 
   const handleResize = (): void => {
-    setSize({
-      width: parentWidth * 0.87,
-      height: (window.screen.availHeight / zoom) * 0.17
-    });
     setPopoutSize({
       width: window.innerWidth * 0.46,
       height: window.innerHeight * 0.64
@@ -610,7 +606,7 @@ const Analytics: FC<AnalyticsProps> = ({
 
   useEffect(() => {
     handleResize();
-  }, [panelElement, traces, parentWidth]);
+  }, [panelElement, traces]);
 
   // Update altitude/inclination and latitude/longitude.
   const setUserPoint = (newParameters, currentData, terrestrialData) => {
