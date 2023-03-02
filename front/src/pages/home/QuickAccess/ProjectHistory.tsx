@@ -13,7 +13,8 @@ import {
   Typography,
   IconButton,
   Button,
-  Tooltip
+  Tooltip,
+  Grid
 } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -39,34 +40,43 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontStyle: 'italic',
     fontWeight: 'normal'
   },
+  subtitle: {
+    fontFamily: 'Roboto',
+    fontStyle: "normal",
+    fontSize: "21px",
+    lineHeight: "25px",
+    display: "flex",
+    alignItems: "center",
+    color: theme.palette.border.main,
+    paddingTop: '1rem',
+    paddingLeft: '.5vw',
+    borderBottom: `4px solid ${theme.palette.border.main}`,
+  },
   box: {
     backgroundColor: theme.palette.background.light,
-    border: `1px solid ${theme.palette.border.main}`,
-    marginTop: theme.spacing(3),
-    userSelect: 'none',
-    MozUserSelect: 'none',
-    WebkitUserSelect: 'none',
-    msUserSelect: 'none',
-    cursor: 'pointer',
-    borderRadius: 6
+    border: `2px solid ${theme.palette.border.main}`,
+    // marginTop: theme.spacing(3),
+    // userSelect: 'none',
+    // MozUserSelect: 'none',
+    // WebkitUserSelect: 'none',
+    // msUserSelect: 'none',
+    // cursor: 'pointer',
+    borderRadius: "0px 0px 8px 8px"
   },
   boxUnselected: {
     backgroundColor: theme.palette.background.light,
-    border: `1px solid ${theme.palette.border.main}`,
-    marginTop: theme.spacing(3),
-    userSelect: 'none',
-    MozUserSelect: 'none',
-    WebkitUserSelect: 'none',
-    msUserSelect: 'none',
-    cursor: 'default',
+    // border: `1px solid ${theme.palette.border.main}`,
+    // marginTop: theme.spacing(3),
+    // userSelect: 'none',
+    // MozUserSelect: 'none',
+    // WebkitUserSelect: 'none',
+    // msUserSelect: 'none',
+    // cursor: 'default',
     borderRadius: 6
   },
   panel: {
     backgroundColor: theme.palette.background.light,
-    border: `1px solid ${theme.palette.border.main}`,
-    marginTop: theme.spacing(3),
     overflowY: 'auto',
-    borderRadius: 6
   },
   icon: {
     color: colors.green[500]
@@ -78,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.primary.main
   },
   item: {
-    paddingTop: 0,
+    paddingTop: '0.5rem',
     paddingBottom: 0
   },
   iconBtn: {
@@ -88,14 +98,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.border.main
   },
   button: {
-    border: `1px solid ${theme.palette.border.main} !important`,
-    color: `${theme.palette.text.primary} !important`,
-    backgroundColor: theme.palette.background.main
+    border: 'none !important',
+    borderRadius: '0 0 8px 8px',
+    color: `#FFFFFF !important`,
+    backgroundColor: '#E34747'
   },
   buttonDisabled: {
-    border: `1px solid ${theme.palette.border.opposite} !important`,
-    color: `${theme.palette.text.secondary} !important`,
-    backgroundColor: theme.palette.background.paper
+    border: 'none !important',
+    borderRadius: '0 0 8px 8px',
+    color: `#FFFFFF !important`,
+    backgroundColor: '#E34747'
   },
   radio: {
     color: theme.palette.border.main
@@ -137,189 +149,180 @@ const ProjectHistory: FC<ProjectHistoryProps> = ({
 
   return (
     <div className={classes.root}>
-      <Box my={4}>
-        <Typography
-          variant="h6"
-          component="h6"
-          className={classes.title}
-          color="textPrimary"
-        >
-          Baseline
-        </Typography>
-        <Box
-          className={
-            result.id === baselineId ? classes.boxUnselected : classes.box
-          }
-          onClick={() =>
-            baselineId
-              ? result.id === baselineId
-                ? null
-                : onCheck({ target: { name: baselineId } } as unknown as Event)
-              : null
-          }
-        >
-          <List className={classes.item}>
-            <Tooltip placement="bottom-end" arrow
-              title={
-                `${baselineSave?.parameters.isOrbital
-                  ? `${baselineSave?.parameters.altitude} km Altitude, ${baselineSave?.parameters.inclination}° Inclination`
-                  : `${baselineSave?.parameters.latitude}° Latitude, ${baselineSave?.parameters.longitude}° Longitude`}
-                  ${baselineSave?.selectedNetworks[0]?.antennaId && baselineSave?.selectedNetworks.length>1 
-                    ? `- ${baselineSave.selectedNetworks.map((item) => {return item.name}).join(`, `)}`
-                    : ''}`
-              }
-            >
+      <Box className={classes.box}>
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            <Typography className={classes.subtitle}>
+              Baseline
+            </Typography>
+          </Grid>
+          <Grid item xs={12}
+            onClick={() =>
+              baselineId
+                ? result.id === baselineId
+                  ? null
+                  : onCheck({ target: { name: baselineId } } as unknown as Event)
+                : null
+            }
+          >
+            <List>
+              <Tooltip placement="bottom-end" arrow
+                title={
+                  `${baselineSave?.parameters.isOrbital
+                    ? `${baselineSave?.parameters.altitude} km Altitude, ${baselineSave?.parameters.inclination}° Inclination`
+                    : `${baselineSave?.parameters.latitude}° Latitude, ${baselineSave?.parameters.longitude}° Longitude`}
+                    ${baselineSave?.selectedNetworks[0]?.antennaId && baselineSave?.selectedNetworks.length>1 
+                      ? `- ${baselineSave.selectedNetworks.map((item) => {return item.name}).join(`, `)}`
+                      : ''}`
+                }
+              >
                 <ListItem className={classes.item}>
-                <ListItemAvatar>
-                  {result.id === baselineId ? (
-                    <CheckIcon fontSize="large" className={classes.icon} />
-                  ) : (
-                    <Language fontSize="large" color="primary" />
-                  )}
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Typography
-                    variant="h6"
-                    component="h6"
-                    color="textPrimary"
-                    style={{ fontWeight: 'normal' }}
-                  >
-                      {baselineId
-                        ? `${
-                            !baselineSave?.selectedNetworks[0]?.name
-                              ? 'No Selections'
-                              : baselineSave?.selectedNetworks[0]?.antennaId
-                                ? `DTE Network - 
-                                  ${baselineSave?.selectedNetworks.length > 1 
-                                    ? baselineSave.selectedNetworks.length 
-                                    : baselineSave.selectedNetworks[0]?.name}
-                                  ${baselineSave.selectedNetworks.length > 1 ? ' Selected Stations' : ''}`
-                                : `Relay Network - ${baselineSave?.selectedNetworks[0]?.name}`
-                          }`
-                        : 'No Baseline Found'}
-                    </Typography>
-                  }
-                  secondary={
-                    result.id === baselineId
-                      ? 'Currently Viewing'
-                      : 'Click to Load Baseline'
-                  }                
-                />
-              </ListItem>
-            </Tooltip>
-          </List>
-        </Box>
-      </Box>
-      <Box my={4}>
-        <Typography
-          variant="h5"
-          component="h5"
-          className={classes.title}
-          color="textPrimary"
-        >
-          Saved configurations
-        </Typography>
-        <Box
-          className={classes.panel}
-          style={{
-            height: window.screen.availHeight*(.45/zoom)
-          }}
-        >
-          <List className={classes.item}>
-            {source
-              .filter((item) => !item.isCompared)
-              .reverse()
-              .map((item, i) => (
-                <Fragment key={i}>
-                  <ListItem className={classes.item}>
-                    <Radio
-                      name={item.id}
-                      checked={item.id === checked}
-                      onChange={onCheck}
-                      className={classes.radio}
-                    />
-                    <Tooltip placement="bottom-end" arrow
-                      title={
-                        `${item?.parameters.isOrbital
-                          ? `${item?.parameters.altitude} km Altitude, ${item?.parameters.inclination}° Inclination`
-                          : `${item?.parameters.latitude}° Latitude, ${item?.parameters.longitude}° Longitude`}
-                          ${item?.selectedNetworks[0]?.antennaId && item?.selectedNetworks.length>1 
-                            ? `- ${item.selectedNetworks.map((item) => {return item.name}).join(`, `)}`
-                            : ''}`
-                      }
-                    >
-                    <ListItemText
-                      primary={
-                        <Typography
-                          variant="h6"
-                          component="h6"
-                          color="textPrimary"
-                          style={{ fontWeight: 'normal' }}
+                  <ListItemAvatar>
+                    {result.id === baselineId ? (
+                      <CheckIcon fontSize="large" className={classes.icon} />
+                    ) : (
+                      <Language fontSize="large" color="primary" />
+                    )}
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <Typography
+                        variant="h6"
+                        component="h6"
+                        color="textPrimary"
+                        style={{ fontWeight: 'normal' }}
+                      >
+                        {baselineId
+                          ? `${
+                              !baselineSave?.selectedNetworks[0]?.name
+                                ? 'No Selections'
+                                : baselineSave?.selectedNetworks[0]?.antennaId
+                                  ? `DTE Network - 
+                                    ${baselineSave?.selectedNetworks.length > 1 
+                                      ? baselineSave.selectedNetworks.length 
+                                      : baselineSave.selectedNetworks[0]?.name}
+                                    ${baselineSave.selectedNetworks.length > 1 ? ' Selected Stations' : ''}`
+                                  : `Relay Network - ${baselineSave?.selectedNetworks[0]?.name}`
+                            }`
+                          : 'No Baseline Found'}
+                      </Typography>
+                    }
+                    secondary={
+                      result.id === baselineId
+                        ? 'Currently Viewing'
+                        : 'Click to Load Baseline'
+                    }                
+                  />
+                </ListItem>
+              </Tooltip>
+            </List>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography className={classes.subtitle}>
+              Saved configurations
+            </Typography>
+          </Grid>
+          <Grid item xs={12}
+            className={classes.panel}
+            style={{
+              minHeight: window.screen.availHeight*(.45/zoom)
+            }}
+          >
+            <List>
+              {source
+                .filter((item) => !item.isCompared)
+                .reverse()
+                .map((item, i) => (
+                  <Fragment key={i}>
+                    <ListItem className={classes.item}>
+                      <Radio
+                        name={item.id}
+                        checked={item.id === checked}
+                        onChange={onCheck}
+                        className={classes.radio}
+                      />
+                      <Tooltip placement="bottom-end" arrow
+                        title={
+                          `${item?.parameters.isOrbital
+                            ? `${item?.parameters.altitude} km Altitude, ${item?.parameters.inclination}° Inclination`
+                            : `${item?.parameters.latitude}° Latitude, ${item?.parameters.longitude}° Longitude`}
+                            ${item?.selectedNetworks[0]?.antennaId && item?.selectedNetworks.length>1 
+                              ? `- ${item.selectedNetworks.map((item) => {return item.name}).join(`, `)}`
+                              : ''}`
+                        }
+                      >
+                      <ListItemText
+                        primary={
+                          <Typography
+                            variant="h6"
+                            component="h6"
+                            color="textPrimary"
+                            style={{ fontWeight: 'normal' }}
+                          >
+                            {moment
+                              .unix(item.dateTime)
+                              .format('MMM DD, YYYY - h:mm A')}
+                          </Typography>
+                        }
+                        secondary={`${
+                          item.id === 'project-created'
+                            ? 'Project Created'
+                            : item.id === checked
+                            ? 'Current Configuration'
+                            : `${
+                              !item?.selectedNetworks[0]?.name
+                                ? 'No Selections'
+                                : item?.selectedNetworks[0]?.antennaId
+                                  ? `DTE Network - 
+                                    ${item?.selectedNetworks.length > 1 
+                                      ? item.selectedNetworks.length 
+                                      : item.selectedNetworks[0]?.name}
+                                    ${item.selectedNetworks.length > 1 ? ' Selected Stations' : ''}`
+                                  : `Relay Network - ${item?.selectedNetworks[0]?.name}`
+                              }`
+                        }`}
+                      />
+                      </Tooltip>
+                      <Box flexGrow={1} />
+                      <Tooltip title="Delete This Save" arrow>
+                        <IconButton
+                          name={item.id}
+                          className={classes.iconBtn}
+                          onClick={handleDelete}
+                          hidden={item.id === 'project-created'}
                         >
-                          {moment
-                            .unix(item.dateTime)
-                            .format('MMM DD, YYYY - h:mm A')}
                           {item.id === baselineId ? (
                             <CheckIcon
-                              className={classes.smallIcon}
-                              style={{ paddingLeft: '5px' }}
+                              fontSize="large"
+                              className={classes.icon}
                             />
-                          ) : null}
-                        </Typography>
-                      }
-                      secondary={`${
-                        item.id === 'project-created'
-                          ? 'Project Created'
-                          : item.id === checked
-                          ? 'Current Configuration'
-                          : `${
-                            !item?.selectedNetworks[0]?.name
-                              ? 'No Selections'
-                              : item?.selectedNetworks[0]?.antennaId
-                                ? `DTE Network - 
-                                  ${item?.selectedNetworks.length > 1 
-                                    ? item.selectedNetworks.length 
-                                    : item.selectedNetworks[0]?.name}
-                                  ${item.selectedNetworks.length > 1 ? ' Selected Stations' : ''}`
-                                : `Relay Network - ${item?.selectedNetworks[0]?.name}`
-                            }`
-                      }`}
-                    />
-                    </Tooltip>
-                    <Box flexGrow={1} />
-                    <Tooltip title="Delete This Save" arrow>
-                      <IconButton
-                        name={item.id}
-                        className={classes.iconBtn}
-                        onClick={handleDelete}
-                        hidden={item.id === 'project-created'}
-                      >
-                        <CloseIcon
-                          fontSize="large"
-                          className={classes.smallIcon}
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </ListItem>
-                  <Divider className={classes.divider} />
-                </Fragment>
-              ))}
-          </List>
-        </Box>
-      </Box>
-      <Box mb={2}>
-        <Button
-          variant={'outlined'}
-          disabled={result.id === baselineId}
-          className={
-            result.id === baselineId ? classes.buttonDisabled : classes.button
-          }
-          onClick={handleBaseLine}
-          fullWidth
-        >
-          Set Selected as Baseline
-        </Button>
+                          ) : (<CloseIcon
+                              fontSize="large"
+                              className={classes.smallIcon}
+                            />)}
+                          
+                        </IconButton>
+                      </Tooltip>
+                    </ListItem>
+                    <Divider className={classes.divider} />
+                  </Fragment>
+                ))}
+            </List>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant={'outlined'}
+              disabled={result.id === baselineId}
+              className={
+                result.id === baselineId ? classes.buttonDisabled : classes.button
+              }
+              onClick={handleBaseLine}
+              fullWidth
+            >
+              Set Selected as Baseline
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </div>
   );
