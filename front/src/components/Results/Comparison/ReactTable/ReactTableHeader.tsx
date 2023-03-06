@@ -16,10 +16,8 @@ interface Props<T> {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    // height: '3rem',
-    // borderBottom: '1px solid red',
     height: '3rem',
-    borderBottom: '1px solid red',
+    // borderBottom: '1px solid red',
     backgroundColor: 'rgb(68,114,196)',
     color: 'white'
   },

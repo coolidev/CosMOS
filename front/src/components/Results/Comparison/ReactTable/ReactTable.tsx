@@ -27,6 +27,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     // width: '100%',
     // minWidth: '600px',
+    borderSpacing: 0,
+    '& td' : {
+      border: '1px solid white'
+    },
+    '& th' : {
+      border: '1px solid white'
+    },
   }
 }));
 
