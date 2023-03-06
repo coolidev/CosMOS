@@ -26,6 +26,16 @@ interface IContextItem {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+  },
+  rowField: {
+    backgroundColor: 'rgb(207,213,234)'
+  },
+  inputCell: {
+    color: 'white',
+    backgroundColor: 'rgb(68,114,196)',
+  },
+  outputCell: {
+    backgroundColor: 'rgb(255,255,0)'
   }
 }));
 
@@ -35,11 +45,14 @@ export function ReactTableRowCell<T>({ item, column, index }: Props<T>): JSX.Ele
   const [contextItems, setContextItems] = useState<IContextItem[]>([])
   const [isRowHeader, setIsRowHeader] = useState<boolean>(false)
   const value = lodash.get(item, column.key);
+  const input = lodash.get<typeof item, string>(item, `input_${column.key}`)
+  const output = lodash.get<typeof item, string>(item, `output_${column.key}`)
+  const isCompressed = lodash.get<typeof item, string>(item, `isCompressed_${column.key}`)
   
   useEffect(() => {
     if (column.key === 'comparison') {
-      // const rowBreakdownOptions = lodash.get<typeof item, string>(item, 'rowBreakdownOptions');
-      // setOptions(rowBreakdownOptions)
+      const rowBreakdownOptions = lodash.get<typeof item, string>(item, 'rowBreakdownOptions');
+      setOptions(rowBreakdownOptions)
       setIsRowHeader(true)
     }
   }, [item, column.key])
@@ -59,22 +72,45 @@ export function ReactTableRowCell<T>({ item, column, index }: Props<T>): JSX.Ele
       fn(e.itemData.key)
     }
   }
-  
+
+  const renderItem = (data: IContextItem, index: number) => {
+    return (
+      <div key={data.key}>
+        <span>{data.text}</span>
+      </div>
+    );
+  }
+
   return (<>
-      <td id={isRowHeader && `context-menu-${index}`} className={classes.root}
+    {isRowHeader ? (
+      <td
+        id={`context-menu-${index}`}
+        // className={classes.rowField}
+        colSpan={lodash.get(item, `isGroup_${column.key}`) === true ? 11 : 0}
         style={{
-          fontSize: lodash.get(item, 'isGroup') === true ? '1.25rem' : '0.875rem',
+          fontSize: lodash.get(item, `isGroup_${column.key}`) === true ? '1.25rem' : '0.875rem',
+          backgroundColor: lodash.get(item, `isGroup_${column.key}`) === true ? 'white' : 'rgb(207,213,234)',
         }}>
-        {column.render ? column.render(column, item) : value}
-        {isRowHeader && contextItems.length > 0 && <>
-          <ArrowDropDownIcon />
-          <ContextMenu
-            dataSource={contextItems}
-            width={200}
-            target={`#context-menu-${index}`}
-            onItemClick={handleSelectOption} />
+          {column.render ? column.render(column, item) : value}
+          {contextItems.length > 0 && <>
+            <ArrowDropDownIcon />
+            <ContextMenu
+              dataSource={contextItems}
+              width={200}
+              target={`#context-menu-${index}`}
+              itemRender={renderItem}
+              onItemClick={handleSelectOption}
+            />
           </>}
-      </td>
+      </td>) : (<>
+          {!isCompressed && input ? <td className={classes.inputCell}>
+            {input}
+          </td> : <></>}
+          {output && <td className={classes.outputCell}>
+            {output}
+          </td>}
+        </>
+      )}
     </>
   );
 }

@@ -1812,6 +1812,1130 @@ export class Api {
     this.router.post("/requestComparison", async (req, res) => {
       const { project } = req.body;
       const result = {
+        tableStructure: {
+          group: [
+            {
+              info: "",
+              name: "Mission",
+              key: "mission",
+              items: [
+                {
+                  name: "Altitude (km)",
+                  key: "altitude",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Inclination (deg)",
+                  key: "inclination",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Eccentricity",
+                  key: "eccentricity",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Frequency Band",
+                  key: "frequencyBand",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Modulation",
+                  key: "modulation",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Coding",
+                  key: "coding",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Standards Compliance",
+                  key: "standardsCompliance",
+                  rowBreakdownOptions: []
+                }
+              ]
+            },
+            {
+              info: "",
+              name: "Performance",
+              key: "performance",
+              items: [
+                {
+                  name: "RF Coverage (%)",
+                  key: "rfCoverage",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Mean Number of RF Contacts Per Orbit",
+                  key: "meanContacts",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Mean RF Contact Duration (min.)",
+                  key: "meanContactDuration",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Average Contact Duration (min.)",
+                  key: "averageContactDuration",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Average Gap",
+                  key: "averageGap",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Max RF Coverage Gap (min.)",
+                  key: "maxGap",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Mean Response Time (min.)",
+                  key: "meanResponseTime",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Effective Comms Time (%)",
+                  key: "effectiveCommsTime",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Data Rate (Mbps)",
+                  key: "dataRate",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Throughput (Gb/day)",
+                  key: "throughput",
+                  rowBreakdownOptions: []
+                },
+              ]
+            },
+            {
+              info: "",
+              name: "Antenna Options (User Burden)",
+              key: "antennaOptions",
+              items: [
+                {
+                  name: "User EIRP (dBW)",
+                  key: "eirp",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Parabolic Antenna Diameter (m)",
+                  key: "parabolicAntennaDiameter",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Parabolic Antenna Mass (kg)",
+                  key: "parabolicAntennaMass",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Electronically Steerable Antenna Size (m2)",
+                  key: "electronicAntennaSize",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Helical Antenna Height (m)",
+                  key: "helicalAntennaHeight",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Patch Antenna Size (m2)",
+                  key: "patchAntennaSize",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "Dipole Antenna Size (m)",
+                  key: "dipoleAntennaSize",
+                  rowBreakdownOptions: []
+                }
+              ]
+            },
+            {
+              info: "",
+              name: "Nav and Tracking",
+              key: "navAndTracking",
+              items: [
+                {
+                  name: "Tracking Accuracy (m)",
+                  key: "trackingAccuracy",
+                  rowBreakdownOptions: []
+                },
+                {
+                  name: "GNSS Availability",
+                  key: "gnssAvailability",
+                  rowBreakdownOptions: []
+                }
+              ]
+            }
+          ],
+          rowBreakdownOptions: []
+        },
+        columnData: [
+          {
+            name: "Project 1",
+            key: "project1",
+            width: 150,
+            data: [
+              {
+                key: "altitude",
+                input: "input 7",
+                output: "output-7"
+              },
+              {
+                key: "inclination",
+                input: "input-6",
+                output: "output-6"
+              },
+              {
+                key: "eccentricity",
+                input: "input-185",
+                output: "output-102"
+              },
+              {
+                key: "frequencyBand",
+                input: "input-207",
+                output: "output-36"
+              },
+              {
+                key: "modulation",
+                input: "input-233",
+                output: "output-121"
+              },
+              {
+                key: "coding",
+                input: "input-200",
+                output: "output-32"
+              },
+              {
+                key: "standardsCompliance",
+                input: "input-172",
+                output: "output-233"
+              },
+              {
+                key: "rfCoverage",
+                input: "input-260",
+                output: "output-180"
+              },
+              {
+                key: "meanContacts",
+                input: "input-54",
+                output: "output-54"
+              },
+              {
+                key: "meanContactDuration",
+                input: "input-23",
+                output: "output-23"
+              },
+              {
+                key: "averageContactDuration",
+                input: "input-37",
+                output: "output-37"
+              },
+              {
+                key: "averageGap",
+                input: "input-25",
+                output: "output-25"
+              },
+              {
+                key: "maxGap",
+                input: "input-54",
+                output: "output-54"
+              },
+              {
+                key: "meanResponseTime",
+                input: "input-17",
+                output: "output-17"
+              },
+              {
+                key: "effectiveCommsTime",
+                input: "input-51",
+                output: "output-51"
+              },
+              {
+                key: "dataRate",
+                input: "input-57",
+                output: "output-57"
+              },
+              {
+                key: "throughput",
+                input: "input-62",
+                output: "output-62"
+              },
+              {
+                key: "eirp",
+                input: "input-82",
+                output: "output-82"
+              },
+              {
+                key: "parabolicAntennaDiameter",
+                input: "input-256",
+                output: "output-256"
+              },
+              {
+                key: "parabolicAntennaMass",
+                input: "input-113",
+                output: "output-113"
+              },
+              {
+                key: "electronicAntennaSize",
+                input: "input-14",
+                output: "output-14"
+              },
+              {
+                key: "helicalAntennaHeight",
+                input: "input-27",
+                output: "output-27"
+              },
+              {
+                key: "patchAntennaSize",
+                input: "input-235",
+                output: "output-235"
+              },
+              {
+                key: "dipoleAntennaSize",
+                input: "input-174",
+                output: "output-174"
+              },
+              {
+                key: "trackingAccuracy",
+                input: "input-41",
+                output: "output-41"
+              },
+              {
+                key: "gnssAvailability",
+                input: "input-20",
+                output: "output-20"
+              }
+            ]
+          },
+          {
+            name: "Project 2",
+            key: "project2",
+            width: 150,
+            data: [
+              {
+                key: "altitude",
+                input: "input 7",
+                output: "output-82"
+              },
+              {
+                key: "inclination",
+                input: "input-6",
+                output: "output-286"
+              },
+              {
+                key: "eccentricity",
+                input: "input-185",
+                output: "output-102"
+              },
+              {
+                key: "frequencyBand",
+                input: "input-207",
+                output: "output-36"
+              },
+              {
+                key: "modulation",
+                input: "input-233",
+                output: "output-121"
+              },
+              {
+                key: "coding",
+                input: "input-200",
+                output: "output-32"
+              },
+              {
+                key: "standardsCompliance",
+                input: "input-172",
+                output: "output-233"
+              },
+              {
+                key: "rfCoverage",
+                input: "input-260",
+                output: "output-180"
+              },
+              {
+                key: "meanContacts",
+                input: "input-54",
+                output: "output-6"
+              },
+              {
+                key: "meanContactDuration",
+                input: "input-23",
+                output: "output-210"
+              },
+              {
+                key: "averageContactDuration",
+                input: "input-37",
+                output: "output-166"
+              },
+              {
+                key: "averageGap",
+                input: "input-25",
+                output: "output-117"
+              },
+              {
+                key: "maxGap",
+                input: "input-54",
+                output: "output-174"
+              },
+              {
+                key: "meanResponseTime",
+                input: "input-17",
+                output: "output-124"
+              },
+              {
+                key: "effectiveCommsTime",
+                input: "input-51",
+                output: "output-48"
+              },
+              {
+                key: "dataRate",
+                input: "input-57",
+                output: "output-275"
+              },
+              {
+                key: "throughput",
+                input: "input-62",
+                output: "output-139"
+              },
+              {
+                key: "eirp",
+                input: "input-82",
+                output: "output-223"
+              },
+              {
+                key: "parabolicAntennaDiameter",
+                input: "input-256",
+                output: "output-80"
+              },
+              {
+                key: "parabolicAntennaMass",
+                input: "input-113",
+                output: "output-83"
+              },
+              {
+                key: "electronicAntennaSize",
+                input: "input-14",
+                output: "output-30"
+              },
+              {
+                key: "helicalAntennaHeight",
+                input: "input-27",
+                output: "output-253"
+              },
+              {
+                key: "patchAntennaSize",
+                input: "input-235",
+                output: "output-21"
+              },
+              {
+                key: "dipoleAntennaSize",
+                input: "input-174",
+                output: "output-278"
+              },
+              {
+                key: "trackingAccuracy",
+                input: "input-41",
+                output: "output-161"
+              },
+              {
+                key: "gnssAvailability",
+                input: "input-20",
+                output: "output-201"
+              }
+            ]
+          },
+          {
+            name: "Project 3",
+            key: "project3",
+            width: 150,
+            data: [
+              {
+                key: "altitude",
+                input: "input-235",
+                output: "output-235"
+              },
+              {
+                key: "inclination",
+                input: "input-241",
+                output: "output-241"
+              },
+              {
+                key: "eccentricity",
+                input: "input-163",
+                output: "output-187"
+              },
+              {
+                key: "frequencyBand",
+                input: "input-7",
+                output: "output-251"
+              },
+              {
+                key: "modulation",
+                input: "input-97",
+                output: "output-190"
+              },
+              {
+                key: "coding",
+                input: "input-47",
+                output: "output-211"
+              },
+              {
+                key: "standardsCompliance",
+                input: "input-16",
+                output: "output-253"
+              },
+              {
+                key: "rfCoverage",
+                input: "input-273",
+                output: "output-164"
+              },
+              {
+                key: "meanContacts",
+                input: "input-214",
+                output: "output-214"
+              },
+              {
+                key: "meanContactDuration",
+                input: "input-200",
+                output: "output-200"
+              },
+              {
+                key: "averageContactDuration",
+                input: "input-279",
+                output: "output-279"
+              },
+              {
+                key: "averageGap",
+                input: "input-282",
+                output: "output-282"
+              },
+              {
+                key: "maxGap",
+                input: "input-109",
+                output: "output-109"
+              },
+              {
+                key: "meanResponseTime",
+                input: "input-56",
+                output: "output-56"
+              },
+              {
+                key: "effectiveCommsTime",
+                input: "input-252",
+                output: "output-252"
+              },
+              {
+                key: "dataRate",
+                input: "input-107",
+                output: "output-107"
+              },
+              {
+                key: "throughput",
+                input: "input-66",
+                output: "output-66"
+              },
+              {
+                key: "eirp",
+                input: "input-133",
+                output: "output-133"
+              },
+              {
+                key: "parabolicAntennaDiameter",
+                input: "input-256",
+                output: "output-256"
+              },
+              {
+                key: "parabolicAntennaMass",
+                input: "input-229",
+                output: "output-229"
+              },
+              {
+                key: "electronicAntennaSize",
+                input: "input-254",
+                output: "output-254"
+              },
+              {
+                key: "helicalAntennaHeight",
+                input: "input-74",
+                output: "output-74"
+              },
+              {
+                key: "patchAntennaSize",
+                input: "input-54",
+                output: "output-54"
+              },
+              {
+                key: "dipoleAntennaSize",
+                input: "input-219",
+                output: "output-219"
+              },
+              {
+                key: "trackingAccuracy",
+                input: "input-174",
+                output: "output-174"
+              },
+              {
+                key: "gnssAvailability",
+                input: "input-44",
+                output: "output-44"
+              }
+            ]
+          },
+          {
+            name: "Project 4",
+            key: "project4",
+            width: 150,
+            data: [
+              {
+                key: "altitude",
+                input: "input-87",
+                output: "output-87"
+              },
+              {
+                key: "inclination",
+                input: "input-193",
+                output: "output-193"
+              },
+              {
+                key: "eccentricity",
+                input: "input-163",
+                output: "output-187"
+              },
+              {
+                key: "frequencyBand",
+                input: "input-7",
+                output: "output-251"
+              },
+              {
+                key: "modulation",
+                input: "input-97",
+                output: "output-190"
+              },
+              {
+                key: "coding",
+                input: "input-47",
+                output: "output-211"
+              },
+              {
+                key: "standardsCompliance",
+                input: "input-16",
+                output: "output-253"
+              },
+              {
+                key: "rfCoverage",
+                input: "input-273",
+                output: "output-164"
+              },
+              {
+                key: "meanContacts",
+                input: "input-189",
+                output: "output-189"
+              },
+              {
+                key: "meanContactDuration",
+                input: "input-26",
+                output: "output-26"
+              },
+              {
+                key: "averageContactDuration",
+                input: "input-41",
+                output: "output-41"
+              },
+              {
+                key: "averageGap",
+                input: "input-13",
+                output: "output-13"
+              },
+              {
+                key: "maxGap",
+                input: "input-245",
+                output: "output-245"
+              },
+              {
+                key: "meanResponseTime",
+                input: "input-33",
+                output: "output-33"
+              },
+              {
+                key: "effectiveCommsTime",
+                input: "input-97",
+                output: "output-97"
+              },
+              {
+                key: "dataRate",
+                input: "input-110",
+                output: "output-110"
+              },
+              {
+                key: "throughput",
+                input: "input-176",
+                output: "output-176"
+              },
+              {
+                key: "eirp",
+                input: "input-256",
+                output: "output-256"
+              },
+              {
+                key: "parabolicAntennaDiameter",
+                input: "input-133",
+                output: "output-133"
+              },
+              {
+                key: "parabolicAntennaMass",
+                input: "input-100",
+                output: "output-100"
+              },
+              {
+                key: "electronicAntennaSize",
+                input: "input-212",
+                output: "output-212"
+              },
+              {
+                key: "helicalAntennaHeight",
+                input: "input-121",
+                output: "output-121"
+              },
+              {
+                key: "patchAntennaSize",
+                input: "input-135",
+                output: "output-135"
+              },
+              {
+                key: "dipoleAntennaSize",
+                input: "input-9",
+                output: "output-9"
+              },
+              {
+                key: "trackingAccuracy",
+                input: "input-232",
+                output: "output-232"
+              },
+              {
+                key: "gnssAvailability",
+                input: "input-269",
+                output: "output-269"
+              }
+            ]
+          },
+          {
+            name: "Project 5",
+            key: "project5",
+            width: 150,
+            data: [
+              {
+                key: "altitude",
+                input: "input-87",
+                output: "output-125"
+              },
+              {
+                key: "inclination",
+                input: "input-193",
+                output: "output-212"
+              },
+              {
+                key: "eccentricity",
+                input: "input-163",
+                output: "output-187"
+              },
+              {
+                key: "frequencyBand",
+                input: "input-7",
+                output: "output-251"
+              },
+              {
+                key: "modulation",
+                input: "input-97",
+                output: "output-190"
+              },
+              {
+                key: "coding",
+                input: "input-47",
+                output: "output-211"
+              },
+              {
+                key: "standardsCompliance",
+                input: "input-16",
+                output: "output-253"
+              },
+              {
+                key: "rfCoverage",
+                input: "input-273",
+                output: "output-164"
+              },
+              {
+                key: "meanContacts",
+                input: "input-189",
+                output: "output-163"
+              },
+              {
+                key: "meanContactDuration",
+                input: "input-26",
+                output: "output-209"
+              },
+              {
+                key: "averageContactDuration",
+                input: "input-41",
+                output: "output-55"
+              },
+              {
+                key: "averageGap",
+                input: "input-13",
+                output: "output-198"
+              },
+              {
+                key: "maxGap",
+                input: "input-245",
+                output: "output-144"
+              },
+              {
+                key: "meanResponseTime",
+                input: "input-33",
+                output: "output-217"
+              },
+              {
+                key: "effectiveCommsTime",
+                input: "input-97",
+                output: "output-44"
+              },
+              {
+                key: "dataRate",
+                input: "input-110",
+                output: "output-101"
+              },
+              {
+                key: "throughput",
+                input: "input-176",
+                output: "output-135"
+              },
+              {
+                key: "eirp",
+                input: "input-256",
+                output: "output-68"
+              },
+              {
+                key: "parabolicAntennaDiameter",
+                input: "input-133",
+                output: "output-13"
+              },
+              {
+                key: "parabolicAntennaMass",
+                input: "input-100",
+                output: "output-123"
+              },
+              {
+                key: "electronicAntennaSize",
+                input: "input-212",
+                output: "output-259"
+              },
+              {
+                key: "helicalAntennaHeight",
+                input: "input-121",
+                output: "output-97"
+              },
+              {
+                key: "patchAntennaSize",
+                input: "input-135",
+                output: "output-242"
+              },
+              {
+                key: "dipoleAntennaSize",
+                input: "input-9",
+                output: "output-215"
+              },
+              {
+                key: "trackingAccuracy",
+                input: "input-232",
+                output: "output-180"
+              },
+              {
+                key: "gnssAvailability",
+                input: "input-269",
+                output: "output-85"
+              }
+            ]
+          },
+          {
+            name: "Project 6",
+            key: "project6",
+            width: 150,
+            data: [
+              {
+                key: "altitude",
+                input: "input-247",
+                output: "output-247"
+              },
+              {
+                key: "inclination",
+                input: "input-25",
+                output: "output-25"
+              },{
+                key: "eccentricity",
+                input: "input-133",
+                output: "output-168"
+              },
+              {
+                key: "frequencyBand",
+                input: "input-218",
+                output: "output-100"
+              },
+              {
+                key: "modulation",
+                input: "input-162",
+                output: "output-206"
+              },
+              {
+                key: "coding",
+                input: "input-206",
+                output: "output-83"
+              },
+              {
+                key: "standardsCompliance",
+                input: "input-200",
+                output: "output-142"
+              },
+              {
+                key: "rfCoverage",
+                input: "input-279",
+                output: "output-240"
+              },
+              {
+                key: "meanContacts",
+                input: "input-54",
+                output: "output-54"
+              },
+              {
+                key: "meanContactDuration",
+                input: "input-221",
+                output: "output-221"
+              },
+              {
+                key: "averageContactDuration",
+                input: "input-68",
+                output: "output-68"
+              },
+              {
+                key: "averageGap",
+                input: "input-166",
+                output: "output-166"
+              },
+              {
+                key: "maxGap",
+                input: "input-12",
+                output: "output-12"
+              },
+              {
+                key: "meanResponseTime",
+                input: "input-184",
+                output: "output-184"
+              },
+              {
+                key: "effectiveCommsTime",
+                input: "input-289",
+                output: "output-289"
+              },
+              {
+                key: "dataRate",
+                input: "input-265",
+                output: "output-265"
+              },
+              {
+                key: "throughput",
+                input: "input-123",
+                output: "output-123"
+              },
+              {
+                key: "eirp",
+                input: "input-176",
+                output: "output-176"
+              },
+              {
+                key: "parabolicAntennaDiameter",
+                input: "input-13",
+                output: "output-13"
+              },
+              {
+                key: "parabolicAntennaMass",
+                input: "input-27",
+                output: "output-27"
+              },
+              {
+                key: "electronicAntennaSize",
+                input: "input-214",
+                output: "output-214"
+              },
+              {
+                key: "helicalAntennaHeight",
+                input: "input-125",
+                output: "output-125"
+              },
+              {
+                key: "patchAntennaSize",
+                input: "input-33",
+                output: "output-33"
+              },
+              {
+                key: "dipoleAntennaSize",
+                input: "input-157",
+                output: "output-157"
+              },
+              {
+                key: "trackingAccuracy",
+                input: "input-216",
+                output: "output-216"
+              },
+              {
+                key: "gnssAvailability",
+                input: "input-147",
+                output: "output-147"
+              }
+            ]
+          },
+          {
+            name: "Project 7",
+            key: "project7",
+            width: 150,
+            data: [
+              {
+                key: "altitude",
+                input: "input-177",
+                output: "output-177"
+              },
+              {
+                key: "inclination",
+                input: "input-8",
+                output: "output-8"
+              },
+              {
+                key: "eccentricity",
+                input: "input-208",
+                output: "output-223"
+              },
+              {
+                key: "frequencyBand",
+                input: "input-178",
+                output: "output-243"
+              },
+              {
+                key: "modulation",
+                input: "input-13",
+                output: "output-122"
+              },
+              {
+                key: "coding",
+                input: "input-59",
+                output: "output-178"
+              },
+              {
+                key: "standardsCompliance",
+                input: "input-143",
+                output: "output-218"
+              },
+              {
+                key: "rfCoverage",
+                input: "input-126",
+                output: "output-131"
+              },
+              {
+                key: "meanContacts",
+                input: "input-41",
+                output: "output-41"
+              },
+              {
+                key: "meanContactDuration",
+                input: "input-132",
+                output: "output-132"
+              },
+              {
+                key: "averageContactDuration",
+                input: "input-248",
+                output: "output-248"
+              },
+              {
+                key: "averageGap",
+                input: "input-20",
+                output: "output-20"
+              },
+              {
+                key: "maxGap",
+                input: "input-134",
+                output: "output-134"
+              },
+              {
+                key: "meanResponseTime",
+                input: "input-87",
+                output: "output-87"
+              },
+              {
+                key: "effectiveCommsTime",
+                input: "input-277",
+                output: "output-277"
+              },
+              {
+                key: "dataRate",
+                input: "input-212",
+                output: "output-212"
+              },
+              {
+                key: "throughput",
+                input: "input-134",
+                output: "output-134"
+              },
+              {
+                key: "eirp",
+                input: "input-284",
+                output: "output-284"
+              },
+              {
+                key: "parabolicAntennaDiameter",
+                input: "input-32",
+                output: "output-32"
+              },
+              {
+                key: "parabolicAntennaMass",
+                input: "input-26",
+                output: "output-26"
+              },
+              {
+                key: "electronicAntennaSize",
+                input: "input-98",
+                output: "output-98"
+              },
+              {
+                key: "helicalAntennaHeight",
+                input: "input-177",
+                output: "output-177"
+              },
+              {
+                key: "patchAntennaSize",
+                input: "input-40",
+                output: "output-40"
+              },
+              {
+                key: "dipoleAntennaSize",
+                input: "input-66",
+                output: "output-66"
+              },
+              {
+                key: "trackingAccuracy",
+                input: "input-195",
+                output: "output-195"
+              },
+              {
+                key: "gnssAvailability",
+                input: "input-274",
+                output: "output-274"
+              }
+            ]
+          }
+        ],
+        columnSequence: [],
         dataIDs: [
           { networkId: 9, system_attribute_version_id: 1 },
           { networkId: 3, system_attribute_version_id: 3 },

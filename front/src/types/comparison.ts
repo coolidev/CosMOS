@@ -7,6 +7,7 @@ export interface Status {
   isSize: boolean;
   width: string;
   disabled: boolean;
+  isCompressedView: boolean;
 }
 
 export interface IData {
@@ -40,8 +41,11 @@ export interface IRowBreakdownOption<T> {
 export interface ICellType<T> {
   key: string;
   colKey: string;
-  value: string;
+  value?: string;
+  input?: string;
+  output?: string;
   isGroup?: boolean;
+  isCompressed?: boolean;
   rowBreakdownOptions?: IRowBreakdownOption<IData>[];
   render?: (cell: ICellType<T>, item: T) => void;
 }
@@ -64,7 +68,8 @@ export interface ITableStructure {
 export interface IColumnData {
   name: string;
   key: string;
-  data: IData[]
+  data: IData[];
+  width?: number;
 }
 export interface IComparisonType {
   tableStructure: ITableStructure;

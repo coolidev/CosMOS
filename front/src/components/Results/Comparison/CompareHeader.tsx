@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { Box, Button, makeStyles } from '@material-ui/core';
+import { FC, useEffect, useState } from 'react';
+import { Box, Button, FormControlLabel, makeStyles, Switch } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import type { Theme } from 'src/theme';
 import { THEMES } from 'src/utils/constants/general';
@@ -47,11 +47,24 @@ const CompareHeader: FC<CompareHeaderProps> = ({
   onStatus,
   handleDialog
 }) => {
+  const [isCompressedView, setIsCompressedView] = useState<boolean>(false);
+
   const classes = useStyles();
 
   const handleChangePage = (e, page) => {
     onStatus((prevState) => ({ ...prevState, page }));
   };
+
+  useEffect(() => {
+    const handleViewStyle = () => {
+      onStatus((prevState) => ({
+        ...prevState,
+        isCompressedView
+      }))
+    }
+  
+    handleViewStyle() 
+  }, [isCompressedView])
 
   return (
     <Box display="flex" p={3}>
@@ -64,6 +77,10 @@ const CompareHeader: FC<CompareHeaderProps> = ({
       >
         Rank
       </Button>
+      <Box flexGrow={1} />
+      <Box>
+        <FormControlLabel control={<Switch color="primary" value={isCompressedView} onChange={(e, v) => {setIsCompressedView(v)}} />} label="Compress View" />
+      </Box>
       <Box flexGrow={1} />
       <Box>
         <Pagination

@@ -7,7 +7,7 @@ import {
 import type { State } from 'src/pages/home';
 import type { ICellType, IColumnType, IComparisonType, IData, IRowBreakdownOption, IRowType, Status } from 'src/types/comparison';
 import type { Theme } from 'src/theme';
-import { ReactTable } from './ReactTable/ReactTable';
+import { IActionType, ReactTable } from './ReactTable/ReactTable';
 import axios from 'src/utils/axios';
 import { useDispatch, useSelector } from 'src/store';
 import { updateComparisonIds } from 'src/slices/pinnedResults';
@@ -16,7 +16,7 @@ interface CompareTableProps {
   state: State;
   status: Status;
   source: IComparisonType;
-  refresh: boolean;
+  action: IActionType;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -81,74 +81,45 @@ const CompareTable: FC<CompareTableProps> = ({
   state,
   status,
   source,
-  refresh,
+  action
 }) => {
   const classes = useStyles();
   const theme = useTheme<Theme>();
 
   const [columns, setColumns] = useState<IColumnType<IData>[]>([])
+  const [compressed, setCompressed] = useState<boolean[]>([])
+  const [compInPage, setCompInPage] = useState<boolean[]>([])
   const [rowNames, setRowNames] = useState<IRowType<IData>[]>([])
   const [rowBreakdownOptions, setRowBreakdownOptions] = useState<IRowBreakdownOption<IData>[]>([])
   const [cellData, setCellData] = useState<IData[]>([])
-  const [columnSequence, setColumnSequence] = useState<string[]>([])
   const [pageLoaded, setPageLoaded] = useState<boolean>(false)
-  const [sortString, setSortString] = useState<string>('')
 
-  const {comparisonIds} = useSelector((state) => state.pinnedResults);
   const dispatch = useDispatch();
 
-  
-  const deleteColumn = async (columnKey: string) => {
-    source.columnData.forEach(async (column) => {
-      if(column.key === columnKey){
-        let params = {
-          resultId: Number(column.key), 
-          email: localStorage.getItem('email'),
-          projectId: String(localStorage.getItem('project'))
-        }
-        await axios.post('/deleteAnalysisResults', params);
-        let newComparisonIds = comparisonIds.slice();
-        newComparisonIds.splice(newComparisonIds.indexOf(column.key), 1);
-        dispatch(updateComparisonIds(newComparisonIds));
-      }
-    });
-    const columnsBuffer = columns;
-    setColumns(columnsBuffer.filter((column) => column.key !== columnKey))
-    const dataBuffer = cellData;
-    const newData = dataBuffer.map((row) => {
-      delete row[columnKey];
-      return row;
-    })
-    setCellData(newData);
-  }
-
-  const sortColumn = () => {
-    const columnsBuffer = [...columns];
-    const sortedColumns = columnsBuffer.sort((column1, column2) => {
-      const idx1 = columnSequence.indexOf(column1.key)
-      const idx2 = columnSequence.indexOf(column2.key)
-      if (column2.key === 'comparison') {
-        return 0;
-      }
-      return idx1 - idx2;
-    })
-    setColumns(sortedColumns)
-  }
-
   useEffect(() => {
+    setPageLoaded(false);
     if (source !== undefined) {
       // Columns
-      const columnData = source.columnData
+      let sum = 0
+      const checkInPage = compressed.filter((_, index) => index > 0).map((value) => {
+        sum = sum + (value === true ? 1 : 2);
+        if (sum % (status.perPage * 2) === 1) {
+          sum = sum + 1;
+        }
+        return sum
+      })
+      const columnData = source.columnData.filter((_, index) => {
+        return status.isCompressedView ?
+          (checkInPage[index] <= status.perPage * 2 * status.page && checkInPage[index] > status.perPage * 2 * (status.page - 1)) :
+          (index >= (status.page - 1) * status.perPage && index < status.page * status.perPage)
+      })
       const columnsBuffer = [
-        { key: 'comparison', name: "" },
+        { key: 'comparison', name: "Parameters", width: 150 },
         ...columnData.map((column) => {
-          return { key: column.key, name: column.name, removeEnabled: true }
+          return { key: column.key, name: column.name, width: column.width, removeEnabled: true }
         })
       ]
       setColumns(columnsBuffer);
-      // Column sequence
-      const sequenceData = source.columnSequence;
-      setSortString(sequenceData.toString());
       // Row Breakdown options
       const optionsData = source.tableStructure.rowBreakdownOptions;
       setRowBreakdownOptions(optionsData);
@@ -160,15 +131,18 @@ const CompareTable: FC<CompareTableProps> = ({
             name: group.name,
             key: `group_${idx}`,
             isGroup: true
-          }, ...group.items];
+          },
+          ...group.items];
       }).flat();
       setRowNames(rows);
+      // For reload page with new table structure
+      setPageLoaded(false);
     }
-  }, [source, refresh])
+  }, [source, status, compressed])
 
   useEffect(() => {
     const handleData = () => {
-      //if (!pageLoaded) {
+      if (!pageLoaded) {
         const comparison = rowNames.map((row: IRowType<IData>): ICellType<IData> => {
           return {
             key: row.key,
@@ -187,26 +161,68 @@ const CompareTable: FC<CompareTableProps> = ({
             return {
               key: row.key,
               colKey: column.key,
-              value: row.value
+              // value: row.value,
+              input: row.input,
+              output: row.output
             }
           })
         })
         // combine row names to data
         columnData.unshift(comparison)
 
+        if (status.isCompressedView) {
+          const inputList = columnData.sort((a, b) => {
+            const sortAsColumn = [...columns].map((v) => v.key)
+            if (a[0] === undefined || b[0] === undefined) return 0
+            return sortAsColumn.indexOf(a[0].key) - sortAsColumn.indexOf(b[0].key)
+          }).map((column, idx) => {
+            return column.map((data, idx) => {
+              return data.input
+            }).toString()
+          })
+          const checkCompressed = inputList.map((str, idx) => idx > 0 && str === inputList[idx - 1])
+          setCompressed(checkCompressed)
+
+          setCompInPage(checkCompressed.filter((_, index) => {
+            return (index === 0 || (index >= (status.page - 1) * status.perPage + 1 && index < status.page * status.perPage + 1))
+          }))
+        } else {
+          setCompressed([])
+          setCompInPage([])
+        }
+
+        let sum = 0
+        const checkInPage = compressed.filter((_, index) => index > 0).map((value) => {
+          sum = sum + (value === true ? 1 : 2);
+          if (sum % (status.perPage * 2) === 1) {
+            sum = sum + 1;
+          }
+          return sum
+        })
+
         const processed = columnData[0].map((rowKey, idx) => {
-          return columnData.map(row => {
+          return columnData.filter((_, index) => {
+            return status.isCompressedView ?
+              (index === 0 || (checkInPage[index - 1] <= status.perPage * 2 * status.page && checkInPage[index - 1] > status.perPage * 2 * (status.page - 1))) :
+              (index === 0 || (index >= (status.page - 1) * status.perPage + 1 && index < status.page * status.perPage + 1))
+          }).map(row => {
             return row.filter((cell) => cell.key === rowKey.key)[0]
           })
+        }).map((row, idx) => {
+          // may have an issue here
+          return row.map((col, index) => ({ ...col, isCompressed: compInPage[index] }))
         }).map((row) => {
           let grouped = {}
           row.filter(cell => cell !== undefined).map((cell) => {
             grouped = {
               ...grouped,
               [cell.colKey]: cell.value,
-              isGroup: cell.isGroup
+              [`input_${cell.colKey}`]: cell.input,
+              [`output_${cell.colKey}`]: cell.output,
+              [`isCompressed_${cell.colKey}`]: cell.isCompressed,
+              [`isGroup_${cell.colKey}`]: cell.isGroup
             }
-            return { [cell.colKey]: cell.value }
+            return true
           })
           grouped = {
             ...grouped,
@@ -215,16 +231,12 @@ const CompareTable: FC<CompareTableProps> = ({
           return grouped
         })
         setCellData(processed)
-      //} else {
-        // Todo: need to manage table data
-        // const columnData = [...data]
-        // setCellData(columnData)
-      //}
+      }
     }
     if (source !== undefined) {
       handleData()
     }
-  }, [source, columns, rowNames, rowBreakdownOptions, pageLoaded])
+  }, [source, columns, rowNames, rowBreakdownOptions, cellData, pageLoaded, status, compressed, compInPage])
 
   useEffect(() => {
     if (cellData.length) {
@@ -232,25 +244,9 @@ const CompareTable: FC<CompareTableProps> = ({
     }
   }, [cellData])
 
-  useEffect(() => {
-    const handleColumnSequence = () => {
-      const sequenceData = sortString.split(',');
-      const columnData = [...columns];
-      sequenceData.push(...columnData.map((column) => column.key).filter((column) => column !== 'comparison'));
-      const buffer = sequenceData.filter((c, index) => {
-        return sequenceData.indexOf(c) === index;
-      });
-      setColumnSequence(buffer);
-    }
-  
-    handleColumnSequence();
-  }, [sortString, columns])
-
   return (
     <div data-rank-table='true' className={classes.root}>
-      <ReactTable data={cellData} columns={columns} actions={{ deleteColumn: deleteColumn}} />
-      <input type={'text'} value={sortString} onChange={(e) => {setSortString(e.target.value);}} />
-      <button onClick={sortColumn}>Sort</button>
+      <ReactTable data={cellData} columns={columns} compressed={compInPage} actions={{ deleteColumn: action.deleteColumn }} status={status} />
     </div>
   );
 };
