@@ -429,14 +429,181 @@ export class Api {
           isEngineer: true
       });
   });
-  this.router.get("/getUserAccount", async (req, res) => {
+  this.router.post("/getUserAccount", async (req, res) => {
     const result = {
       isAdmin: true,
       isEngineer: true
   };
   res.status(200).send(result);
 });
+
+this.router.get("/getModCodOptions", async(_req, res) => {
+  const data = {
+      "frequencyBandOptions": [],
+      "antennaOptions": [],
+      "selectedAntennaId": 0,
+      "selectedAntennaName": "",
+      "modCodTable": {
+          "BPSK": {
+              "Uncoded": 1
+          }
+      },
+      "ebNoTable": {
+          "BPSK": {
+              "Uncoded": 9.6
+          },
+      },
+      "multipleAccess": "SA",
+      "bandwidth_MHz": null
+  };
+  res.status(200).send(data);
+});
+
+ this.router.post("/getNetworkOverview", async (_req, res) => {
+  const data = {
+    "name": "Test Network 1",
+    "details": "Network Description - this is a placeholder that is being stored in the database",
+    "image": {
+        "type": "Buffer",
+        "data": []
+    },
+    "source": [
+        {
+            "id": null,
+            "name": "Operational Year",
+            "value": "2021",
+            "explanation": null,
+            "references": null,
+            "attributeKey": "operational_year"
+        },
+        {
+            "id": null,
+            "name": null,
+            "value": null,
+            "explanation": null,
+            "references": null,
+            "attributeKey": null
+        }
+    ]
+  };
+  res.status(200).send(data);
+});
+
+    
+
     /**
+     * Returns data for the GroundStation Dashboard view.
+     * @returns {GroundStationSummary[]}
+     * id
+     */
+     this.router.get("/getNetworkLibrary", async (_req, res) => {
+      const data = [
+          {
+            "id": 1,
+            "system": "Test Network 1",
+            "location": "",
+            "year": 2000,
+            "numLocations": 0,
+            "scanAgreement": false,
+            "standardsCompliance": 0,
+            "isEditable": true,
+            "platforms": [
+              {
+                "name": "Test Platform 1",
+                "type": 1,
+                "location": "Somewhere",
+                "id": 3,
+                "services": [
+                    {
+                        "antennaId": 4,
+                        "antennaName": "Test Antenna 1",
+                        "isTx": false,
+                        "frequencyBandId": 1,
+                        "frequencyBandName": "S-Band",
+                        "antennaSize": 1,
+                        "eirpValues": "",
+                        "gtValues": "1",
+                        "minFrequency": 2200,
+                        "maxFrequency": 2290,
+                        "polarization": "LHCP & RHCP",
+                        "antennaGain": 1,
+                        "dataFormat": "",
+                        "dataRate": 40000,
+                        "modulationType": "Uncoded",
+                        "channelCodingType": "Rate 1/2",
+                        "subcarrierModulationType": "Uncoded",
+                        "standardsCompliance": 0,
+                        "scanAgreement": true,
+                        "networkName": "Test Network 1",
+                        "platformName": "Test Platform 1",
+                        "location": "Somewhere",
+                        "year": 1981
+                    },
+                ],
+                "antennaIds": [
+                    3
+                ],
+                "count": 0,
+                "startYear": 1981
+            },
+          ]
+        },
+        {
+          "id": 2,
+          "system": "Test Network 2",
+          "location": "",
+          "year": 2000,
+          "numLocations": 0,
+          "scanAgreement": false,
+          "standardsCompliance": 0,
+          "isEditable": true,
+          "platforms":
+            [
+              {
+                "name": "Test Platform 2`",
+                "type": 1,
+                "location": "Somewhere",
+                "id": 3,
+                "services": [
+                    {
+                        "antennaId": 4,
+                        "antennaName": "Test Antenna 2",
+                        "isTx": false,
+                        "frequencyBandId": 1,
+                        "frequencyBandName": "S-Band",
+                        "antennaSize": 1,
+                        "eirpValues": "",
+                        "gtValues": "1",
+                        "minFrequency": 2200,
+                        "maxFrequency": 2290,
+                        "polarization": "LHCP & RHCP",
+                        "antennaGain": 1,
+                        "dataFormat": "",
+                        "dataRate": 40000,
+                        "modulationType": "Uncoded",
+                        "channelCodingType": "Rate 1/2",
+                        "subcarrierModulationType": "Uncoded",
+                        "standardsCompliance": 0,
+                        "scanAgreement": true,
+                        "networkName": "Test Network 1",
+                        "platformName": "Test Platform 1",
+                        "location": "Somewhere",
+                        "year": 1981
+                    },
+                ],
+                "antennaIds": [
+                    3
+                ],
+                "count": 0,
+                "startYear": 1981
+            }
+          ]
+        }, 
+      ];
+      res.status(200).send(data);
+    });
+
+  /**
      * @typedef {Object} GroundStationSummary
      * @property {number} id
      * @property {string} name
@@ -1130,626 +1297,805 @@ export class Api {
      * @param {string} email Email of the current user.
      * @returns {DTEDetail}
      */
-    this.router.post("/requestDTEDetail", async (req, res) => {
+    this.router.post("/requestDTEDetails", async (req, res) => {
       const { id, email } = req.body;
       const result = {
-        master: [
-          { key: "Network Overview", value: "Network Overview" },
-          { key: "TestGS", value: "TestGS" },
-          {
-            key: "DTE Network 3",
-            value: "DTE Network 3",
-          },
+        "master": [
+            {
+                "key": "Test Platform 1",
+                "value": "Test Platform 1"
+            }
         ],
-        detail: {
-          system_name: "DTE Network 3",
-          system_value: [
-            {
-              section_key: "Network Overview",
-              section_name: "Network Overview",
-              section_value: [
+        "detail": {
+            "system_name": "Test Network 1",
+            "system_value": [
                 {
-                  key: "Network Overview",
-                  sub_key: "system_name_model_number",
-                  name: "System Name",
-                  value: "NEN",
-                  explanation: "",
-                  references: "",
-                  antennaId: null,
-                  frequencyBand: null,
-                  modDemod: null,
-                },
-                {
-                  key: "Network Overview",
-                  sub_key: "operational_year",
-                  name: "Operational (Year)",
-                  value: "2006",
-                  explanation: "Unknown, currently using SCaN founding date",
-                  references: "",
-                  antennaId: null,
-                  frequencyBand: null,
-                  modDemod: null,
-                },
-                {
-                  key: "Network Overview",
-                  sub_key: "network_model",
-                  name: "Network Model",
-                  value: "Dedicated / Shared",
-                  explanation: "",
-                  references: "",
-                  antennaId: null,
-                  frequencyBand: null,
-                  modDemod: null,
-                },
-                {
-                  key: "Network Overview",
-                  sub_key: "number_of_locations",
-                  name: "Number of Locations",
-                  value: "1",
-                  explanation: "1 station currently included*",
-                  references: "",
-                  antennaId: null,
-                  frequencyBand: null,
-                  modDemod: null,
-                },
-                {
-                  key: "Network Overview",
-                  sub_key: "tracking_services",
-                  name: "Tracking Services",
-                  value: "",
-                  explanation: "",
-                  references: "",
-                  antennaId: null,
-                  frequencyBand: null,
-                  modDemod: null,
-                },
-              ],
-            },
-            {
-              section_key: "Platform",
-              section_name: "Platform",
-              section_value: [
-                {
-                  key: "Platform",
-                  sub_key: "station_name_model_number",
-                  name: "Name",
-                  value: "Platform",
-                  explanation:"",
-                  references: "",
-                  antennaId: "Station Overview",
-                  frequencyBand: null,
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:null,
-                  rfFrontEnd_Id:null,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "location_regional",
-                  name: "Location",
-                  value: "North West",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Station Overview",
-                  frequencyBand: null,
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:null,
-                  rfFrontEnd_Id:null,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "number_antennas",
-                  name: "Number of people",
-                  value: "800M",
-                  explanation:"",
-                  references: "",
-                  antennaId: "Station Overview",
-                  frequencyBand: null,
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:null,
-                  rfFrontEnd_Id:null,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_coordinate",
-                  name: "Coordinates",
-                  value: "37.9249° N, 75.4765° W",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "Antenna Overview",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:null,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "supported_frequency_general",
-                  name: "President",
-                  value: "Joe Biden",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "Antenna Overview",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:null,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_size",
-                  name: "population Size",
-                  value: "250M",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "Antenna Overview",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:null,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_frequency",
-                  name: "Name",
-                  value: "RF Front End 1",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 1",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:1,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_gt",
-                  name: "Number of Cities",
-                  value: "5",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 1",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:1,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_beamwidth",
-                  name: "Top team",
-                  value: "Lakers",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 1",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:1,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_subcarrier_frequency",
-                  name: "Climate",
-                  value: "Dry",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 1",
-                  modDemod: "Mod/Demod",
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:1,
-                  modDemod_Id:1
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_data_rate",
-                  name: "Famous for",
-                  value:"Hollywood",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 1",
-                  modDemod: "Mod/Demod",
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:1,
-                  modDemod_Id:1
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_frequency",
-                  name: "Name",
-                  value: "RF Front End 2",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 2",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:2,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_gt",
-                  name: "Number of Cities",
-                  value: "2",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 2",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:2,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_beamwidth",
-                  name: "Top Team",
-                  value: "Nuggets",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 2",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:2,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_subcarrier_frequency",
-                  name: "Climate",
-                  value: "Cold",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 2",
-                  modDemod: 'Mod/Demod',
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:2,
-                  modDemod_Id:2
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_data_rate",
-                  name: "Famous for",
-                  value:"Sking",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 1",
-                  frequencyBand: "RF Front End 2",
-                  modDemod: 'Mod/Demod',
-                  platform_Id:1,
-                  antenna_Id:1,
-                  rfFrontEnd_Id:2,
-                  modDemod_Id:2
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_coordinate",
-                  name: "Coordinates",
-                  value: "37.9239°N, 75.4761°W",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 2",
-                  frequencyBand: "Antenna Overview",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:2,
-                  rfFrontEnd_Id:null,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "supported_frequency_general",
-                  name: "President",
-                  value: "Justin Trudeau",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 2",
-                  frequencyBand: "Antenna Overview",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:2,
-                  rfFrontEnd_Id:null,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_size",
-                  name: "popualtion size",
-                  value: "110M",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 2",
-                  frequencyBand: "Antenna Overview",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:2,
-                  rfFrontEnd_Id:null,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_frequency",
-                  name: "Name",
-                  value: "RF Front End 3",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 2",
-                  frequencyBand: "RF Front End 3",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:2,
-                  rfFrontEnd_Id:3,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_gt",
-                  name: "Number of Cities",
-                  value: "3",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 2",
-                  frequencyBand: "RF Front End 3",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:2,
-                  rfFrontEnd_Id:3,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_beamwidth",
-                  name: "Top team",
-                  value: "Raptors",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 2",
-                  frequencyBand: "RF Front End 3",
-                  modDemod: null,
-                  platform_Id:1,
-                  antenna_Id:2,
-                  rfFrontEnd_Id:3,
-                  modDemod_Id:null
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_subcarrier_frequency",
-                  name: "Climate",
-                  value: "Cold",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 2",
-                  frequencyBand: "RF Front End 3",
-                  modDemod: "Mod/Demod",
-                  platform_Id:1,
-                  antenna_Id:2,
-                  rfFrontEnd_Id:3,
-                  modDemod_Id:3
-                },
-                {
-                  key: "Platform",
-                  sub_key: "antenna_data_rate",
-                  name: "Famous for",
-                  value:"CN Tower",
-                  explanation: "",
-                  references: "",
-                  antennaId: "Antenna 2",
-                  frequencyBand: "RF Front End 3",
-                  modDemod: "Mod/Demod",
-                  platform_Id:1,
-                  antenna_Id:2,
-                  rfFrontEnd_Id:3,
-                  modDemod_Id:3
-                },
-              ],
-            },
-          ],
+                    "section_key": "Test Platform 1",
+                    "section_name": "Test Platform 1",
+                    "section_value": [
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "station_name_model_number",
+                            "name": "Name",
+                            "value": "Test Platform 1",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Station Overview",
+                            "frequencyBand": null,
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": null,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "platform_type",
+                            "name": "Platform Type",
+                            "value": "1",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Station Overview",
+                            "frequencyBand": null,
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": null,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "reference_body",
+                            "name": "Reference Body",
+                            "value": "1",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Station Overview",
+                            "frequencyBand": null,
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": null,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "latitude",
+                            "name": "Latitude (°)",
+                            "value": "0",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Station Overview",
+                            "frequencyBand": null,
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": null,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "longitude",
+                            "name": "Longitude (°)",
+                            "value": "0",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Station Overview",
+                            "frequencyBand": null,
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": null,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "site_altitude",
+                            "name": "Site Altitude (m)",
+                            "value": "0",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Station Overview",
+                            "frequencyBand": null,
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": null,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "startOperationalYear",
+                            "name": "Start of Operation (Year)",
+                            "value": "2023",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Station Overview",
+                            "frequencyBand": null,
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": null,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "stopOperationalYear",
+                            "name": "End of Operation (Year)",
+                            "value": "2123",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Station Overview",
+                            "frequencyBand": null,
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": null,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "antenna_name",
+                            "name": "Name",
+                            "value": "Test Antenna 1",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Antenna Overview",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "antenna_size",
+                            "name": "Antenna Size (m)",
+                            "value": "",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Antenna Overview",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "antenna_efficiency",
+                            "name": "Antenna Efficiency (%)",
+                            "value": "",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Antenna Overview",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "rx_system_noise_temp",
+                            "name": "Rx System Noise Temperature (K)",
+                            "value": "300",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Antenna Overview",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "antenna_polarization",
+                            "name": "Polarization Type",
+                            "value": "3",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Antenna Overview",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "polarization_losses",
+                            "name": "Polarization Losses (dB)",
+                            "value": "3",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Antenna Overview",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "dte_scan_agreement",
+                            "name": "Agreement",
+                            "value": "0",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Antenna Overview",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": null,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "rf_FrontEnd_name",
+                            "name": "Name",
+                            "value": "Test RF FrontEnd 1 (Rx)",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "startFrequency",
+                            "name": "Start Frequency (MHz)",
+                            "value": "2000",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "stopFrequency",
+                            "name": "Stop Frequency (MHz)",
+                            "value": "4000",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "centerFrequency",
+                            "name": "Center Frequency (MHz)",
+                            "value": "2500",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "other_losses",
+                            "name": "Other Losses* (dB)",
+                            "value": "5",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "TxPower",
+                            "name": "Tx Power (dBW)",
+                            "value": "5",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "symbolRate",
+                            "name": "Symbol Rate (ksps)",
+                            "value": "1000",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "btProduct",
+                            "name": "BT product \r\n",
+                            "value": "5",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "bandwidth",
+                            "name": "Bandwidth (MHz)",
+                            "value": "4000",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "antenna_gain",
+                            "name": "Antenna Gain (dBi)",
+                            "value": "5",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "antenna_gt",
+                            "name": "Antenna G/T (dB/K)",
+                            "value": "5",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "pointing_loss",
+                            "name": "Pointing Loss (dB)",
+                            "value": "5",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "antenna_beamwidth",
+                            "name": "Antenna Beamwidth (°)",
+                            "value": "45",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        },
+                        {
+                            "key": "Test Platform 1",
+                            "sub_key": "eirp",
+                            "name": "EIRP (dBW)",
+                            "value": "10",
+                            "explanation": "",
+                            "references": "",
+                            "antennaName": "Test Antenna 1",
+                            "frequencyBand": "Test RF FrontEnd 1 (Rx)",
+                            "modDemod": null,
+                            "platformId": 181,
+                            "antennaId": 309,
+                            "rfFrontEndId": 515,
+                            "modDemodId": null
+                        }
+                    ]
+                }
+            ]
         },
-        admin: { admin: true },
-        csvData: [],
-      };
-      res.status(200).send(result);
-    });
-    this.router.post("/requestRelationship", async (req, res) => {
-      const { id } = req.body;
-      const result=[
-        {
-           id: 1,
-           platform_1:"Platform",
-           platform_1_id:1,
-           antenna_1: "Antenna 1",
-           antenna_1_id: 1,
-           rfFrontEnd_1:null,
-           rfFrontEnd_1_id:null,
-           modDemod_1:null,
-           modDemod_1_id:null,
-           platform_2:"Platform",
-           platform_2_id:1,
-           antenna_2: "Antenna 1",
-           antenna_2_id: 1,
-           rfFrontEnd_2:"RF Front End 1",
-           rfFrontEnd_2_id:1,
-           modDemod_2:null,
-           modDemod_2_id:null,
-           isconnected: true,
-           down:true, //if up then false    
-         },
-         {
-           id: 2,
-           platform_1:"Platform",
-           platform_1_id:1,
-           antenna_1: "Antenna 1",
-           antenna_1_id: 1,
-           rfFrontEnd_1:null,
-           rfFrontEnd_1_id:null,
-           modDemod_1:null,
-           modDemod_1_id:null,
-           platform_2:"Platform",
-           platform_2_id:1,
-           antenna_2: "Antenna 1",
-           antenna_2_id: 1,
-           rfFrontEnd_2:"RF Front End 2",
-           rfFrontEnd_2_id:2,
-           modDemod_2:null,
-           modDemod_2_id:null,
-           isconnected: true,
-           down:true, //if up then false
-          },
-         {
-           id: 3,
-           platform_1:"Platform",
-           platform_1_id:1,
-           antenna_1: "Antenna 1",
-           antenna_1_id: 1,
-           rfFrontEnd_1:"RF Front End 1",
-           rfFrontEnd_1_id:1,
-           modDemod_1:null,
-           modDemod_1_id:null,
-           platform_2:"Platform",
-           platform_2_id:1,
-           antenna_2: "Antenna 2",
-           antenna_2_id: 2,
-           rfFrontEnd_2:"RF Front End 3",
-           rfFrontEnd_2_id:3,
-           modDemod_2:null,
-           modDemod_2_id:null,
-           isconnected: true,
-           down:true, //if up then false
-          },
-          {
-           id: 4,
-           platform_1:"Platform",
-           platform_1_id:1,
-           antenna_1: "Antenna 1",
-           antenna_1_id: 1,
-           rfFrontEnd_1:"RF Front End 2",
-           rfFrontEnd_1_id: 2,
-           modDemod_1:null,
-           modDemod_1_id:null,
-           platform_2:"Platform",
-           platform_2_id: 1,
-           antenna_2: "Antenna 2",
-           antenna_2_id: 2,
-           rfFrontEnd_2:"RF Front End 3",
-           rfFrontEnd_2_id: 3,
-           modDemod_2:null,
-           modDemod_2_id:null,
-           isconnected: true,
-           down:true, //if up then false
-          },
-          {
-           id: 5,
-           platform_1:"Platform",
-           platform_1_id:1,
-           antenna_1: "Antenna 2",
-           antenna_1_id: 2,
-           rfFrontEnd_1:"RF Front End 3",
-           rfFrontEnd_1_id: 3,
-           modDemod_1:null,
-           modDemod_1_id:null,
-           platform_2:"Platform",
-           platform_2_id:1,
-           antenna_2: "Antenna 2",
-           antenna_2_id: 2,
-           rfFrontEnd_2:null,
-           rfFrontEnd_2_id:null,
-           modDemod_2:null,
-           modDemod_2_id:null,
-           isconnected: true,
-           down:false, //if up then false
-          },
-          {
-            id: 6,
-            platform_1:"Platform",
-            platform_1_id:1,
-            antenna_1: "Antenna 1",
-            antenna_1_id: 1,
-            rfFrontEnd_1:"RF Front End 1",
-            rfFrontEnd_1_id: 1,
-            modDemod_1:null,
-            modDemod_1_id:null,
-            platform_2:"Platform",
-            platform_2_id:1,
-            antenna_2: "Antenna 1",
-            antenna_2_id: 1,
-            rfFrontEnd_2: "RF Front End 1",
-            rfFrontEnd_2_id:1,
-            modDemod_2: "Mod/Demod 1",
-            modDemod_2_id: 1,
-            isconnected: true,
-            down:true, //if up then false
-           },
-           {
-            id: 7,
-            platform_1:"Platform",
-            platform_1_id:1,
-            antenna_1: "Antenna 1",
-            antenna_1_id: 1,
-            rfFrontEnd_1:"RF Front End 2",
-            rfFrontEnd_1_id: 2,
-            modDemod_1:null,
-            modDemod_1_id:null,
-            platform_2:"Platform",
-            platform_2_id:1,
-            antenna_2: "Antenna 1",
-            antenna_2_id: 1,
-            rfFrontEnd_2: "RF Front End 2",
-            rfFrontEnd_2_id:2,
-            modDemod_2: "Mod/Demod 2",
-            modDemod_2_id: 2,
-            isconnected: true,
-            down:true, //if up then false
-           },
-           {
-            id: 8,
-            platform_1:"Platform",
-            platform_1_id:1,
-            antenna_1: "Antenna 2",
-            antenna_1_id: 2,
-            rfFrontEnd_1:"RF Front End 3",
-            rfFrontEnd_1_id: 3,
-            modDemod_1: "Mod/Demod 3",
-            modDemod_1_id: 3,
-            platform_2:"Platform",
-            platform_2_id:1,
-            antenna_2: "Antenna 2",
-            antenna_2_id: 2,
-            rfFrontEnd_2: "RF Front End 3",
-            rfFrontEnd_2_id:3,
-            modDemod_2: null,
-            modDemod_2_id: null,
-            isconnected: true,
-            down:false, //if up then false
-           }
-     ];
+        "admin": {
+            "admin": true
+        },
+        "csvData": [
+            [
+                "Test Platform 1"
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Name",
+                "Test Platform 1",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Platform Type",
+                "1",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Reference Body",
+                "1",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Latitude (°)",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Longitude (°)",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Location",
+                "",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Site Altitude (m)",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Start of Operation (Year)",
+                "2023",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "End of Operation (Year)",
+                "2123",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Satellites per Plane",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Half Cone Angle",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Number of Shells",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Altitude of Shells (km)",
+                "30000",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Planes per Shell",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Plane Inclination (°)",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Station Overview",
+                null,
+                null,
+                "Plane Distribution",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Antenna Overview",
+                null,
+                "Name",
+                "Test Antenna 1",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Antenna Overview",
+                null,
+                "Antenna Size (m)",
+                "",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Antenna Overview",
+                null,
+                "Antenna Efficiency (%)",
+                "",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Antenna Overview",
+                null,
+                "Rx System Noise Temperature (K)",
+                "300",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Antenna Overview",
+                null,
+                "Polarization Type",
+                "3",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Antenna Overview",
+                null,
+                "Polarization Losses (dB)",
+                "3",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Antenna Overview",
+                null,
+                "Agreement",
+                "0",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Name",
+                "Test RF FrontEnd 1 (Rx)",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Start Frequency (MHz)",
+                "2000",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Stop Frequency (MHz)",
+                "4000",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Center Frequency (MHz)",
+                "2500",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Other Losses* (dB)",
+                "5",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Tx Power (dBW)",
+                "5",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Symbol Rate (ksps)",
+                "1000",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "BT product \r\n",
+                "5",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Bandwidth (MHz)",
+                "4000",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Antenna Gain (dBi)",
+                "5",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Antenna G/T (dB/K)",
+                "5",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Pointing Loss (dB)",
+                "5",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "Antenna Beamwidth (°)",
+                "45",
+                "",
+                ""
+            ],
+            [
+                "Test Antenna 1",
+                "Test RF FrontEnd 1 (Rx)",
+                null,
+                "EIRP (dBW)",
+                "10",
+                "",
+                ""
+            ],
+            []
+        ],
+        "isEditable": true
+    };
       res.status(200).send(result);
     });
     /**
@@ -4760,6 +5106,103 @@ export class Api {
       ];
       res.status(200).send(result);
     });
+    
+    this.router.get("/getAvailableCodingTypes", async (req, res) => {
+      const status = 200;
+      const result = [
+        {
+            "modulationId": 4
+        },
+        {
+            "modulationId": 5
+        },
+      ];
+      res.status(200).send(result);
+    });
+
+    this.router.get("/getAvailableModulations", async (req, res) => {
+      const status = 200;
+      const result = [
+        {
+            "codingRateId": 1
+        },
+        {
+            "codingRateId": 2
+        },
+      ];
+      res.status(200).send(result);
+    });
+
+    this.router.post("/requestRelationship", async(req, res) => {
+      const result = [
+        {
+            "id": 3177,
+            "isconnected": true,
+            "platform_src": "Test Platform 1",
+            "platform_src_id": 181,
+            "antenna_src": null,
+            "antenna_src_id": null,
+            "rfFrontEnd_src": null,
+            "rfFrontEnd_src_id": null,
+            "modDemod_src": null,
+            "modDemod_src_id": null,
+            "platform_dest": "Test Platform 1",
+            "platform_dest_id": 181,
+            "antenna_dest": "Test Antenna 1",
+            "antenna_dest_id": 309,
+            "rfFrontEnd_dest": null,
+            "rfFrontEnd_dest_id": null,
+            "modDemod_dest": null,
+            "modDemod_dest_id": null,
+            "down": true
+        },
+        {
+            "id": 3178,
+            "isconnected": true,
+            "platform_src": "Test Platform 1",
+            "platform_src_id": 181,
+            "antenna_src": "Test Antenna 1",
+            "antenna_src_id": 309,
+            "rfFrontEnd_src": null,
+            "rfFrontEnd_src_id": null,
+            "modDemod_src": null,
+            "modDemod_src_id": null,
+            "platform_dest": "Test Platform 1",
+            "platform_dest_id": 181,
+            "antenna_dest": null,
+            "antenna_dest_id": null,
+            "rfFrontEnd_dest": null,
+            "rfFrontEnd_dest_id": null,
+            "modDemod_dest": null,
+            "modDemod_dest_id": null,
+            "down": false
+        },
+        {
+            "id": 3179,
+            "isconnected": true,
+            "platform_src": "Test Platform 1",
+            "platform_src_id": 181,
+            "antenna_src": "Test Antenna 1",
+            "antenna_src_id": 309,
+            "rfFrontEnd_src": null,
+            "rfFrontEnd_src_id": null,
+            "modDemod_src": null,
+            "modDemod_src_id": null,
+            "platform_dest": "Test Platform 1",
+            "platform_dest_id": 181,
+            "antenna_dest": "Test Antenna 1",
+            "antenna_dest_id": 309,
+            "rfFrontEnd_dest": "S-band_1.b.iii",
+            "rfFrontEnd_dest_id": 515,
+            "modDemod_dest": null,
+            "modDemod_dest_id": null,
+            "down": true
+        }
+    ]
+
+      res.status(200).send(result);
+    });
+
     this.router.post("/createSystem", async (req, res) => {
       const { systemName, networkType } = req.body;
       const result = {};
