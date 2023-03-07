@@ -9,7 +9,6 @@ import useWindowSize, { useFullScreen } from "../../hooks/useSize";
 
 const useStyles = makeStyles<Theme>((theme) => ({
   root: {
-    textAlign: "center",
   },
 }))
 

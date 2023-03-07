@@ -84,6 +84,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     gap: "1px",
     border: "0px"
   },
+  noOutline: {
+    '& .MuiOutlinedInput-notchedOutline': {
+      border: '0px'
+    }
+  },
 }));
 
 const TimeFrame: FC<SpecificationsProps> = ({
@@ -396,130 +401,108 @@ const TimeFrame: FC<SpecificationsProps> = ({
   return (
     <div className={classes.root}>
       <Box p={2} className={classes.box}>
-            <Grid
-              container
-              justifyContent="flex-start"
-              alignItems="center" 
-              spacing={2}
-            >
-              <Grid item xs = {5}>
-                <Typography className= {classes.text}>
-                  Launch Date
-                </Typography>
-              </Grid>
-              <Grid item xs = {3} style = {{paddingRight: '5px'}}>
-                <FormControl variant="filled" size="small" fullWidth className={classes.select} >
-                  <Select
-                      name="launchMonth"
-                      variant="outlined"
-                      data-filter-network="true"
-                      value={launchMonth}
-                      color="primary"
-                      onChange={handleChange}
-                      disabled={result.loading}
-                      fullWidth
-                    >
-                       <MenuItem value={1}>{'Jan'}</MenuItem> 
-                       <MenuItem value={2}>{'Feb'}</MenuItem> 
-                       <MenuItem value={3}>{'Mar'}</MenuItem> 
-                       <MenuItem value={4}>{'Apr'}</MenuItem> 
-                       <MenuItem value={5}>{'May'}</MenuItem> 
-                       <MenuItem value={6}>{'June'}</MenuItem> 
-                       <MenuItem value={7}>{'July'}</MenuItem> 
-                       <MenuItem value={8}>{'Aug'}</MenuItem> 
-                       <MenuItem value={9}>{'Sept'}</MenuItem> 
-                       <MenuItem value={10}>{'Oct'}</MenuItem> 
-                       <MenuItem value={11}>{'Nov'}</MenuItem> 
-                       <MenuItem value={12}>{'Dec'}</MenuItem> 
-                    </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={4} style = {{paddingLeft: '5px'}}>
-                <TextField
-                  name="launchYear"
-                  value={launchYear}
-                  onBlur={handleChange}
-                  InputProps={{
-                    inputComponent: CustomNumberFormat,
-                    disableUnderline: true,
-                    inputProps: {
-                      className: classes.input,
-                      min: bounds.launchYear.min,
-                      max: bounds.launchYear.max
-                    }
-                  }}
-                  onKeyPress={(ev) => {
-                    if (ev.key === 'Enter') {
-                      handleChange(ev);
-                    }
-                  }}
-                  fullWidth
-                  disabled={result.loading}
-                />
-              </Grid>
-              <Grid item xs = {5}>
-                <Typography className= {classes.text}>
-                  {'Duration (Years)'}
-                </Typography>
-              </Grid>
-              <Grid item xs = {7}>
-                <TextField
-                  name="duration"
-                  value={missionDuration}
-                  //@ts-ignore
-                  onBlur={(ev) => {
-                    setMissionDuration(
-                      parseInt(ev.target.value.replaceAll(',', ''))
-                    );
-                  }}
-                  InputProps={{
-                    inputComponent: CustomNumberFormat,
-                    disableUnderline: true,
-                    inputProps: {
-                      className: classes.input,
-                      min: 0,
-                      max: 1000
-                    }
-                  }}
-                  onKeyPress={(ev) => {
-                    if (ev.key === 'Enter') {
-                      setMissionDuration(
-                        //@ts-ignore
-                        parseInt(ev.target.value.replaceAll(',', ''))
-                      );
-                    }
-                  }}
+        <Grid
+          container
+          justifyContent="flex-start"
+          alignItems="center" 
+          spacing={2}
+        >
+          <Grid item xs = {6}>
+            <Typography className= {classes.text}>
+              Launch Date
+            </Typography>
+          </Grid>
+          <Grid item xs = {3} style = {{paddingRight: '5px'}}>
+            <FormControl variant="filled" size="small" fullWidth className={classes.select} >
+              <Select
+                  name="launchMonth"
+                  variant="outlined"
+                  data-filter-network="true"
+                  value={launchMonth}
+                  color="primary"
+                  onChange={handleChange}
                   disabled={result.loading}
                   fullWidth
-                />
-              </Grid>
-            </Grid>
+                  className={classes.noOutline}
+                >
+                    <MenuItem value={1}>{'Jan'}</MenuItem> 
+                    <MenuItem value={2}>{'Feb'}</MenuItem> 
+                    <MenuItem value={3}>{'Mar'}</MenuItem> 
+                    <MenuItem value={4}>{'Apr'}</MenuItem> 
+                    <MenuItem value={5}>{'May'}</MenuItem> 
+                    <MenuItem value={6}>{'June'}</MenuItem> 
+                    <MenuItem value={7}>{'July'}</MenuItem> 
+                    <MenuItem value={8}>{'Aug'}</MenuItem> 
+                    <MenuItem value={9}>{'Sept'}</MenuItem> 
+                    <MenuItem value={10}>{'Oct'}</MenuItem> 
+                    <MenuItem value={11}>{'Nov'}</MenuItem> 
+                    <MenuItem value={12}>{'Dec'}</MenuItem> 
+                </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={3} style = {{paddingLeft: '5px'}}>
+            <TextField
+              name="launchYear"
+              value={launchYear}
+              onBlur={handleChange}
+              InputProps={{
+                inputComponent: CustomNumberFormat,
+                disableUnderline: true,
+                inputProps: {
+                  className: classes.input,
+                  min: bounds.launchYear.min,
+                  max: bounds.launchYear.max
+                }
+              }}
+              onKeyPress={(ev) => {
+                if (ev.key === 'Enter') {
+                  handleChange(ev);
+                }
+              }}
+              fullWidth
+              disabled={result.loading}
+            />
+          </Grid>
+          <Grid item xs = {6}>
+            <Typography className= {classes.text}>
+              {'Duration (Years)'}
+            </Typography>
+          </Grid>
+          <Grid item xs = {6}>
+            <TextField
+              name="duration"
+              value={missionDuration}
+              //@ts-ignore
+              onBlur={(ev) => {
+                setMissionDuration(
+                  parseInt(ev.target.value.replaceAll(',', ''))
+                );
+              }}
+              InputProps={{
+                inputComponent: CustomNumberFormat,
+                disableUnderline: true,
+                inputProps: {
+                  className: classes.input,
+                  min: 0,
+                  max: 1000
+                }
+              }}
+              onKeyPress={(ev) => {
+                if (ev.key === 'Enter') {
+                  setMissionDuration(
+                    //@ts-ignore
+                    parseInt(ev.target.value.replaceAll(',', ''))
+                  );
+                }
+              }}
+              disabled={result.loading}
+              fullWidth
+            />
+          </Grid>
+        </Grid>
       </Box>
     </div>
   );
 };
 
 export default TimeFrame;
-
-/* <Accordion
-          key={'specification'}
-          className={classes.interiorBox}
-          expanded={accordion[`specification-panel`] ?? false}
-        >
-          <AccordionSummary
-            id={`specification-panel`}
-            onClick={handleAccordion}
-          >
-            <Typography style={{ width: '100%', fontSize: '12pt' }}>
-              {`Mission Time Frame`}
-            </Typography>
-            {!Object.keys(accordion).includes(`specification-panel`) ||
-            !accordion[`specification-panel`] ? (
-              <KeyboardArrowDownIcon fontSize="small" />
-            ) : (
-              <KeyboardArrowUpIcon fontSize="small" />
-            )}
-          </AccordionSummary>
-          <AccordionDetails></AccordionDetails> */
-          // </AccordionDetails>
-          // </Accordion>

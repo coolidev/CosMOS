@@ -9,7 +9,8 @@ import {
   FormControl,
   Select,
   MenuItem,
-  Tooltip
+  Tooltip,
+  FormControlLabel
 } from '@material-ui/core';
 import type { ChangeProps } from 'src/pages/home/QuickAccess';
 import CustomNumberFormat from 'src/components/CustomNumberFormat';
@@ -115,6 +116,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '0px',
     gap: '1px',
     border: '0px'
+  },
+  noOutline: {
+    '& .MuiOutlinedInput-notchedOutline': {
+      border: '0px'
+    }
   },
   enhanceDropdown: {
     padding: 0,
@@ -607,88 +613,81 @@ const CommServicesDef: FC<ConstraintsProps> = ({
     <>
       <Box mx={1} className={classes.box}>
         <Grid container alignItems="center" spacing={2}>
-          <Grid item xs={1}>
-            <Radio
-              name={'upService'}
-              checked={false}
-              onChange={() => {}}
-              disabled={true}
-            />
-          </Grid>
-          <Grid item xs={5}>
+          <Grid item alignItems="stretch" xs={6}>
             <Tooltip
               title={
                 'Forward Links are not currently available in this version of CART'
               }
             >
-              <Typography
-                className={classes.text}
-                style={{ paddingLeft: '8px' }}
-              >
-                Up/Forward Service
-              </Typography>
+              <FormControlLabel
+                name={'upService'}
+                color="primary"
+                checked={false}
+                onChange={() => {}}
+                control={<Radio />}
+                label="Up/Forward Service"
+                disabled={true}
+                style={{ color: 'black' }}
+              />
             </Tooltip>
           </Grid>
-          <Grid item xs={1}>
-            <Radio
+          <Grid item alignItems="stretch" xs={6}>
+            <FormControlLabel
               name={'downService'}
+              color="primary"
               checked={true}
               onChange={() => {}}
+              control={<Radio />}
+              label="Down/Return Service"
               disabled={state.loading}
+              style={{ color: 'black' }}
             />
           </Grid>
-          <Grid item xs={5}>
-            <Typography className={classes.text} style={{ paddingLeft: '8px' }}>
-              Down/Return Service
-            </Typography>
-          </Grid>
-
-          <Grid item xs={1}>
-            <Radio
+          <Grid item alignItems="stretch" xs={6}>
+            <FormControlLabel
               name={'throughputFlag'}
+              color="primary"
               checked={throughputVolFlag}
-              onClick={() =>
-                handleClick({
-                  target: { name: 'throughputFlag', value: true }
-                })
-              }
+              control={<Radio
+                    onClick={() =>
+                      handleClick({
+                        target: { name: 'throughputFlag', value: true }
+                      })
+                    }
+                  />}
+              label="Data Volume"
               disabled={state.loading}
+              style={{ color: 'black' }}
             />
           </Grid>
-          <Grid item xs={5}>
-            <Typography className={classes.text} style={{ paddingLeft: '8px' }}>
-              Data Volume
-            </Typography>
-          </Grid>
-
-          <Grid item xs={1}>
-            <Radio
+          <Grid item alignItems="stretch" xs={6}>
+            <FormControlLabel
               name={'throughputFlag'}
+              color="primary"
               checked={!throughputVolFlag}
-              onClick={() =>
-                handleClick({
-                  target: { name: 'throughputFlag', value: false }
-                })
-              }
+              control={<Radio
+                    onClick={() =>
+                      handleClick({
+                        target: { name: 'throughputFlag', value: false }
+                      })
+                    }
+                  />}
+              label="Data Rate"
               disabled={state.loading}
+              style={{ color: 'black' }}
             />
-          </Grid>
-          <Grid item xs={5}>
-            <Typography className={classes.text} style={{ paddingLeft: '8px' }}>
-              Data Rate
-            </Typography>
           </Grid>
 
           {throughputVolFlag && (
             <>
-              <Grid item md={5}>
+              <Grid item md={6}>
                 <Tooltip title={TooltipList.dataVolume}>
                   <Typography className={classes.text}>
                     {'Data Volume (GB/day)'}
                   </Typography>
                 </Tooltip>
               </Grid>
-              <Grid item md={7}>
+              <Grid item md={6}>
                 <TextField
                   name="throughput"
                   //value={throughputVolFlag ? throughput / 8 : ''} //Convert Gb/day to GB/day
@@ -717,35 +716,18 @@ const CommServicesDef: FC<ConstraintsProps> = ({
                   style={{ marginRight: '10px' }}
                 />
               </Grid>
-              {/* <Grid item md={4}>
-          <FormControl variant="filled" size="small" fullWidth className = {classes.input}>
-            <Select
-              name="type"
-              variant="outlined"
-              data-filter-network="true"
-              value={'Per Day'}
-              defaultValue={'Per Day'}
-              color={'primary'}
-              disabled={state.loading}
-              renderValue={() => 'Per Day'}
-              fullWidth
-            >
-              <MenuItem value={0}>Per Day</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid> */}
             </>
           )}
           {!throughputVolFlag && (
             <>
-              <Grid item md={5}>
+              <Grid item md={6}>
                 <Tooltip title={TooltipList.data_Rate}>
                   <Typography className={classes.text}>
                     {'Data Rate (Mbps)'}
                   </Typography>
                 </Tooltip>
               </Grid>
-              <Grid item md={7}>
+              <Grid item md={6}>
                 <TextField
                   name="dataRateKbps"
                   // value={!throughputVolFlag ? dataRateMbps : ''}
@@ -778,50 +760,8 @@ const CommServicesDef: FC<ConstraintsProps> = ({
           <Grid item xs={12} />
           <Grid item xs={12} />
           <Grid item xs={12} />
-          {/* <Grid
-          container
-          justifyContent="flex-end"
-          alignItems="flex-end"
-          spacing={2}
-        >
-          <Grid item md={6}>
-            <Box mx={1}>
-              <Button
-                name="Coverage Metrics"
-                variant={'contained'}
-                color={'primary'}
-                style={{
-                  color:
-                    theme.name === THEMES.LIGHT
-                      ? '#fff'
-                      : theme.palette.text.primary,
-                  height: (window.screen.availHeight / zoom) * .035, 
-                  width: (window.screen.availHeight / zoom)* .16,
-                  float: 'right'
-                }}
-                className={classes.box}
-                onClick={() => {
-                  setPanelId(1)
-                }}
-                fullWidth
-              >
-                {`Coverage Metrics`}<ArrowRight/> 
-              </Button>
-            </Box>
-          </Grid>
-        </Grid> */}
-          {/* <Typography
-            variant="body1"
-            component="p"
-            color="textPrimary"
-            className={classes.header}
-      >
-            Service Constraints
-          </Typography>
-        </Grid> */}
-          {/* {state.radioButtonSelectionId === 0 ?  */}
           <>
-            <Grid item md={5}>
+            <Grid item md={6}>
               <Tooltip title={TooltipList.frequencyBand}>
                 <Typography className={classes.text}>
                   {'Frequency Band'}
@@ -829,7 +769,7 @@ const CommServicesDef: FC<ConstraintsProps> = ({
               </Tooltip>
             </Grid>
 
-            <Grid item md={7}>
+            <Grid item md={6}>
               <Autocomplete
                 options={filteredFreqBandList}
                 getOptionDisabled={(option) => option.disabled}
@@ -840,7 +780,7 @@ const CommServicesDef: FC<ConstraintsProps> = ({
                 color="primary"
                 size="small"
                 value={getFreqBandValue()}
-                className={`${classes.enhanceDropdown} ${
+                className={`${classes.enhanceDropdown} ${classes.noOutline} ${
                   freqBandSelection !== -1 && classes.selectedEnhanceDropdown
                 }`}
                 forcePopupIcon={freqBandSelection !== -1 ? false : true}
@@ -860,90 +800,14 @@ const CommServicesDef: FC<ConstraintsProps> = ({
             </Grid>
           </>
 
-          {/* //   : 
-      //   <>
-      //     <Grid item md={5}>
-      //       <Tooltip title={TooltipList.frequencyBand}>
-      //         <Typography
-      //           className = {classes.text}
-      //         >
-      //           {'Frequency Band'}
-      //         </Typography>
-      //       </Tooltip>
-      //     </Grid>
-      //     <Grid item md={7}>
-      //       <FormControl variant="filled" size="small" className={classes.select} fullWidth>
-      //         <Select
-      //           name="frequencyBand"
-      //           variant="outlined"
-      //           data-filter-network="true"
-      //           value={state.selectedItems.find(
-      //               (item) => item.id === state.radioButtonSelectionId
-      //             )?.frequencyBandId ?? 0
-      //           }
-      //           color="primary"
-      //           onChange={handleOption}
-      //           //style={{ textAlign: 'center' }}
-      //           disabled={state.loading}
-      //           fullWidth
-      //         >
-      //           <MenuItem value={0}>---</MenuItem>
-      //           {frequencyBands.map((item) => (
-      //             <MenuItem value={item.id} key={item.id}>
-      //               {item.name}
-      //             </MenuItem>
-      //           ))} 
-      //         </Select>
-      //       </FormControl>
-      //     </Grid>
-      //   </>
-      //   // <>
-      //   // <Grid item md={4}>
-      //   //   <Typography variant="body1" component="p">
-      //   //     Frequency Band
-      //   //   </Typography>
-      //   // </Grid>
-      //   // <Grid item md={8}>
-      //   //   <FormControl variant="outlined" size="small" fullWidth>
-      //   //     <Select
-      //   //       name="frequencyBand"
-      //   //       variant="outlined"
-      //   //       color="primary"
-      //   //       value={
-      //   //         state.selectedItems.find(
-      //   //           (item) => item.id === state.radioButtonSelectionId
-      //   //         )?.frequencyBandId ?? 0
-      //   //       }
-      //   //       onChange={handleOption}
-      //   //       disabled={
-      //   //         state.radioButtonSelectionId === 0 ||
-      //   //         //state.networkType === 'relay' ||
-      //   //         state.loading
-      //   //       }
-      //   //       className={classes.select}
-      //   //       fullWidth
-      //   //     > 
-      //   //        <MenuItem value={0} disabled>
-      //   //         None
-      //   //       </MenuItem> 
-      //   //        {frequencyBands.map((item) => (
-      //   //         <MenuItem value={item.id} key={item.id}>
-      //   //           {item.name}
-      //   //         </MenuItem>
-      //   //       ))} 
-      //   //     </Select>
-      //   //   </FormControl>
-      //   // </Grid>
-      //   // </>
-      // } */}
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.centerFrequency}>
               <Typography className={classes.text}>
                 {'Center Frequency (MHz)'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             {state.radioButtonSelectionId === 0 ||
             state.networkType === 'relay' ? (
               <TextField
@@ -990,14 +854,14 @@ const CommServicesDef: FC<ConstraintsProps> = ({
               />
             )}
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.standardsCompliance}>
               <Typography className={classes.text}>
                 {'Standards Compliance'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <FormControl
               variant="filled"
               size="small"
@@ -1005,6 +869,7 @@ const CommServicesDef: FC<ConstraintsProps> = ({
               className={classes.select}
             >
               <Select
+                className={classes.noOutline}
                 name="standardsCompliance"
                 variant="outlined"
                 data-filter-network="true"
@@ -1024,40 +889,6 @@ const CommServicesDef: FC<ConstraintsProps> = ({
             </FormControl>
           </Grid>
           <Grid item sm={12} />
-          {/* <Grid
-          container
-          justifyContent="flex-end"
-          alignItems="flex-end"
-          spacing={2}
-          
-        >
-          <Grid item md={9}>
-            <Box mx={1}>
-              <Button
-                name="Comms Payload Specs"
-                variant={'contained'}
-                color={'primary'}
-                style={{
-                  color:
-                    theme.name === THEMES.LIGHT
-                      ? '#fff'
-                      : theme.palette.text.primary,
-                  height: (window.screen.availHeight / zoom) * .035, 
-                  width: (window.screen.availHeight / zoom)* .25,
-                  float: 'right'
-                }}
-                className={classes.box}
-                onClick={() => {
-                  setPanelId(2)
-                }}
-                size="small"
-                fullWidth
-              >
-                {` Comms Payload Specifications`}<ArrowRight/> 
-              </Button>
-            </Box>
-          </Grid>
-        </Grid> */}
         </Grid>
       </Box>
     </>
@@ -1065,64 +896,3 @@ const CommServicesDef: FC<ConstraintsProps> = ({
 };
 
 export default CommServicesDef;
-
-// <div className={classes.root}>
-// <Box p={2} className={classes.box}>
-// <Accordion
-//   key={'constraints'}
-//   className={classes.interiorBox}
-//   expanded={accordion[`constraints-panel`] ?? false}
-// >
-//   <AccordionSummary
-//     id={`constraints-panel`}
-//     onClick={handleAccordion}
-//   >
-//     <Typography style={{ width: '100%', fontSize: '12pt' }}>
-//       {`Communications Services Definition`}
-//     </Typography>
-//     {!Object.keys(accordion).includes(`constraints-panel`) ||
-//     !accordion[`constraints-panel`] ? (
-//       <KeyboardArrowDownIcon fontSize="small" />
-//     ) : (
-//       <KeyboardArrowUpIcon fontSize="small" />
-//     )}
-//   </AccordionSummary>
-//   <AccordionDetails>
-//     <Grid item md={12}>
-//       <Carousel
-//         autoPlay={false}
-//         animation="slide"
-//         fullHeightHover={false}
-//         index={carouselId}
-//         className={classes.root}
-//         indicators={false}
-//         swipe={false}
-//         navButtonsAlwaysInvisible={true}
-//       >
-//         <>
-//         <Box mx={1}>
-//           {
-//             panelId === 1?
-//             <CoverageMetricsDialog
-//               state = {state}
-//               onState = {onState}
-//               bounds = {bounds}
-//               onChange = {onChange}
-//               close = {() => setPanelId(0)}
-//             />:panelId === 2?
-//             <CommsPayloadSpecDialog
-//               state = {state}
-//               onState = {onState}
-//               bounds = {bounds}
-//               onChange = {onChange}
-//               close = {() => setPanelId(0)}
-//               refresh = {refresh}
-//             />:null
-//           }</Box>
-//         </>
-//           </Carousel>
-//         </Grid>
-//       </AccordionDetails>
-//     </Accordion>
-//   </Box>
-// </div>

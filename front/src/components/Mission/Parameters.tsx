@@ -16,7 +16,9 @@ import {
   DialogContentText,
   DialogTitle,
   Tooltip,
-  Radio
+  Radio,
+  RadioGroup,
+  FormControlLabel
 } from '@material-ui/core';
 import type { Parameter } from 'src/types/preference';
 import CustomNumberFormat from 'src/components/CustomNumberFormat';
@@ -113,7 +115,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   disabledInput: {
     textAlign: 'left',
     borderRadius: 6,
-    border: `1px solid grey`,
+    border: `#eeeeee solid grey`,
     backgroundColor:
       theme.name !== THEMES.DARK
         ? theme.palette.grey[200]
@@ -131,6 +133,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '0px',
     gap: '1px',
     border: '0px'
+  },
+  noOutline: {
+    '& .MuiOutlinedInput-notchedOutline': {
+      border: '0px'
+    }
   },
   text: {
     color: `${theme.palette.text.primary} !important`,
@@ -520,14 +527,14 @@ const Parameters: FC<ParametersProps> = ({
       panel = (
         <Grid container alignItems="center" spacing={2}>
           <Grid item sm={12} />
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.altitude}>
               <Typography className={classes.text}>
                 {'Altitude (km)'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name="altitude"
               value={parameters.altitude}
@@ -550,14 +557,14 @@ const Parameters: FC<ParametersProps> = ({
               disabled={state.loading}
             />
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.inclination}>
               <Typography className={classes.text}>
                 {'Inclination (deg)  '}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name={'inclination'}
               value={parameters.inclination}
@@ -580,12 +587,12 @@ const Parameters: FC<ParametersProps> = ({
               disabled={state.loading}
             />
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.RAAN}>
               <Typography className={classes.text}>{'RAAN (deg)'}</Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name={'raan'}
               value={parameters.raan}
@@ -616,14 +623,14 @@ const Parameters: FC<ParametersProps> = ({
       panel = (
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
           <Grid item sm={12} />
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.semiMajorAxis}>
               <Typography className={classes.text}>
                 {'Semimajor Axis (km)'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name="semiMajorAxis"
               value={semiMajorAxis}
@@ -646,12 +653,12 @@ const Parameters: FC<ParametersProps> = ({
               disabled={state.loading}
             />
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.eccentricity}>
               <Typography className={classes.text}>{'Eccentricity'}</Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name={'eccentricity'}
               value={parameters.eccentricity}
@@ -674,14 +681,14 @@ const Parameters: FC<ParametersProps> = ({
               disabled={state.loading}
             />
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.inclination}>
               <Typography className={classes.text}>
                 {'Inclination (deg)'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name={'inclination'}
               value={parameters.inclination}
@@ -704,14 +711,14 @@ const Parameters: FC<ParametersProps> = ({
               disabled={state.loading}
             />
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.argumentOfPerigee}>
               <Typography className={classes.text}>
                 {'Argument of Perigee (deg)'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name={'argumentOfPerigee'}
               value={parameters.argumentOfPerigee}
@@ -734,12 +741,12 @@ const Parameters: FC<ParametersProps> = ({
               disabled={state.loading}
             />
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.RAAN}>
               <Typography className={classes.text}>{'RAAN (deg)'}</Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name={'raan'}
               value={parameters.raan}
@@ -762,14 +769,14 @@ const Parameters: FC<ParametersProps> = ({
               disabled={state.loading}
             />
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.trueAnomaly}>
               <Typography className={classes.text}>
                 {'True Anomaly (deg)'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name={'trueAnomaly'}
               value={parameters.trueAnomaly}
@@ -800,16 +807,16 @@ const Parameters: FC<ParametersProps> = ({
       panel = (
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
           <Grid item sm={12} />
-          <Grid item md={5}>
-            <Box ml={2}>
+          <Grid item md={6}>
+            {/* <Box ml={2}> */}
               <Tooltip title={TooltipList.LTAN}>
                 <Typography className={classes.text}>
                   {'LTAN (hh:mm)'}
                 </Typography>
               </Tooltip>
-            </Box>
+            {/* </Box> */}
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name={'ltan'}
               value={ltanLocal}
@@ -832,42 +839,32 @@ const Parameters: FC<ParametersProps> = ({
               disabled={state.loading}
             />
           </Grid>
-          <Grid item md={1}>
-            <Box>
-              <Radio
+          <Grid item alignItems="stretch" xs={6}>
+            <Tooltip
+              title={
+                TooltipList.altitude +
+                '. The sun-sync altitude is limited at 5,975 km.'
+              }
+            >
+              <FormControlLabel
                 name="sunSyncAlt"
-                size="small"
-                style={{ verticalAlign: 'center' }}
-                // ????? Double negate is REQUIRED ??????
+                color="primary"
                 checked={!!state.parameters.sunSyncUseAlt}
-                onChange={(e) => {
-                  onState('parameters', {
-                    ...state.parameters,
-                    sunSyncUseAlt: e.target.checked
-                  });
-                }}
+                control={<Radio size="small"
+                    onChange={(e) => {
+                      onState('parameters', {
+                        ...state.parameters,
+                        sunSyncUseAlt: e.target.checked
+                      });
+                    }}
+                  />}
+                label="Altitude (km)"
                 disabled={state.loading}
+                style={{ color: 'black' }}
               />
-            </Box>
+            </Tooltip>
           </Grid>
-          <Grid item md={4}>
-            <Box>
-              <Tooltip
-                title={
-                  TooltipList.altitude +
-                  '. The sun-sync altitude is limited at 5,975 km.'
-                }
-              >
-                <Typography
-                  className={classes.text}
-                  style={{ paddingLeft: '5px' }}
-                >
-                  {`Altitude (km)`}
-                </Typography>
-              </Tooltip>
-            </Box>
-          </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <Box width={'100%'}>
               <TextField
                 name="altitude"
@@ -894,39 +891,32 @@ const Parameters: FC<ParametersProps> = ({
               />
             </Box>
           </Grid>
-          <Grid item md={1}>
-            <Radio
-              name="synSyncInc"
-              size="small"
-              style={{ verticalAlign: 'center' }}
-              checked={!state.parameters.sunSyncUseAlt}
-              onChange={(e) => {
-                onState('parameters', {
-                  ...state.parameters,
-                  sunSyncUseAlt: !e.target.checked
-                });
-              }}
-              disabled={state.loading}
-            />
+          <Grid item alignItems="stretch" xs={6}>
+            <Tooltip
+              title={
+                TooltipList.inclination +
+                '. The sun-sync inclination is limited at 180 deg.'
+              }
+            >
+              <FormControlLabel
+                name="synSyncInc"
+                color="primary"
+                checked={!state.parameters.sunSyncUseAlt}
+                control={<Radio size="small"
+                    onChange={(e) => {
+                      onState('parameters', {
+                        ...state.parameters,
+                        sunSyncUseAlt: !e.target.checked
+                      });
+                    }}
+                  />}
+                label="Inclination (deg)"
+                disabled={state.loading}
+                style={{ color: 'black' }}
+              />
+            </Tooltip>
           </Grid>
-          <Grid item md={4}>
-            <Box ml={1}>
-              <Tooltip
-                title={
-                  TooltipList.inclination +
-                  '. The sun-sync inclination is limited at 180 deg.'
-                }
-              >
-                <Typography
-                  className={classes.text}
-                  style={{ paddingLeft: '5px' }}
-                >
-                  {`Inclination (deg) `}
-                </Typography>
-              </Tooltip>
-            </Box>
-          </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <TextField
               name={'inclination'}
               value={parameters.inclination}
@@ -1007,40 +997,30 @@ const Parameters: FC<ParametersProps> = ({
               Terrestrial
             </Button>
           </Grid> */}
-          <Grid item xs={1}>
-            <Radio
+          <Grid item alignItems="stretch" xs={6}>
+            <FormControlLabel
               name={'orbital'}
+              value="Orbital"
+              color="primary"
               checked={currentTab === 'orbital'}
               onChange={handleCurrentTab}
+              control={<Radio />}
+              label="Orbital"
+              style={{ color: 'black' }}
             />
           </Grid>
-          <Grid item xs={5}>
-            <Typography
-              className={classes.text}
-              style={{ paddingLeft: '8px', marginTop: '14px' }}
-            >
-              Orbital
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Radio
+          <Grid item alignItems="stretch" xs={6}>
+            <FormControlLabel
               name={'terrestrial'}
+              value="Orbital"
+              color="primary"
               checked={currentTab === 'terrestrial'}
               onChange={handleCurrentTab}
+              control={<Radio />}
+              label="Terrestrial"
               disabled={state.networkType === 'dte'}
+              style={{ color: 'black' }}
             />
-          </Grid>
-          <Grid item xs={5}>
-            <Typography
-              className={
-                state.networkType === 'dte'
-                  ? classes.disabledText
-                  : classes.text
-              }
-              style={{ paddingLeft: '8px', marginTop: '14px' }}
-            >
-              Terrestrial
-            </Typography>
           </Grid>
         </Grid>
 
@@ -1053,12 +1033,12 @@ const Parameters: FC<ParametersProps> = ({
         >
           {currentTab === 'orbital' ? (
             <Grid container alignItems="center" spacing={2}>
-              <Grid item md={5}>
+              <Grid item md={6}>
                 <Typography className={classes.text}>
                   Orbital Options
                 </Typography>
               </Grid>
-              <Grid item md={7}>
+              <Grid item md={6}>
                 <FormControl
                   variant="filled"
                   size="small"
@@ -1071,6 +1051,7 @@ const Parameters: FC<ParametersProps> = ({
                     data-filter-network="true"
                     value={currentSelection}
                     color="primary"
+                    className={classes.noOutline}
                     onChange={(e) => {
                       const { value } = e.target;
                       setCurrentSelection(value as number);
@@ -1095,12 +1076,12 @@ const Parameters: FC<ParametersProps> = ({
               alignItems="center"
               spacing={2}
             >
-              <Grid item md={5}>
+              <Grid item md={6}>
                 <Typography className={classes.text}>
                   {'Latitude (deg)'}
                 </Typography>
               </Grid>
-              <Grid item md={7}>
+              <Grid item md={6}>
                 <TextField
                   name="latitude"
                   value={parameters.latitude}
@@ -1123,12 +1104,12 @@ const Parameters: FC<ParametersProps> = ({
                   disabled={state.loading}
                 />
               </Grid>
-              <Grid item md={5}>
+              <Grid item md={6}>
                 <Typography className={classes.text}>
                   {'Longitude (deg)'}
                 </Typography>
               </Grid>
-              <Grid item md={7}>
+              <Grid item md={6}>
                 <TextField
                   name={'longitude'}
                   value={parameters.longitude}

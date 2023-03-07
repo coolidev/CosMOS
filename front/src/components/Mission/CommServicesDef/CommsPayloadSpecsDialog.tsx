@@ -12,6 +12,8 @@ import {
   Tooltip,
   Box,
   InputAdornment,
+  Input,
+  OutlinedInput,
 } from '@material-ui/core';
 import { FC, useEffect, useState } from 'react';
 import CustomNumberFormat from 'src/components/CustomNumberFormat';
@@ -112,6 +114,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: "0px",
     gap: "1px",
     border: "0px"
+  },
+  noOutline: {
+    '& .MuiOutlinedInput-notchedOutline': {
+      border: '0px'
+    }
   },
   header: {
     fontWeight: 'bold'
@@ -1114,132 +1121,104 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
         spacing={2}
         style={{ paddingTop: '10px' }}
       >
-            {/* <Grid item md={12}>
-              <Typography
-                variant="body1"
-                component="p"
-                color="textPrimary"
-                className={classes.header}
-              >
-                User System
-              </Typography>
-            </Grid> */}
-            {/* <Grid item md={1}>
-              <Radio
-                name="checkedShow"
-                size="small"
-                checked={
-                  !state.commsSpecs.commsPayloadSpecs.gainOn &&
-                  !state.commsSpecs.commsPayloadSpecs.minEIRPFlag
-                }
-                onChange={() => {
-                  onState('commsSpecs', {
-                    ...state.commsSpecs,
-                    commsPayloadSpecs: {
-                      ...state.commsSpecs.commsPayloadSpecs,
-                      gainOn: !state.commsSpecs.commsPayloadSpecs.gainOn
-                    }
-                  });
-                }}
-                disabled={state.commsSpecs.commsPayloadSpecs.minEIRPFlag || state.loading}
-              />
-            </Grid> */}
-            <Grid item md={5}>
-              <Tooltip title={TooltipList.EIRP}>
-                <Typography
-                  className={classes.text}
-                >
-                  {'EIRP (dBW)'}
-                </Typography>
-              </Tooltip>
-            </Grid>
-            <Grid item md={7}>
-              <TextField
-                name="eirp"
-                value={isNull(eirpVal) || isNaN(eirpVal)?'':eirpVal}
-                onBlur={(ev) => ev.target.value.length>0 && ev.target.value !== '' ? (!state.isDataLoaded?setEirpVal(parseFloat(ev.target.value)): null): (!state.isDataLoaded?setEirpVal(null):null)}
-                fullWidth
-                placeholder={isNull(eirpVal) || isNaN(eirpVal) ? "Calculated": ""}
-                InputProps={{
-                  inputComponent: CustomNumberFormat,
-                  disableUnderline: true,
-                  inputProps: {
-                    className: classes.input,
-                    min: -999999,
-                    max: 999999
-                  },
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <Tooltip
-                        title={'EIRP Calculator'}
-                        placement="top-start"
-                        classes={{ tooltip: classes.tooltip }}
+        <Grid item md={6}>
+          <Tooltip title={TooltipList.EIRP}>
+            <Typography
+              className={classes.text}
+            >
+              {'EIRP (dBW)'}
+            </Typography>
+          </Tooltip>
+        </Grid>
+        <Grid item md={6}>
+          <FormControl variant='filled' className={classes.input}>
+            <TextField
+              name="eirp"
+              value={isNull(eirpVal) || isNaN(eirpVal)?'':eirpVal}
+              onBlur={(ev) => ev.target.value.length>0 && ev.target.value !== '' ? (!state.isDataLoaded?setEirpVal(parseFloat(ev.target.value)): null): (!state.isDataLoaded?setEirpVal(null):null)}
+              fullWidth
+              placeholder={isNull(eirpVal) || isNaN(eirpVal) ? "Calculated": ""}
+              InputProps={{
+                inputComponent: CustomNumberFormat,
+                disableUnderline: true,
+                inputProps: {
+                  // className: classes.input,
+                  min: -999999,
+                  max: 999999
+                },
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <Tooltip
+                      title={'EIRP Calculator'}
+                      placement="top-start"
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                      <IconButton
+                        size="small"
+                        onClick={() => setEirpCalc(true)}
+                        disabled={
+                          state.loading
+                        }
                       >
-                        <IconButton
-                          size="small"
-                          onClick={() => setEirpCalc(true)}
-                          disabled={
-                            state.loading
-                          }
+                        <Icon
+                          style={{
+                            textAlign: 'center',
+                            overflow: 'visible'
+                          }}
                         >
-                          <Icon
+                          <img
+                            alt="calculate"
+                            src="/static/icons/calculator.svg"
                             style={{
-                              textAlign: 'center',
-                              overflow: 'visible'
+                              height: (window.screen.availHeight / zoom) * 0.032,
+                              paddingBottom: '12px',
                             }}
-                          >
-                            <img
-                              alt="calculate"
-                              src="/static/icons/calculator.svg"
-                              style={{
-                                height: (window.screen.availHeight / zoom) * 0.032,
-                                paddingBottom: '12px',
-                              }}
-                            />
-                          </Icon>
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  )
-                }}
-                disabled={
-                  state.loading
-                }
-              />
-            </Grid>
+                          />
+                        </Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                )
+              }}
+              disabled={
+                state.loading
+              }
+            />
+          </FormControl>
+        </Grid>
 
-        <Grid item md={5}>
+        <Grid item md={6}>
           <Tooltip title={TooltipList.polarizationType}>
             <Typography className={classes.text}>
               {'Polarization Type'}
             </Typography>
           </Tooltip>
         </Grid>
-        <Grid item md={7}>
+        <Grid item md={6}>
           <Autocomplete
-              options={polarizationOptions}
-              getOptionDisabled = {(option) => option.disabled}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => <TextField {...params} placeholder="---" variant="outlined"/>}
-              color="primary"
-              size='small'
-              value={getPolarizationValue()}
-              className={`${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.polarizationType !== -2 && classes.selectedEnhanceDropdown}`}
-              forcePopupIcon={state.commsSpecs.commsPayloadSpecs.polarizationType !== -2 ? false : true}
-              style={{ textAlign: 'center' }}
-              //@ts-ignore
-              onChange={(e, newVal)=>{handleClick({target: {name: "polarizationType", value: (newVal? newVal.id : -1)}})}}
-              openOnFocus={true}
-            />
+            options={polarizationOptions}
+            getOptionDisabled = {(option) => option.disabled}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => <TextField {...params} placeholder="---" variant="outlined"/>}
+            color="primary"
+            size='small'
+            value={getPolarizationValue()}
+            className={`${classes.noOutline} ${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.polarizationType !== -2 && classes.selectedEnhanceDropdown}`}
+            forcePopupIcon={state.commsSpecs.commsPayloadSpecs.polarizationType !== -2 ? false : true}
+            style={{ textAlign: 'center' }}
+            //@ts-ignore
+            onChange={(e, newVal)=>{handleClick({target: {name: "polarizationType", value: (newVal? newVal.id : -1)}})}}
+            openOnFocus={true}
+          />
         </Grid>
-        <Grid item md={5}>
+        <Grid item md={6}>
           <Tooltip title={TooltipList.polarizationLoss}>
             <Typography className = {classes.text}>
               {'Polarization Loss (dB)'}
             </Typography>
           </Tooltip>
         </Grid>
-        <Grid item md={7}>
+        <Grid item md={6}>
           <TextField
             name="polarizationLoss"
             value={state.commsSpecs.commsPayloadSpecs.polarizationLoss}
@@ -1262,7 +1241,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
             }}
           />
         </Grid>
-        <Grid item md={5}>
+        <Grid item md={6}>
           <Tooltip title={TooltipList.pointingLoss}>
             <Typography className = {classes.text}>
               {'Pointing Loss (dB)'}
@@ -1270,7 +1249,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
           </Tooltip>
           <Typography color="textSecondary"></Typography>
         </Grid>
-        <Grid item md={7}>
+        <Grid item md={6}>
           <TextField
             name="pointingLoss"
             value={state.commsSpecs.commsPayloadSpecs.pointingLoss}
@@ -1293,14 +1272,14 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
             }}
           />
         </Grid>
-        <Grid item md={5}>
+        <Grid item md={6}>
           <Tooltip title={TooltipList.otherLosses}>
             <Typography className = {classes.text}>
               {'Other Losses (dB)'}
             </Typography>
           </Tooltip>
         </Grid>
-        <Grid item md={7}>
+        <Grid item md={6}>
           <TextField
             name="otherLoss"
             value={state.commsSpecs.commsPayloadSpecs.otherLoss}
@@ -1326,14 +1305,14 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
         {/* {state.selectedItems.length <= 0 
         ?*/}
          <> 
-         <Grid item md={5}>
+         <Grid item md={6}>
             <Tooltip title={TooltipList.modulation}>
               <Typography className = {classes.text}>
                 {'Modulation'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <Autocomplete
               options={filteredModList}
               getOptionDisabled = {(option) => option.disabled}
@@ -1342,7 +1321,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
               color="primary"
               size='small'
               value={getModulationValue()}
-              className={`${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.modulation !== -2 && classes.selectedEnhanceDropdown}`}
+              className={`${classes.noOutline} ${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.modulation !== -2 && classes.selectedEnhanceDropdown}`}
               forcePopupIcon={state.commsSpecs.commsPayloadSpecs.modulation !== -2 ? false : true}
               style={{ textAlign: 'center' }}
               //@ts-ignore
@@ -1350,16 +1329,17 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
               openOnFocus={true}
             />
           </Grid>
-         <Grid item md={5}>
+         <Grid item md={6}>
             <Tooltip title={TooltipList.coding}>
               <Typography className = {classes.text}>
                 {'Coding Type'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <FormControl variant="filled" size="small" fullWidth className={classes.select}>
               <Select
+                className={`${classes.noOutline}`}
                 name="codingType"
                 variant="outlined"
                 data-filter-network="true"
@@ -1375,14 +1355,14 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={6}>
             <Tooltip title={TooltipList.coding}>
               <Typography className = {classes.text}>
                 {'Coding Rate'}
               </Typography>
             </Tooltip>
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={6}>
             <Autocomplete
               options={filteredCodingOptions}
               getOptionDisabled = {(option) => option.disabled}
@@ -1391,7 +1371,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
               color="primary"
               size='small'
               value={getCodingRateValue()}
-              className={`${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.coding !== -2 && classes.selectedEnhanceDropdown}`}
+              className={`${classes.noOutline} ${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.coding !== -2 && classes.selectedEnhanceDropdown}`}
               forcePopupIcon={state.commsSpecs.commsPayloadSpecs.coding !== -2 ? false : true}
               style={{ textAlign: 'center' }}
               //@ts-ignore

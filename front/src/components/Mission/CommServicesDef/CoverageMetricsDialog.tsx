@@ -102,14 +102,14 @@ const CoverageMetricsDialog: FC<CoverageMetricsDialogProps> = ({ state, onState,
     return (
       <Box className = {classes.box}>
         <Grid container alignItems="center" spacing={2}>
-        <Grid item md={8}>
+        <Grid item md={9}>
          <Tooltip title= {TooltipList.meanNumberOfContactsPerOrbit}>
             <Typography className={classes.text}>
               {'Avg. Number of Contacts Per Orbit'}
             </Typography>
           </Tooltip>
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={3}>
             <TextField
               name="meanNumContacts"
               value={state.commsSpecs.coverageMetrics.meanNumContacts}
@@ -131,14 +131,14 @@ const CoverageMetricsDialog: FC<CoverageMetricsDialogProps> = ({ state, onState,
               }}
             />
           </Grid>
-         <Grid item md={8}>
+         <Grid item md={9}>
          <Tooltip title= {TooltipList.meanRFContactDuration}>
             <Typography className={classes.text}>
               {'Avg. RF Contact Duration (min)'}
             </Typography>
           </Tooltip>
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={3}>
             <TextField
               name="meanContactDur"
               value={state.commsSpecs.coverageMetrics.meanContactDur}
@@ -189,14 +189,14 @@ const CoverageMetricsDialog: FC<CoverageMetricsDialogProps> = ({ state, onState,
               }}
             />
           </Grid> */}
-         <Grid item md={8}>
+         <Grid item md={9}>
          <Tooltip title= {TooltipList.maxGap}>
             <Typography className={classes.text}>
               {'Max Gap Duration (min)'}
             </Typography>
           </Tooltip>
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={3}>
             <TextField
               name="tolerableGap"
               value={state.specifications.tolerableGap}
