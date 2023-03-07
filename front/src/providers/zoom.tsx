@@ -1,5 +1,6 @@
 // Libraries
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { round } from "lodash";
 
 const initial = {
   zoom: 1,
@@ -9,10 +10,10 @@ const initial = {
 export const ZoomContext = React.createContext(initial);
 
 const ZoomContextProvider = ({ children }: any) => {
-  const [zoom, setZoom] = useState(1)
-
+  const [zoom, setZoom] = useState(1);
   const selectZoom = () => {
-    setZoom(window.devicePixelRatio);
+    const defaultScale = round(window.innerWidth / (window.screen.width / window.devicePixelRatio), 2)
+    setZoom(window.devicePixelRatio / defaultScale);
   }
 
   return (
