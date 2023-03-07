@@ -501,7 +501,7 @@ const Header: FC<HeaderProps> = ({
       <Toolbar className={classes.toolbar}>
         <Box display="flex" alignItems="center" width="100%">
           <IconButton
-            style={{ color: theme.palette.border.main }}
+            style={{ color: theme.palette.border.main, cursor: 'pointer' }}
             size="small"
             onClick={() => onOpen()}
           >
@@ -509,8 +509,11 @@ const Header: FC<HeaderProps> = ({
               <MenuIcon />
             </SvgIcon>
           </IconButton>
-          <Box>
-            <Link to="/" className={classes.link}>
+          <Box
+            style={{ cursor: 'pointer' }}
+            onClick={() => onOpen()}
+          >
+            {/* <Link to="/" className={classes.link}> */}
               <Typography
                 variant="h5"
                 className={classes.title}
@@ -527,7 +530,7 @@ const Header: FC<HeaderProps> = ({
               >
          
               </Typography>
-            </Link>
+            {/* </Link> */}
           </Box>
           <Box ml={3} flexGrow={1.4} />
           <Box>

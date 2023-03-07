@@ -11,7 +11,9 @@ import {
   makeStyles,
   IconButton,
   SvgIcon,
-  useTheme
+  useTheme,
+  Typography,
+  Grid
 } from '@material-ui/core';
 import {
   NewProject,
@@ -26,6 +28,7 @@ import { THEMES } from 'src/utils/constants/general';
 import { useSelector } from 'src/store';
 import StationLibrary from './Network/StationLibrary';
 import DialogBox from 'src/components/DialogBox';
+import { Close } from '@material-ui/icons';
 
 interface NavBarProps {
   onClose: () => void;
@@ -116,12 +119,34 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: '10px'
   },
   header: {
-    marginRight: 'auto',
-    marginLeft: '10px',
-    fontWeight: 'bold'
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "left",
+    padding: "5px",
+    paddingLeft: '1rem',
+    gap: "1px",
+
+    background: "#E34747",
+    boxShadow: "0px 4px 14px rgba(0, 0, 0, 0.1)",
+    borderRadius: "8px 8px 0px 0px",
+
+    textAlign: 'left',
+    fontFamily: 'Roboto',
+    fontStyle: "normal",
+    fontSize: "24px",
+    color: "white",
   },
-  menuButton: {
-    margin: '2vh .6vw'
+  subtitle: {
+    fontFamily: 'Roboto',
+    fontStyle: "normal",
+    fontSize: "21px",
+    lineHeight: "25px",
+    display: "flex",
+    alignItems: "center",
+    color: theme.palette.border.main,
+    paddingTop: '1rem',
+    paddingLeft: '.5vw',
+    borderBottom: `4px solid ${theme.palette.border.main}`,
   },
   sectionTitle: {
     marginRight: 'auto',
@@ -189,24 +214,41 @@ const NavBar: FC<NavBarProps> = ({ onClose, open, openIntro, loading }) => {
           display="flex"
           flexDirection="column"
           style={{
+            border: '2px solid #E34747',
+            borderRadius: "8px 8px 8px 0px",
             backgroundColor:
               theme.name === THEMES.LIGHT
                 ? '#fff'
                 : theme.palette.background.main
           }}
         >
-          <div className={classes.menuButton}>
-            <IconButton color="inherit" size="small" onClick={onClose}>
-              <SvgIcon fontSize="small">
-                <MenuIcon />
-              </SvgIcon>
-            </IconButton>
-            <span className={classes.header}>CART</span>
-          </div>
+          <Box className={classes.header}>
+            <Box>
+              <IconButton color="inherit" size="small">
+                <SvgIcon fontSize="small">
+                  <MenuIcon />
+                </SvgIcon>
+              </IconButton>
+              <Typography
+                variant="h4"
+                component="span"
+                style={{ fontWeight: 'normal', color: 'white' }}
+              >
+                {"CosMOS"}
+              </Typography>
+              <IconButton color='inherit' size='small' onClick={onClose} style={{ position: "absolute", right: "1rem" }}>
+                <Close />
+              </IconButton>
+            </Box>
+          </Box>
           <PerfectScrollbar options={{ suppressScrollX: true }}>
             <Box py={2}>
               <List>
-                <span className={classes.sectionTitle}>Options</span>
+                <Grid item xs={12}>
+                  <Typography className={classes.subtitle}>
+                    Options
+                  </Typography>
+                </Grid>
                 {projectSections.map((section) => (
                   <ListItem
                     className={classes.itemLeaf}
@@ -245,7 +287,11 @@ const NavBar: FC<NavBarProps> = ({ onClose, open, openIntro, loading }) => {
                   </ListItem>
                 ))}
                 <br />
-                <span className={classes.sectionTitle}>Resources</span>
+                <Grid item xs={12}>
+                  <Typography className={classes.subtitle}>
+                    Resources
+                  </Typography>
+                </Grid>
                 {resourceSections.map((section) => (
                   <ListItem
                     className={classes.itemLeaf}
