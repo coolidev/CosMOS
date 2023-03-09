@@ -14,16 +14,16 @@ import { THEMES } from 'src/utils/constants/general';
 import { State } from 'src/pages/home';
 
 interface AdvancedSearchProps {
-    source : SearchOption[];
-    filterer: Filterer;
-    filters: NetworkFilters;
-    filtererHasBeenChanged: () => void;
-    setSource: Dispatch<SetStateAction<SearchOption[]>>
-    onOpen: () => void;
-    onClear: () => void;
-    state: State;
-    onState: (name: string, value: any) => void;
-  }
+  source: SearchOption[];
+  filterer: Filterer;
+  filters: NetworkFilters;
+  filtererHasBeenChanged: () => void;
+  setSource: Dispatch<SetStateAction<SearchOption[]>>
+  onOpen: () => void;
+  onClear: () => void;
+  state: State;
+  onState: (name: string, value: any) => void;
+}
 
 interface AttrValue {
   id: number;
@@ -59,10 +59,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.text.primary,
       borderBottom: theme.name === THEMES.DARK ? `1px double ${theme.palette.border.main}` : ``
     },
-    '& .dx-datagrid .dx-link' : {
+    '& .dx-datagrid .dx-link': {
       color: theme.palette.border.main
     },
-    '& .dx-editor-cell .dx-texteditor .dx-texteditor-input' : {
+    '& .dx-editor-cell .dx-texteditor .dx-texteditor-input': {
       color: theme.palette.text.primary,
     },
     '& .dx-datagrid-content .dx-datagrid-table .dx-row .dx-editor-cell .dx-texteditor, .dx-datagrid-content .dx-datagrid-table .dx-row .dx-editor-cell .dx-texteditor-container': {
@@ -71,20 +71,20 @@ const useStyles = makeStyles((theme: Theme) => ({
       },
     },
   },
-  
+
 }));
 
-export const filterTypesUniversal = [{filter: "missionFreqBand", filterType: "Frequency Band"}, {filter: "location", filterType: "Location"}, 
-  {filter: "minFrequency", filterType: "Min. Frequency (MHz)"}, {filter: "maxFrequency", filterType: "Max. Frequency (MHz)"}, {filter: "antennaName", filterType: "Antenna Name"}, 
-  {filter: "dataFormat", filterType: "Data Format"}, {filter: "missionModulationType", filterType: "Modulation Type"}, 
-  {filter: "channelCodingType", filterType: "Channel Coding Type"}, {filter: "missionPolarization", filterType: "Polarization"}, 
-  {filter: "subcarrierModulationType", filterType: "Sub-Carrier Modulation Type"}, {filter: "EIRP", filterType: "EIRP (dBW)"},  
-  {filter: "antennaSize", filterType: "Antenna Size (m)"}, {filter: "GT", filterType: "G/T (dB/k)"}, {filter: "antennaGain", filterType: "Antenna Gain (dB)"},
-  {filter: "standardsCompliance", filterType: "Standards Compliance"}, {filter: "dataRate", filterType: "Data Rate"}
+export const filterTypesUniversal = [{ filter: "missionFreqBand", filterType: "Frequency Band" }, { filter: "location", filterType: "Location" },
+{ filter: "minFrequency", filterType: "Min. Frequency (MHz)" }, { filter: "maxFrequency", filterType: "Max. Frequency (MHz)" }, { filter: "antennaName", filterType: "Antenna Name" },
+{ filter: "dataFormat", filterType: "Data Format" }, { filter: "missionModulationType", filterType: "Modulation Type" },
+{ filter: "channelCodingType", filterType: "Channel Coding Type" }, { filter: "missionPolarization", filterType: "Polarization" },
+{ filter: "subcarrierModulationType", filterType: "Sub-Carrier Modulation Type" }, { filter: "EIRP", filterType: "EIRP (dBW)" },
+{ filter: "antennaSize", filterType: "Antenna Size (m)" }, { filter: "GT", filterType: "G/T (dB/k)" }, { filter: "antennaGain", filterType: "Antenna Gain (dB)" },
+{ filter: "standardsCompliance", filterType: "Standards Compliance" }, { filter: "dataRate", filterType: "Data Rate" }
 ];
 
-const operatorTypes = [{operator: '=', operatorType: 'Equals (=)'}, {operator: '<', operatorType: 'Less Than (<)'}, {operator: '>', operatorType: 'Greater Than (>)'}, 
-  {operator: '<=', operatorType: 'Less Than or Equal to (<=)'}, {operator: '>=', operatorType: 'Greater Than or Equal to (>=)'}, {operator: null, operatorType: 'N/A'}];
+const operatorTypes = [{ operator: '=', operatorType: 'Equals (=)' }, { operator: '<', operatorType: 'Less Than (<)' }, { operator: '>', operatorType: 'Greater Than (>)' },
+{ operator: '<=', operatorType: 'Less Than or Equal to (<=)' }, { operator: '>=', operatorType: 'Greater Than or Equal to (>=)' }, { operator: null, operatorType: 'N/A' }];
 
 //The list of attributes that need an operator in the second column
 const operatorList = ["sglGT", "sglEIRP", "sslGT", "sslEIRP", "EIRP", "antennaSize", "GT", "antennaGain", "minFrequency", "maxFrequency"];
@@ -95,8 +95,8 @@ export const multiSelectList = ["frequencyBands", "location", "relayType", "ante
 //the list of attributes that need a dropdown for searching
 export const dropdownList = ["missionFreqBand", "missionModulationType", "missionPolarization", "channelCodingType"]
 //the list of all of the lists that are used for the multiselects. Note the the format for the lists must be {id, name} or the multi select will not work
-export var attributes = new Map(); 
-const AdvancedSearch: FC<AdvancedSearchProps>  = ({state, source, filters, filterer, filtererHasBeenChanged, setSource, onOpen, onClear, onState}) => {
+export var attributes = new Map();
+const AdvancedSearch: FC<AdvancedSearchProps> = ({ state, source, filters, filterer, filtererHasBeenChanged, setSource, onOpen, onClear, onState }) => {
   // const theme = useTheme<Theme>();
   const classes = useStyles();
   const [grid, setGrid] = useState(null);
@@ -105,33 +105,33 @@ const AdvancedSearch: FC<AdvancedSearchProps>  = ({state, source, filters, filte
   var operators = operatorTypes;
 
   useEffect(() => {
-    if(filterer.getFilters().has('operationalYear')) filterer.removeFilter('operationalYear');
-    if(filterer.getFilters().has('missionLaunchYear')) filterer.removeFilter('missionLaunchYear');
-    if(state.constraints.launchYear && state.constraints.launchYear !== -1){
+    if (filterer.getFilters().has('operationalYear')) filterer.removeFilter('operationalYear');
+    if (filterer.getFilters().has('missionLaunchYear')) filterer.removeFilter('missionLaunchYear');
+    if (state.constraints.launchYear && state.constraints.launchYear !== -1) {
       filterer.addFilter('missionLaunchYear', allFilters.get('missionLaunchYear')(state.constraints.launchYear));
     }
     filtererHasBeenChanged();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[state.constraints.launchYear]);
+  }, [state.constraints.launchYear]);
 
   useEffect(() => {
-    if(filterer.getFilters().has('missionModulationType')) filterer.removeFilter('missionModulationType');
-    if(state.commsSpecs.commsPayloadSpecs.modulation && state.commsSpecs.commsPayloadSpecs.modulation !== -1){
-      filterer.addFilter('missionModulationType', allFilters.get('missionModulationType')(attributes.get('modulationType')?.filter((band) => band.id===state.commsSpecs.commsPayloadSpecs.modulation)[0]?.name));
+    if (filterer.getFilters().has('missionModulationType')) filterer.removeFilter('missionModulationType');
+    if (state.commsSpecs.commsPayloadSpecs.modulation && state.commsSpecs.commsPayloadSpecs.modulation !== -1) {
+      filterer.addFilter('missionModulationType', allFilters.get('missionModulationType')(attributes.get('modulationType')?.filter((band) => band.id === state.commsSpecs.commsPayloadSpecs.modulation)[0]?.name));
     }
     filtererHasBeenChanged();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[state.commsSpecs.commsPayloadSpecs.modulation]);
+  }, [state.commsSpecs.commsPayloadSpecs.modulation]);
 
   //legacy name - this is code rate
   useEffect(() => {
-    if(filterer.getFilters().has('channelCodingType')) filterer.removeFilter('channelCodingType');
-    if(state.commsSpecs.commsPayloadSpecs.coding && state.commsSpecs.commsPayloadSpecs.coding !== -1){
-      filterer.addFilter('channelCodingType', allFilters.get('channelCodingType')(attributes.get('channelCodingType')?.filter((band) => band.id===state.commsSpecs.commsPayloadSpecs.coding)[0]?.name));
+    if (filterer.getFilters().has('channelCodingType')) filterer.removeFilter('channelCodingType');
+    if (state.commsSpecs.commsPayloadSpecs.coding && state.commsSpecs.commsPayloadSpecs.coding !== -1) {
+      filterer.addFilter('channelCodingType', allFilters.get('channelCodingType')(attributes.get('channelCodingType')?.filter((band) => band.id === state.commsSpecs.commsPayloadSpecs.coding)[0]?.name));
     }
     filtererHasBeenChanged();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[state.commsSpecs.commsPayloadSpecs.coding]);
+  }, [state.commsSpecs.commsPayloadSpecs.coding]);
 
   //This is Coding Type
   // useEffect(() => {
@@ -143,40 +143,40 @@ const AdvancedSearch: FC<AdvancedSearchProps>  = ({state, source, filters, filte
   // },[state.commsSpecs.commsPayloadSpecs.codingType]);
 
   useEffect(() => {
-    if(filterer.getFilters().has('missionPolarization')) filterer.removeFilter('missionPolarization');
-    if(state.commsSpecs.commsPayloadSpecs.polarizationType && state.commsSpecs.commsPayloadSpecs.polarizationType !== -1){
-      filterer.addFilter('missionPolarization', allFilters.get('missionPolarization')(attributes.get('polarization')?.filter((band) => band.id===state.commsSpecs.commsPayloadSpecs.polarizationType)[0]?.name));
+    if (filterer.getFilters().has('missionPolarization')) filterer.removeFilter('missionPolarization');
+    if (state.commsSpecs.commsPayloadSpecs.polarizationType && state.commsSpecs.commsPayloadSpecs.polarizationType !== -1) {
+      filterer.addFilter('missionPolarization', allFilters.get('missionPolarization')(attributes.get('polarization')?.filter((band) => band.id === state.commsSpecs.commsPayloadSpecs.polarizationType)[0]?.name));
     }
     filtererHasBeenChanged();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[state.commsSpecs.commsPayloadSpecs.polarizationType]);
+  }, [state.commsSpecs.commsPayloadSpecs.polarizationType]);
 
   useEffect(() => {
-    if(filterer.getFilters().has('missionFreqBand')) filterer.removeFilter('missionFreqBand');
-    if(state.commsSpecs.freqBand && state.commsSpecs.freqBand !== -1){
-      filterer.addFilter('missionFreqBand', allFilters.get('missionFreqBand')(attributes.get('frequencyBands')?.filter((band) => band.id===state.commsSpecs.freqBand)[0]?.name));
+    if (filterer.getFilters().has('missionFreqBand')) filterer.removeFilter('missionFreqBand');
+    if (state.commsSpecs.freqBand && state.commsSpecs.freqBand !== -1) {
+      filterer.addFilter('missionFreqBand', allFilters.get('missionFreqBand')(attributes.get('frequencyBands')?.filter((band) => band.id === state.commsSpecs.freqBand)[0]?.name));
     }
     filtererHasBeenChanged();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[state.commsSpecs.freqBand]);
+  }, [state.commsSpecs.freqBand]);
 
   useEffect(() => {
-    if(filterer.getFilters().has('standardsCompliance')) filterer.removeFilter('standardsCompliance');
-    if(state.commsSpecs.standardsCompliance != null && state.commsSpecs.standardsCompliance !== 0){
+    if (filterer.getFilters().has('standardsCompliance')) filterer.removeFilter('standardsCompliance');
+    if (state.commsSpecs.standardsCompliance != null && state.commsSpecs.standardsCompliance !== 0) {
       filterer.addFilter('standardsCompliance', allFilters.get('standardsCompliance')(state.commsSpecs.standardsCompliance));
     }
     filtererHasBeenChanged();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[state.commsSpecs.standardsCompliance]);
+  }, [state.commsSpecs.standardsCompliance]);
 
   useEffect(() => {
-    if(filterer.getFilters().has('dataRate')) filterer.removeFilter('dataRate');
-    if(state.commsSpecs.dataRateKbps != null && state.commsSpecs.dataRateKbps !== 0){
+    if (filterer.getFilters().has('dataRate')) filterer.removeFilter('dataRate');
+    if (state.commsSpecs.dataRateKbps != null && state.commsSpecs.dataRateKbps !== 0) {
       filterer.addFilter('dataRate', allFilters.get('dataRate')(state.commsSpecs.dataRateKbps));
     }
     filtererHasBeenChanged();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[state.commsSpecs.dataRateKbps]);
+  }, [state.commsSpecs.dataRateKbps]);
 
   // useEffect(() => {
   //   console.log('Center Frequency changed: ', state.constraints.centerFreqFilter);
@@ -185,9 +185,9 @@ const AdvancedSearch: FC<AdvancedSearchProps>  = ({state, source, filters, filte
   useEffect(() => {
     filtererHasBeenChanged();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[attributes]);
+  }, [attributes]);
 
-//Fetches all of the options for the editing multiselects (we do it in this level to prevent the api calls being needed every time an edit is made)
+  //Fetches all of the options for the editing multiselects (we do it in this level to prevent the api calls being needed every time an edit is made)
   useEffect(() => {
     const fetchFrequencyBandData = async () => {
       const response = await axios.get<AttrValue[]>('/getAttributeValues', {
@@ -198,12 +198,12 @@ const AdvancedSearch: FC<AdvancedSearchProps>  = ({state, source, filters, filte
     };
     //this one is hard coded
     const fetchLocationData = async () => {
-       const response = [{id: "Global", name: "Global"}, {id: "North America", name: "North America"}, {id: "South America", name: "South America"},
-      {id: "Pacific", name: "Pacific"}, {id: "Antarctica", name: "Antarctica"}, {id: "Southeast Asia", name: "Southeast Asia"}, {id: "Europe", name: "Europe"},
-      {id: "Africa", name: "Africa"}, {id: "Central America", name: "Central America"}, {id: "Middle East", name: "Middle East"}, {id: "Oceania", name: "Oceania"},
-      {id: "Australia", name: "Australia"},{id: "Pacific", name: "Pacific"}, {id: "Arctic", name: "Arctic"}]
-       setAttributes(response, 'location');
-     };
+      const response = [{ id: "Global", name: "Global" }, { id: "North America", name: "North America" }, { id: "South America", name: "South America" },
+      { id: "Pacific", name: "Pacific" }, { id: "Antarctica", name: "Antarctica" }, { id: "Southeast Asia", name: "Southeast Asia" }, { id: "Europe", name: "Europe" },
+      { id: "Africa", name: "Africa" }, { id: "Central America", name: "Central America" }, { id: "Middle East", name: "Middle East" }, { id: "Oceania", name: "Oceania" },
+      { id: "Australia", name: "Australia" }, { id: "Pacific", name: "Pacific" }, { id: "Arctic", name: "Arctic" }]
+      setAttributes(response, 'location');
+    };
     const fetchRelayTypeData = async () => {
       const response = await axios.get<AttrValue[]>('/getAttributeValues', {
         params: { sub_key: 'relay_type ' }
@@ -212,11 +212,11 @@ const AdvancedSearch: FC<AdvancedSearchProps>  = ({state, source, filters, filte
 
     };
     const fetchAntennaNameData = async () => {
-       const response = await axios.get<AttrValue[]>('/getAttributeValues', {
-         params: { sub_key: 'antenna_name ' }
-       });
-       response.data && setAttributes(response.data, 'antennaName');
-     };
+      const response = await axios.get<AttrValue[]>('/getAttributeValues', {
+        params: { sub_key: 'antenna_name ' }
+      });
+      response.data && setAttributes(response.data, 'antennaName');
+    };
     const fetchDataFormatData = async () => {
       const response = await axios.get<AttrValue[]>('/getAttributeValues', {
         params: { sub_key: 'data_format ' }
@@ -258,13 +258,13 @@ const AdvancedSearch: FC<AdvancedSearchProps>  = ({state, source, filters, filte
     fetchChannelCodingTypeData();
     fetchPolarizationData();
     fetchsubCarrierModulationTypeData();
-},[]);
+  }, []);
 
-const setAttributes = (value, index) => {
-  attributes.set(index, value);
-}
+  const setAttributes = (value, index) => {
+    attributes.set(index, value);
+  }
 
-//changes the filters availible for selection based on what type (All, Relay, DTE) is selected
+  //changes the filters availible for selection based on what type (All, Relay, DTE) is selected
   useEffect(() => {
     let newFilterTypes = [];
 
@@ -274,13 +274,13 @@ const setAttributes = (value, index) => {
     let removeFilter = true;
     source.forEach(filter => {
       newFilterTypes.forEach(availibleType => {
-        if(availibleType.filter === filter.filterName){
+        if (availibleType.filter === filter.filterName) {
           newSource.push(filter);
           removeFilter = false;
         }
       })
-      if(removeFilter){
-        let filterToRemove = filter.operator? filter.filterName + filter.operator : filter.filterName
+      if (removeFilter) {
+        let filterToRemove = filter.operator ? filter.filterName + filter.operator : filter.filterName
         filterer.removeFilter(filterToRemove);
         filtererHasBeenChanged();
       }
@@ -288,14 +288,14 @@ const setAttributes = (value, index) => {
     })
     setSource(newSource);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-},[filters.type]);
+  }, [filters.type]);
 
-//resets the other values when the filter type is changed
+  //resets the other values when the filter type is changed
   const onFilterTypeChanged = (rowData, value, oldRow) => {
     rowData.value = null;
     rowData.filterName = value;
 
-    if(operatorList.includes(rowData.filterName)){
+    if (operatorList.includes(rowData.filterName)) {
       rowData.operator = "="
     } else {
       rowData.operator = null
@@ -304,76 +304,76 @@ const setAttributes = (value, index) => {
     // oldRow.filterName;
     //previous value
     // oldRow.value;
-    
+
   }
 
   //When the filter's value is changed, update the actual filter doing the filtering
   const onFilterUpdate = (event) => {
-    if(event == null){
+    if (event == null) {
       return;
     }
-    if(event.type === "remove"){
+    if (event.type === "remove") {
       let oldFilterName = event.key.filterName;
-      oldFilterName = oldFilterName && event.key.operator? oldFilterName + event.key.operator: oldFilterName;
-      if(filterer.getFilters().has(oldFilterName)) {
+      oldFilterName = oldFilterName && event.key.operator ? oldFilterName + event.key.operator : oldFilterName;
+      if (filterer.getFilters().has(oldFilterName)) {
         filterer.removeFilter(oldFilterName);
         filtererHasBeenChanged();
-        if(oldFilterName === "missionFreqBand"){
-          onState('commsSpecs', {...state.commsSpecs, freqBand: 0});
+        if (oldFilterName === "missionFreqBand") {
+          onState('commsSpecs', { ...state.commsSpecs, freqBand: 0 });
         }
-        if(oldFilterName === "missionPolarization"){
-          onState('commsSpecs', {...state.commsSpecs, commsPayloadSpecs: {...state.commsSpecs.commsPayloadSpecs, polarizationType: -1}});
+        if (oldFilterName === "missionPolarization") {
+          onState('commsSpecs', { ...state.commsSpecs, commsPayloadSpecs: { ...state.commsSpecs.commsPayloadSpecs, polarizationType: -1 } });
         }
-        if(oldFilterName === "channelCodingType"){
-          onState('commsSpecs', {...state.commsSpecs, commsPayloadSpecs: {...state.commsSpecs.commsPayloadSpecs, coding: -1}});
+        if (oldFilterName === "channelCodingType") {
+          onState('commsSpecs', { ...state.commsSpecs, commsPayloadSpecs: { ...state.commsSpecs.commsPayloadSpecs, coding: -1 } });
         }
-        if(oldFilterName === "missionModulationType"){
-          onState('commsSpecs', {...state.commsSpecs, commsPayloadSpecs: {...state.commsSpecs.commsPayloadSpecs, modulation: -1}});
+        if (oldFilterName === "missionModulationType") {
+          onState('commsSpecs', { ...state.commsSpecs, commsPayloadSpecs: { ...state.commsSpecs.commsPayloadSpecs, modulation: -1 } });
         }
       }
       return;
     }
     //most of this mess is here to account for the operator
     let oldFilterName = event.key.filterName;
-    oldFilterName = oldFilterName && event.key.operator? oldFilterName + event.key.operator: oldFilterName;
-    let newFilterName = event.data.filterName? event.data.filterName: event.key.filterName;
-    newFilterName = newFilterName && event.data.operator? newFilterName + event.data.operator: newFilterName;
-    newFilterName = newFilterName && operatorList.includes(newFilterName) && !event.data.operator && event.key.operator? newFilterName + event.key.operator: newFilterName;
-    let newValue = event.data.value? event.data.value: event.key.value;
-    if(filterer.getFilters().has(oldFilterName)) {
+    oldFilterName = oldFilterName && event.key.operator ? oldFilterName + event.key.operator : oldFilterName;
+    let newFilterName = event.data.filterName ? event.data.filterName : event.key.filterName;
+    newFilterName = newFilterName && event.data.operator ? newFilterName + event.data.operator : newFilterName;
+    newFilterName = newFilterName && operatorList.includes(newFilterName) && !event.data.operator && event.key.operator ? newFilterName + event.key.operator : newFilterName;
+    let newValue = event.data.value ? event.data.value : event.key.value;
+    if (filterer.getFilters().has(oldFilterName)) {
       filterer.removeFilter(oldFilterName);
     }
-    if(newFilterName){
+    if (newFilterName) {
       const newFilter = (allFilters.get(newFilterName))(newValue);
       filterer.addFilter(newFilterName, newFilter);
       filtererHasBeenChanged();
-      if(newFilterName === "missionFreqBand"){
-        onState('commsSpecs', {...state.commsSpecs, freqBand: dropdownVal !== -1? dropdownVal: 0});
+      if (newFilterName === "missionFreqBand") {
+        onState('commsSpecs', { ...state.commsSpecs, freqBand: dropdownVal !== -1 ? dropdownVal : 0 });
       }
-      if(newFilterName === "missionPolarization"){
-        onState('commsSpecs', {...state.commsSpecs, commsPayloadSpecs: {...state.commsSpecs.commsPayloadSpecs, polarizationType: dropdownVal}});
+      if (newFilterName === "missionPolarization") {
+        onState('commsSpecs', { ...state.commsSpecs, commsPayloadSpecs: { ...state.commsSpecs.commsPayloadSpecs, polarizationType: dropdownVal } });
       }
-      if(newFilterName === "channelCodingType"){
-        onState('commsSpecs', {...state.commsSpecs, commsPayloadSpecs: {...state.commsSpecs.commsPayloadSpecs, coding: dropdownVal}});
+      if (newFilterName === "channelCodingType") {
+        onState('commsSpecs', { ...state.commsSpecs, commsPayloadSpecs: { ...state.commsSpecs.commsPayloadSpecs, coding: dropdownVal } });
       }
-      if(newFilterName === "missionModulationType"){
-        onState('commsSpecs', {...state.commsSpecs, commsPayloadSpecs: {...state.commsSpecs.commsPayloadSpecs, modulation: dropdownVal}});
+      if (newFilterName === "missionModulationType") {
+        onState('commsSpecs', { ...state.commsSpecs, commsPayloadSpecs: { ...state.commsSpecs.commsPayloadSpecs, modulation: dropdownVal } });
       }
     }
-    
+
   };
 
   //Handles the code for the operators, whether it needs them or not is determined by the operatorList constant declared at the top of the file
   const getOperatorsSource = (options) => {
-    if(!options.data){
+    if (!options.data) {
       return operators;
     }
-    if(operatorList.includes(options.data.filterName)){
-      operators = [{operator: '=', operatorType: 'Equals (=)'}, {operator: '<', operatorType: 'Less Than (<)'}, {operator: '>', operatorType: 'Greater Than (>)'}, 
-          {operator: '<=', operatorType: 'Less Than or Equal to (<=)'}, {operator: '>=', operatorType: 'Greater Than or Equal to (>=)'}]
-    } 
+    if (operatorList.includes(options.data.filterName)) {
+      operators = [{ operator: '=', operatorType: 'Equals (=)' }, { operator: '<', operatorType: 'Less Than (<)' }, { operator: '>', operatorType: 'Greater Than (>)' },
+      { operator: '<=', operatorType: 'Less Than or Equal to (<=)' }, { operator: '>=', operatorType: 'Greater Than or Equal to (>=)' }]
+    }
     else {
-      operators = [{operator: null, operatorType: 'N/A'}];
+      operators = [{ operator: null, operatorType: 'N/A' }];
     }
     return operators;
   }
@@ -381,31 +381,31 @@ const setAttributes = (value, index) => {
   //This bit of code makes it so that the options for selecting filters shrink down as more filters are selected
   //This is acheived by changing the source for each row depending on what filters have been selected and what filter the row has
   const getAvailiblefilterTypes = (options) => {
-    if(!options.data){
+    if (!options.data) {
       return filterTypes;
     }
     let filteredFilterTypes = []
     let getFilteredFilter = false
     let filtertypes = filterTypes
-    if(filters.type === 'none'){
+    if (filters.type === 'none') {
       filtertypes = filterTypesUniversal
     }
     filtertypes.forEach(filter => {
       source.forEach(entry => {
-        if(entry.filterName === filter.filter && entry.filterName !== options.key.filterName){
+        if (entry.filterName === filter.filter && entry.filterName !== options.key.filterName) {
           getFilteredFilter = true;
         }
       })
-      if(!getFilteredFilter){
+      if (!getFilteredFilter) {
         filteredFilterTypes.push(filter)
       }
       getFilteredFilter = false;
     })
     return filteredFilterTypes;
   }
-    return (
-      <Grid container justifyContent="flex-start" alignItems="center" spacing = {1} >
-        <Grid item xs = {12}>
+  return (
+    <Grid container justifyContent="flex-start" alignItems="center" spacing={1} >
+      <Grid item xs={12}>
         <DataGrid
           id="grid"
           className={classes.table}
@@ -413,67 +413,66 @@ const setAttributes = (value, index) => {
           style={{ maxHeight: "25vh", border: '0px' }}
           ref={(ref) => { setGrid(ref); }}
           showBorders={true}
-          onSaving = {(e) => {
+          onSaving={(e) => {
             onFilterUpdate(e.changes[0]);
           }}
 
-          
-          activeStateEnabled = {true}>
-            <Editing 
-            mode="row" 
-            allowDeleting = {true} 
-            allowUpdating = {true}
-            >
-            </Editing>
-          <Column dataField = "filterName" caption = "Filter Name" setCellValue = {onFilterTypeChanged}> 
-            <Lookup dataSource = {getAvailiblefilterTypes} valueExpr = "filter" displayExpr = "filterType"/>
+          activeStateEnabled={true}>
+          <Editing
+            mode="row"
+            allowDeleting={true}
+            allowUpdating={true}
+          >
+          </Editing>
+          <Column dataField="filterName" caption="Filter Name" setCellValue={onFilterTypeChanged}>
+            <Lookup dataSource={getAvailiblefilterTypes} valueExpr="filter" displayExpr="filterType" />
           </Column>
-          <Column dataField = "operator" caption = "Operator">
-          <Lookup dataSource = {getOperatorsSource} valueExpr = "operator" displayExpr = "operatorType"/>
+          <Column dataField="operator" caption="Operator">
+            <Lookup dataSource={getOperatorsSource} valueExpr="operator" displayExpr="operatorType" />
           </Column>
-          <Column 
-          dataField="value" 
-          caption = "Value" 
-          editCellComponent={(event) => VariedCell({event, attributes, state, onState, dropdownVal, setDropdownVal})}>
-          </Column> 
+          <Column
+            dataField="value"
+            caption="Value"
+            editCellComponent={(event) => VariedCell({ event, attributes, state, onState, dropdownVal, setDropdownVal })}>
+          </Column>
         </DataGrid>
-        </Grid>
-        <Grid item xs = {2}>
+      </Grid>
+      <Grid item xs={2}>
         <Button
-              data-filter="addfilter"
-              autoFocus
-              variant="contained"
-              color="primary"
-              style={{marginTop: '20px'}}
-              onClick={(e) => grid.instance.addRow()}
-            >
-              + Add Filter
+          data-filter="addfilter"
+          autoFocus
+          variant="contained"
+          color="primary"
+          style={{ marginTop: '20px' }}
+          onClick={(e) => grid.instance.addRow()}
+        >
+          + Add Filter
         </Button>
-        </Grid>
-        <Grid item xs = {7}></Grid>
-        <Grid item xs = {2}>
+      </Grid>
+      <Grid item xs={7}></Grid>
+      <Grid item xs={2}>
         <Button
           autoFocus
-          style={{marginTop: '20px', marginLeft: "30px", marginRight: "0"}}
+          style={{ marginTop: '20px', marginLeft: "30px", marginRight: "0" }}
           variant="outlined"
           color="primary"
           onClick={onClear}
         >
           Reset Filters
         </Button>
-        </Grid>
-        <Grid item xs = {1}>
-        <Button 
-          style={{marginTop: '20px', marginLeft: "5px"}}
-          variant="contained" 
-          color="primary" 
+      </Grid>
+      <Grid item xs={1}>
+        <Button
+          style={{ marginTop: '20px', marginLeft: "5px" }}
+          variant="contained"
+          color="primary"
           data-filter-close='true'
           onClick={onOpen}>
-             Close
+          Close
         </Button>
-        </Grid>
       </Grid>
-    );
-  }
+    </Grid>
+  );
+}
 
 export default AdvancedSearch;
