@@ -96,7 +96,23 @@ const App = () => {
             }
             :root {
               color-scheme: ${theme.name === THEMES.LIGHT ? 'light' : 'dark'};
-            }`}
+            }
+            .dx-button {
+              color: ${theme.palette.border.main}!important;
+            }
+            .dx-checkbox[aria-checked=mixed] .dx-checkbox-icon, .dx-checkbox[aria-checked=true] .dx-checkbox-icon {
+              background-color: ${theme.palette.border.main}!important;
+            }
+            .dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row > td:not(.dx-validation-pending):not(.dx-datagrid-select-all) {
+              vertical-align: unset!important
+            }
+            .dx-datagrid-content .dx-datagrid-table .dx-row .dx-editor-cell .dx-texteditor {
+              padding: 0 1rem 0 0;
+            }
+            .dx-selectbox-container {
+              box-shadow: 0px 4px 14px rgb(0 0 0 / 10%);
+            }
+            `}
         </style>
       </Helmet>
       <ThemeProvider theme={theme}>
