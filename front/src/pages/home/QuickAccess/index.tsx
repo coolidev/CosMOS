@@ -218,56 +218,68 @@ const QuickAccess: FC<QuickAccessProps> = ({
     <div
       className={classes.root}
       style={{
-        width: `${input_panel === MINIMUM ? PANEL_RATIO[INPUT_PANEL].minimized_width : PANEL_RATIO[INPUT_PANEL].width}%`
+        width: `${input_panel === MINIMUM ? PANEL_RATIO[INPUT_PANEL].minimized_width : PANEL_RATIO[INPUT_PANEL].width}%`,
         // overflowY: currentTab === 'mission' ? 'scroll' : 'auto',
         // height: currentTab === 'report' ? '100%' : '95%',
-        // overflowX: 'hidden',
+        overflow: 'hidden',
+        justifyContent: 'center'
       }}
     >
-      <Grid container justifyContent="center">
-        <Grid item md={12}>
-          <Box>
-            <Typography
-              variant="h3"
-              component="h3"
-              style={{ fontWeight: 'normal' }}
-              className = {classes.header}
-              color="textPrimary"
-            >
-              {"  " + tabs[currentTab]}
-            </Typography>
-          </Box>
-          <Divider className={classes.divider} />
-          {currentTab === 'mission' && (
-            <Mission 
-              state={state} 
-              bounds={bounds}
-              onBounds = {onBounds}
-              setWizardIndex = {setWizardIndex} 
-              onChange={handleChange}
-              onState = {onState}
-            />
-          )}
-          {currentTab === 'saves' && (
-            <ProjectHistory
-              result={cache}
-              source={source}
-              checked={state.save}
-              onDelete={handleDelete}
-              onCheck={handleCheck}
-              onBaseLine={handleBaseLine}
-            />
-          )}
-          {currentTab === 'report' && (
-            <Reports
-              project={preference.project.find((item) => item.id === project)}
-              state={state}
-              networkPanelStatus={networkPanelStatus}
-              resultPanelCollapsed={resultPanelCollapsed}
-            />
-          )}
+      <div
+        style={{
+          width: 'calc(100% - 20px)',
+          height: '100%',
+          overflow: 'auto',
+          paddingTop: '0.5rem',
+          paddingBottom: '0.5rem',
+          margin: '0 auto'
+        }}
+      >
+        <Grid container justifyContent="center">
+          <Grid item md={12}>
+            <Box>
+              <Typography
+                variant="h3"
+                component="h3"
+                style={{ fontWeight: 'normal' }}
+                className = {classes.header}
+                color="textPrimary"
+              >
+                {"  " + tabs[currentTab]}
+              </Typography>
+            </Box>
+            <Divider className={classes.divider} />
+            {currentTab === 'mission' && (
+              <Mission 
+                state={state} 
+                bounds={bounds}
+                onBounds = {onBounds}
+                setWizardIndex = {setWizardIndex} 
+                onChange={handleChange}
+                onState = {onState}
+              />
+            )}
+            {currentTab === 'saves' && (
+              <ProjectHistory
+                result={cache}
+                source={source}
+                checked={state.save}
+                onDelete={handleDelete}
+                onCheck={handleCheck}
+                onBaseLine={handleBaseLine}
+              />
+            )}
+            {currentTab === 'report' && (
+              <Reports
+                project={preference.project.find((item) => item.id === project)}
+                state={state}
+                networkPanelStatus={networkPanelStatus}
+                resultPanelCollapsed={resultPanelCollapsed}
+              />
+            )}
+          </Grid>
         </Grid>
-      </Grid>
+      </div>
     </div>
   );
 };

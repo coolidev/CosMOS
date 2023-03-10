@@ -7,12 +7,22 @@ import {
   Typography,
   IconButton,
   CssBaseline,
-  useTheme
+  useTheme,
+  makeStyles
 } from '@material-ui/core';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { Close as CloseIcon } from '@material-ui/icons';
 import useStyles from 'src/utils/styles';
 import type { Theme } from 'src/theme';
+
+const newStyles = makeStyles((theme: Theme) => ({
+  dialogBox: {
+    '& > div > div': {
+      border: `2px solid ${theme.palette.border.main}`,
+      borderRadius: '8px'
+    }
+  }
+}))
 
 interface DialogBoxProps {
   id?: string;
@@ -43,6 +53,7 @@ const DialogBox: FC<DialogBoxProps> = ({
   onClose
 }) => {
   const styles = useStyles();
+  const newClasses = newStyles();
   const theme = useTheme<Theme>();
 
   return (
@@ -52,6 +63,7 @@ const DialogBox: FC<DialogBoxProps> = ({
       TransitionComponent={Transition}
       onClose={onClose}
       classes={classes ?? className}
+      className={newClasses.dialogBox}
       style={style}
     >
       <CssBaseline />
@@ -59,7 +71,8 @@ const DialogBox: FC<DialogBoxProps> = ({
         style={{
           margin: 0,
           padding: '16px',
-          backgroundColor: theme.palette.primary.light
+          backgroundColor: theme.palette.border.main,
+          color: "white"
         }}
       >
         <Typography component="strong" variant="h4">
@@ -68,6 +81,7 @@ const DialogBox: FC<DialogBoxProps> = ({
         <IconButton
           aria-label="Close"
           className={styles.dialogCloseBtn}
+          style={{ color: theme.palette.background.light }}
           onClick={onClose}
         >
           <CloseIcon />

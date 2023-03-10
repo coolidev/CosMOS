@@ -92,7 +92,7 @@ const App = () => {
         <style>
           {`body { 
             overflow: ${isMaximized ? 'hidden' : 'auto'};
-            background-color: ${theme.palette.background.paper}
+            background-color: ${theme.palette.background.light}
             }
             :root {
               color-scheme: ${theme.name === THEMES.LIGHT ? 'light' : 'dark'};
