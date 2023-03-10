@@ -41,16 +41,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: '768px',
     minHeight: '55vh'
   },
+  dialogStyle: {
+    '& > div > div': {
+      border: `2px solid ${theme.palette.border.main}`,
+      borderRadius: '8px 8px 0 0'
+    }
+  },
   title: {
     margin: 0,
-    padding: theme.spacing(4),
-    backgroundColor: theme.palette.primary.light
+    padding: theme.spacing(2, 4),
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+    display: 'flex',
+    alignItems: 'center'
   },
   closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500]
+    color: theme.palette.background.light
   },
   //attempt to remove the second border at some point in the future
   select: {
@@ -155,10 +161,12 @@ const NetworkFilterModal: FC<NetworkFilterModalProps> = ({
       disableEscapeKeyDown
       keepMounted
       fullWidth
+      className={classes.dialogStyle}
     >
       <DialogTitle disableTypography className={classes.title}>
         <Typography variant="h6">Network Filters</Typography>
-        <IconButton className={classes.closeButton} onClick={onOpen}>
+        <div className='ml-auto' />
+        <IconButton className={classes.closeButton} onClick={onOpen} size="small">
           <CloseIcon />
         </IconButton>
       </DialogTitle>
@@ -205,10 +213,10 @@ const NetworkFilterModal: FC<NetworkFilterModalProps> = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <Typography variant="body1" style={{ textAlign: 'left' }}>Agreements With SCaN</Typography>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <FormControl variant="filled" size="small" fullWidth>
               <Select
                 name="SCAN"
@@ -295,10 +303,10 @@ const NetworkFilterModal: FC<NetworkFilterModalProps> = ({
               value={filters.name}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <Typography variant="body1">Operational Year</Typography>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               className={classes.textBox}
               variant="outlined"
