@@ -1,4 +1,4 @@
-import { Button, Grid, Icon, makeStyles, Tooltip } from "@material-ui/core";
+import { Button, Grid, makeStyles } from "@material-ui/core";
 import { FC, useState } from "react";
 import ParameterSummary from "src/components/Results/SummaryPanel/ParameterSummary";
 import NetworkSelectionSummary from "src/components/Results/SummaryPanel/NetworkSelectionSummary";

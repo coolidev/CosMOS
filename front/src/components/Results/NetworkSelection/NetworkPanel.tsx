@@ -1,19 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FC, Fragment, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'src/store';
 import { updateResults } from 'src/slices/results';
-import clsx from 'clsx';
 import _ from 'underscore';
 import {
   Box,
   makeStyles,
   Typography,
-  List,
   ListItem,
   ListItemText,
   IconButton,
-  Radio,
-  useTheme,
   Divider,
   Icon,
   Grid,
@@ -25,7 +21,6 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import type { State } from 'src/pages/home';
 import type { Theme } from 'src/theme';
-import { THEMES } from 'src/utils/constants/general';
 import Modulation from './Modulation';
 
 interface NetworkPanelProps {

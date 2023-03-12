@@ -1,12 +1,9 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Grid, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
 import { FC, useEffect, useState } from "react";
 import { CommsSpecs, Constraints, Parameter, SelectedNetwork } from "src/types/preference";
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import type { Theme } from 'src/theme';
 import { AttrValue } from "src/components/Mission/CommServicesDef";
 import axios from "src/utils/axios";
-import clsx from 'clsx';
 
 interface ParameterSummaryProps {
 	parameters: Parameter;

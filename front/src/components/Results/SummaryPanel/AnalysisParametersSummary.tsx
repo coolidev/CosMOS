@@ -1,9 +1,6 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Grid, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
 import { FC, useEffect, useState } from "react";
 import type { Theme } from 'src/theme';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import clsx from 'clsx';
 import { StepDef } from "src/types/preference";
 
 interface AnalysisParametersSummaryProps {

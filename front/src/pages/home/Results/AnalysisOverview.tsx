@@ -5,7 +5,6 @@ import {
   colors,
   Typography,
   Grid,
-  Button,
   IconButton,
 } from '@material-ui/core';
 import Network from './Network';

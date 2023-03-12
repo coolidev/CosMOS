@@ -1,9 +1,6 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Grid, makeStyles, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import React, { FC, useEffect } from "react";
 import type { Theme } from 'src/theme';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import clsx from 'clsx';
 
 interface NetworkSelectionSummaryProps {
 	accordion: any;
