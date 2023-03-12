@@ -17,9 +17,10 @@ import {
   Divider,
   Icon,
   Grid,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
+  Accordion as MuiAccordion,
+  AccordionSummary as MuiAccordionSummary,
+  AccordionDetails as MuiAccordionDetails,
+  withStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import type { State } from 'src/pages/home';
@@ -36,7 +37,7 @@ interface NetworkPanelProps {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    color: theme.palette.text.primary
+    color: theme.palette.text.primary,
   },
   title: {
     textAlign: 'center',
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   item: {
     paddingTop: 0,
     paddingBottom: 0,
-    backgroundColor: theme.palette.component.main,
+    // backgroundColor: theme.palette.component.main,
     userSelect: 'none',
     MozUserSelect: 'none',
     WebkitUserSelect: 'none',
@@ -81,16 +82,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   radio: {
     color: theme.palette.border.main
   },
-  placeholder:{
+  placeholder: {
     fontFamily: 'Roboto',
     fontStyle: 'normal',
     fontSize: '12px',
     lineHeight: '14px',
     letterSpacing: '0.05em',
 
-    color:  `${theme.palette.text.secondary}`,
-    marginTop: '20px',
-    marginBottom: '20px',
+    color: `${theme.palette.text.secondary}`,
   },
   icon: {
     display: 'flex',
@@ -106,6 +105,49 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.border.main,
   },
 }));
+
+const Accordion = withStyles({
+  root: {
+    boxShadow: 'none',
+    '&:not(:last-child)': {
+      borderBottom: 0,
+    },
+    '&:before': {
+      display: 'none',
+    },
+    '&$expanded': {
+      margin: 'auto',
+    },
+  },
+  expanded: {},
+})(MuiAccordion);
+
+const AccordionSummary = withStyles((theme: Theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.light,
+    borderBottom: theme.palette.border.main,
+    padding: 0,
+    marginBottom: 0,
+    // minHeight: 56,
+    '&$expanded': {
+      // minHeight: 56,
+    },
+  },
+  content: {
+    margin: '0',
+    borderBottom: `1px solid ${theme.palette.border.main}`,
+    '&$expanded': {
+      margin: '0',
+    },
+  },
+  expanded: {},
+}))(MuiAccordionSummary);
+
+const AccordionDetails = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiAccordionDetails);
 
 const NetworkPanel: FC<NetworkPanelProps> = ({ state, onState, handleClear, onBounds }) => {
   const classes = useStyles();
@@ -205,7 +247,7 @@ const NetworkPanel: FC<NetworkPanelProps> = ({ state, onState, handleClear, onBo
   // event when the antenna name under the ground station
   // is clicked.
   const handleRowClick = (event): void => {
-    
+
   };
 
   // Opens and closes the Antenna Modal.
@@ -213,116 +255,114 @@ const NetworkPanel: FC<NetworkPanelProps> = ({ state, onState, handleClear, onBo
   const handleOpen = (): void => setOpen(!open);
 
   return (
-    <div className={classes.root}>
-      <Box
-        className={clsx(classes.box, classes.listBox)}
-        style={{ height: (window.screen.availHeight / zoom) * 0.75 }}
-      >
-        {state.selectedItems.length > 0 ? (
-          <>
-            <Grid container spacing = {0} style = {{display: 'flex', alignContent: 'center', flexWrap: "wrap"}}>
-              <Grid item xs = {2}>
-                <IconButton onClick={handleClear} disabled={state.loading}>
-                  <Icon>
-                    <img
-                      alt="Custom Icon"
-                      className={classes.icon}
-                      src={'/static/icons/Exit_Dropdown_Icon-Red-SVG.svg'}
-                    />
-                  </Icon>
-                </IconButton>
-              </Grid>
-              <Grid item xs = {10} style = {{display: 'flex', alignContent: 'center', flexWrap: "wrap"}}>
-                <Typography className = {classes.special}>
-                  Clear all Selections
-                </Typography>
-              </Grid>
+    <Grid className={classes.root}>
+      {/* <Box
+        // className={clsx(classes.box, classes.listBox)}
+        // style={{ height: (window.screen.availHeight / zoom) * 0.75 }}
+      > */}
+      {state.selectedItems.length > 0 ? (
+        <>
+          <Grid container spacing={0}>
+            <Grid item xs={2}>
+              <IconButton onClick={handleClear} disabled={state.loading}>
+                <Icon>
+                  <img
+                    alt="Custom Icon"
+                    className={classes.icon}
+                    src={'/static/icons/Exit_Dropdown_Icon-Red-SVG.svg'}
+                  />
+                </Icon>
+              </IconButton>
             </Grid>
-            <Divider className={classes.divider}/>
-            <List className={classes.item} style = {{marginBottom: '20px'}}>
-              {state.selectedItems.map((item, i) => (
-                <Accordion expanded = {state.radioButtonSelectionId === item.id}>
-                  <AccordionSummary>
-                    <Fragment key={i}>
-                      <ListItem className={classes.item}>
-                        <Radio
-                          name={item.id.toString()}
-                          checked={state.radioButtonSelectionId === item.id}
-                          onChange={handleChange}
-                          className={classes.radio}
-                          disabled={state.loading}
-                        />
-                        <ListItemText
-                          primary={
-                            <Typography
-                              variant="h6"
-                              component="h6"
-                              color="textPrimary"
-                            >
-                              {item?.system ?? item.name}
-                            </Typography>
-                          }
-                          secondary={
-                            item?.supportedFrequencies ??
-                            `Antenna: ${item.antennaName ?? 'Auto-Select'}`
-                          }
-                          onClick={item?.supportedFrequencies && handleRowClick}
-                        />
-                        <Box flexGrow={1} />
-                        <IconButton
-                          name={item.id.toString()}
-                          className={classes.iconBtn}
-                          onClick={handleDelete}
-                          disabled={state.loading}
-                        >
-                          <CloseIcon fontSize="large" color={'primary'} />
-                        </IconButton>
-                      </ListItem>
-                      <Divider className={classes.divider}/>
-                    </Fragment>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Modulation
-                      state = {state}
-                      onState = {onState}
-                      onBounds = {onBounds}
-                    />
-                  </AccordionDetails>
-                </Accordion>
-                
-              ))}
-            </List>
-          </>
-        ) : (
-            <Grid container spacing = {0} style = {{display: 'flex', alignContent: 'flex-start', flexWrap: "wrap"}}>
-              <Grid item xs = {2}>
-                <IconButton onClick={handleClear} disabled={state.loading}>
-                  <Icon>
-                    <img
-                      alt="Custom Icon"
-                      className={classes.icon}
-                      src={'/static/icons/Exit_Dropdown_Icon-Red-SVG.svg'}
-                    />
-                  </Icon>
-                </IconButton>
-              </Grid>
-              <Grid item xs = {10} style = {{display: 'flex', alignContent: 'center', flexWrap: "wrap"}}>
-                <Typography className = {classes.special}>
-                  Clear all Selections
-                </Typography>
-              </Grid>
-              <Grid item xs = {12}>
-                <Divider className={classes.divider}/>
-              </Grid>
-              <Grid item xs = {12} style = {{padding: '10px', paddingTop: '15vh'}}>
-                <Typography className={classes.placeholder} align={'center'}>
-                  <i>*Right-click and Select a Network or <br/>Ground Station to add to this list.</i>
-                </Typography>
-              </Grid>
+            <Grid item xs={10} alignItems="center" style={{ display: 'flex' }}>
+              <Typography className={classes.special}>
+                Clear all Selections
+              </Typography>
             </Grid>
-        )}
-      </Box>
-    </div>
+          </Grid>
+          <Divider className={classes.divider} />
+          {state.selectedItems.map((item, i) => (
+            <Accordion square key={i}
+              // expanded={state.radioButtonSelectionId === item.id}
+            >
+              <AccordionSummary>
+                <ListItem>
+                  {/* <Radio
+                    name={item.id.toString()}
+                    checked={state.radioButtonSelectionId === item.id}
+                    onChange={handleChange}
+                    className={classes.radio}
+                    disabled={state.loading}
+                  /> */}
+                  <ListItemText
+                    primary={
+                      <Typography
+                        variant="h6"
+                        component="h6"
+                        color="textPrimary"
+                      >
+                        {item?.system ?? item.name}
+                      </Typography>
+                    }
+                    secondary={
+                      item?.supportedFrequencies ??
+                      `Antenna: ${item.antennaName ?? 'Auto-Select'}`
+                    }
+                    onClick={item?.supportedFrequencies && handleRowClick}
+                  />
+                  <Box flexGrow={1} />
+                  <IconButton
+                    name={item.id.toString()}
+                    className={classes.iconBtn}
+                    onClick={handleDelete}
+                    disabled={state.loading}
+                    size="small"
+                  >
+                    <CloseIcon color={'primary'} />
+                  </IconButton>
+                </ListItem>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Modulation
+                  state={state}
+                  onState={onState}
+                  onBounds={onBounds}
+                />
+              </AccordionDetails>
+            </Accordion>
+
+          ))}
+        </>
+      ) : (
+        <Grid container spacing={0}>
+          <Grid item xs={2}>
+            <IconButton onClick={handleClear} disabled={state.loading}>
+              <Icon>
+                <img
+                  alt="Custom Icon"
+                  className={classes.icon}
+                  src={'/static/icons/Exit_Dropdown_Icon-Red-SVG.svg'}
+                />
+              </Icon>
+            </IconButton>
+          </Grid>
+          <Grid item xs={10} alignItems="center" style={{ display: 'flex' }}>
+            <Typography className={classes.special}>
+              Clear all Selections
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider className={classes.divider} />
+          </Grid>
+          <Grid item xs={12} style={{ paddingTop: '15vh' }}>
+            <Typography className={classes.placeholder} align={'center'}>
+              <i>*Right-click and Select a Network or <br />Ground Station to add to this list.</i>
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
+      {/* </Box> */}
+    </Grid>
   );
 };
 

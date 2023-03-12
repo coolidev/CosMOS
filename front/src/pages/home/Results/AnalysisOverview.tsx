@@ -36,9 +36,9 @@ interface AnalysisOverviewProps {
 }
 
 const tabs = [
-  { name: 'Network Selection', lbutton: "Run Analysis", rbutton: "Next"},
-  { name: 'Analysis Parameters', lbutton: "Back", rbutton: "Next"},
-  { name: 'Input Summary', lbutton: "Back", rbutton: "Return"}
+  { name: 'Network Selection', lbutton: "Run Analysis", rbutton: "Next" },
+  { name: 'Analysis Parameters', lbutton: "Back", rbutton: "Next" },
+  { name: 'Input Summary', lbutton: "Back", rbutton: "Return" }
 ];
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -65,15 +65,15 @@ const useStyles = makeStyles((theme: Theme) => ({
         : theme.palette.background.paper
   },
   indicator: {
-    width: '13px',
-    height: '13px',
+    width: '15px',
+    height: '15px',
     marginX: '8px',
     paddingY: '1px',
-    fill: theme.palette.grey[500],
-    color: theme.palette.grey[500],
-    '&:hover':{
+    fill: theme.palette.border.main,
+    color: theme.palette.background.light,
+    '&:hover': {
       cursor: 'pointer',
-      fill: theme.palette.border.main,
+      fill: theme.palette.background.light,
       color: theme.palette.border.main,
     }
   },
@@ -81,27 +81,27 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '15px',
     height: '15px',
     marginX: '8px',
-    fill: theme.palette.border.main,
-    color: theme.palette.border.main,
-    '&:hover':{
+    fill: theme.palette.background.light,
+    color: theme.palette.background.light,
+    '&:hover': {
       cursor: 'pointer',
-      fill: theme.palette.border.main,
+      fill: theme.palette.background.light,
       color: theme.palette.border.main
     }
   },
-  disabledIndicators:{
-    width: '13px',
-    height: '13px',
-    marginX: '8px',
-    paddingY: '1px',
-    fill: theme.palette.grey[500],
-    color: theme.palette.grey[500],
-  },
-  disabledSelectedIndicators:{
+  disabledIndicators: {
     width: '15px',
     height: '15px',
     marginX: '8px',
-    fill: theme.palette.border.main,
+    paddingY: '1px',
+    fill: theme.palette.grey[500],
+    color: theme.palette.border.main,
+  },
+  disabledSelectedIndicators: {
+    width: '15px',
+    height: '15px',
+    marginX: '8px',
+    fill: theme.palette.background.light,
     color: theme.palette.border.main,
   },
   selected: {
@@ -123,7 +123,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   disabledButton: {
     backgroundColor: `${theme.palette.border.opposite} !important`,
     color: `#fff !important`,
-  }, 
+  },
   buttonCircle: {
     backgroundColor: `${theme.palette.background.light} !important`,
     color: `${theme.palette.text.primary} !important`,
@@ -145,12 +145,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: `${theme.palette.text.disabled} !important`,
     borderColor: `${theme.palette.text.disabled} !important`,
     fontSize: '13px',
-    borderRadius: '50px' 
-  }, 
+    borderRadius: '50px'
+  },
   invertedButton: {
-    color: `${theme.palette.text.primary}`,
+    color: `white`,
     '&:hover': {
-      backgroundColor: `${theme.palette.background.main}`
+      // backgroundColor: `${theme.palette.background.main}`
     },
   },
   disabledInvertedButton: {
@@ -161,6 +161,24 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 'inherit',
     width: 'inherit'
   },
+  overviewTitle: {
+    backgroundColor: theme.palette.border.main,
+    borderRadius: '8px 8px 0px 0px',
+  },
+  overviewContext: {
+    border: `2px solid ${theme.palette.border.main}`,
+    backgroundColor: theme.palette.background.light,
+    height: 'calc(100% - 4rem)'
+  },
+  overviewFooter: {
+    backgroundColor: theme.palette.border.main,
+    borderRadius: '0px 0px 8px 8px',
+    '& > div': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  }
 }));
 
 const AnalysisOverview: FC<AnalysisOverviewProps> = ({
@@ -182,19 +200,19 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
   const [metricType, setMetricType] = useState<string>();
   const [data, setData] = useState<PerformancePanel>(null);
   const [analysisDone, setAnalysisDone] = useState<boolean>(false);
-  const [tpd, setTpd] = useState<{theoryCoverage : number, regressionCoverage : number} | null>(null);
+  const [tpd, setTpd] = useState<{ theoryCoverage: number, regressionCoverage: number } | null>(null);
   const [dontChangePanel, setDontChangePanel] = useState<boolean>(false);
   const dispatch = useDispatch();
   const [refreshAnalysis, setRefreshAnalysis] = useState<boolean>(false);
   const [prevWizardId, setPrevWizardId] = useState<number>(wizardIndex);
- 
+
   useEffect(() => {
-    if(state.networkType){
-      if(state.networkType === 'relay'){
+    if (state.networkType) {
+      if (state.networkType === 'relay') {
         setMetricType('coverage');
       } else {
         setMetricType('coverageMinutes');
-      } 
+      }
     }
   }, [state.networkType])
 
@@ -205,63 +223,64 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
   }, [resultTab])
 
   useEffect(() => {
-    if(state.selectedItems.length !== 1){
+    if (state.selectedItems.length !== 1) {
       setTpd(null);
     }
   }, [state.selectedItems])
 
-  useEffect( () => {
+  useEffect(() => {
     const getTPD = (async () => {
-      if(data !== null) {
-        const calcDist = (alt, incl) => {return Math.sqrt(Math.pow(state.parameters.altitude - alt,2) + Math.pow(state.parameters.inclination - incl,2))};
+      if (data !== null) {
+        const calcDist = (alt, incl) => { return Math.sqrt(Math.pow(state.parameters.altitude - alt, 2) + Math.pow(state.parameters.inclination - incl, 2)) };
         let newTheoryPoint;
-        if(state.selectedItems.length === 1 && state.networkType === 'dte'){
-          newTheoryPoint =  await axios.post('/requestCoverageEstimation', {
-            altitude : state.parameters.altitude, 
-            inclination : state.parameters.inclination, 
-            fieldOfView : 89, 
-            frequencyBandId : state.selectedItems[0].frequencyBandId,  
-            groundStationId : state.selectedItems[0].id, 
-            eccentricity : state.parameters.eccentricity
+        if (state.selectedItems.length === 1 && state.networkType === 'dte') {
+          newTheoryPoint = await axios.post('/requestCoverageEstimation', {
+            altitude: state.parameters.altitude,
+            inclination: state.parameters.inclination,
+            fieldOfView: 89,
+            frequencyBandId: state.selectedItems[0].frequencyBandId,
+            groundStationId: state.selectedItems[0].id,
+            eccentricity: state.parameters.eccentricity
           })
         }
-        let theoryCoverage =null;
-        if(newTheoryPoint){
+        let theoryCoverage = null;
+        if (newTheoryPoint) {
           theoryCoverage = newTheoryPoint.data.result;
           //This code is supposed to update the theory point on the graph so that the user point has a place to go to, but it doesnt right now
           //This is a known problem, and we should try to solve it in the future.
-          
+
           let deletedItems = 0;
           data.modelData.orbital.coverageMinutes.points.forEach((point, index, array) => {
-            if(point.theoryPoint){
+            if (point.theoryPoint) {
               array.splice(index, 1);
               deletedItems++;
-            } 
+            }
           });
-          if(deletedItems === 0){
+          if (deletedItems === 0) {
             data.modelData.orbital.coverageMinutes.points.pop();
           }
           data.modelData.orbital.coverageMinutes.points.push({
-            altitude: state.parameters.altitude, 
+            altitude: state.parameters.altitude,
             inclination: state.parameters.inclination,
             eccentricity: state.parameters.eccentricity,
-            value: newTheoryPoint.data.result*1440,
-            theoryPoint: true});
+            value: newTheoryPoint.data.result * 1440,
+            theoryPoint: true
+          });
         }
         let regressionCoverage = null;
-        let closestPoint = {dist: calcDist(-10000,-10000), value:0};
+        let closestPoint = { dist: calcDist(-10000, -10000), value: 0 };
         closestPoint = data?.predictedData.surfaces[metricType]?.reduce((reduceClosest, currentPoint) => {
           let currentDist = calcDist(currentPoint.altitude, currentPoint.inclination);
-          if(currentDist < reduceClosest.dist) {
-            return {dist: currentDist, value:currentPoint.value}
+          if (currentDist < reduceClosest.dist) {
+            return { dist: currentDist, value: currentPoint.value }
           } else {
             return reduceClosest;
           }
         }, closestPoint);
-        if(closestPoint && closestPoint.dist !== calcDist(-10000,-10000)) {
-          regressionCoverage = closestPoint.value/(60*24);
+        if (closestPoint && closestPoint.dist !== calcDist(-10000, -10000)) {
+          regressionCoverage = closestPoint.value / (60 * 24);
         }
-        setTpd(theoryCoverage === null ? null : {theoryCoverage, regressionCoverage});
+        setTpd(theoryCoverage === null ? null : { theoryCoverage, regressionCoverage });
       }
     });
     getTPD();
@@ -269,7 +288,7 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
   }, [data, state.parameters]);
 
   useEffect(() => {
-    if(state.parameters.eccentricity === 0 && !(state.pointSync)){
+    if (state.parameters.eccentricity === 0 && !(state.pointSync)) {
       onState('noRegression', false);
     } else {
       onState('noRegression', true);
@@ -278,15 +297,15 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
   }, [state.parameters.eccentricity, state.pointSync])
 
   useEffect(() => {
-    if(wizardIndex === 1 && !state.isDataLoaded && prevWizardId === 0){
+    if (wizardIndex === 1 && !state.isDataLoaded && prevWizardId === 0) {
       setAnalysisType('no-point');
       setRefreshAnalysis(true);
     }
-    if((resultTab !== 'network' || collapsed) && !dontChangePanel){
+    if ((resultTab !== 'network' || collapsed) && !dontChangePanel) {
       onResultTab('network');
     }
-    if(!dontChangePanel){
-        setDontChangePanel(false);
+    if (!dontChangePanel) {
+      setDontChangePanel(false);
     }
     setPrevWizardId(wizardIndex);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -299,15 +318,15 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
   })
 
   useEffect(() => {
-    if(data && data.modelData.orbital[metricType]){
-        if(data.modelData.orbital[metricType].points.find((element) => 
+    if (data && data.modelData.orbital[metricType]) {
+      if (data.modelData.orbital[metricType].points.find((element) =>
         (element.altitude === state.parameters.altitude && element.inclination === state.parameters.inclination && element.eccentricity === state.parameters.eccentricity))
-        ){
-            setPointExists(true);
-        } else {
-            setPointExists(false);
-        }
-    } 
+      ) {
+        setPointExists(true);
+      } else {
+        setPointExists(false);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.parameters.altitude, state.parameters.inclination, state.parameters.eccentricity])
 
@@ -330,118 +349,22 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
   }
 
   return (
-    <Grid container justifyContent="center" alignItems="center">
-      <Box
-        mt={2}
-        ml={2}
-        mr={3}
-        display="flex"
-        className={
-          resultTab === 'network' && !collapsed
-            ? classes.overview
-            : classes.hide
-        }
-      >
-        <Grid item md={tabs[wizardIndex].name === 'Input Summary' ? 3 : 2}>
-          <IconButton
-            onClick={() =>
-              prev(wizardIndex !== 0 ? wizardIndex - 1 : 2, wizardIndex)
-            }
-            className={classes.invertedButton}
-            style={{
-              marginLeft: '10px',
-              marginTop: '5px',
-              display:
-                tabs[wizardIndex].name === 'Network Selection' ? 'none' : 'flex'
-            }}
-          >
-            <ArrowBackIosRounded color="primary" />
-          </IconButton>
-          {/* <Box
-            display={
-              tabs[wizardIndex].name === 'Network Selection' ? 'flex' : 'none'
-            }
-            justifyContent="flex-end"
-            mr={4}
-            mt={2}
-          >
-            <Tooltip title="Remove All Selections" placement="left">
-              <IconButton onClick={handleClear} disabled={state.loading}>
-                <Icon>
-                  <img
-                    alt="Custom Icon"
-                    className={classes.icon}
-                    src={'/static/icons/Exit_Dropdown_Icon-Red-SVG.svg'}
-                  />
-                </Icon>
-              </IconButton>
-            </Tooltip>
-          </Box> */}
-        </Grid>
-        <Grid item md={tabs[wizardIndex].name === 'Input Summary' ? 6 : 8}>
-          <Grid item md={12}>
+    <Grid container justifyContent="center" style={{ padding: '0.5rem 1rem', height: '100%' }}>
+      <Grid container className={classes.overviewTitle}>
+        <Grid item md={12} style={{ padding: '4px 1rem' }}>
           <Typography
-            variant="h4"
-            component="h4"
+            variant="h3"
+            component="h3"
             style={{
               fontWeight: 'normal',
-              textAlign: 'center',
-              marginTop: '10px'
+              color: 'white'
             }}
-            color="textPrimary"
           >
             {tabs[wizardIndex].name}
           </Typography>
-          </Grid>
-          <Grid item md={12}>
-            <Box display="flex" alignItems={"center"} justifyContent={"center"}>
-                 <Circle style={{margin: '5px'}} className={state.selectedItems.length === 0?classes.disabledSelectedIndicators:tabs[wizardIndex].name === 'Network Selection'?classes.selectedIndicator:classes.indicator} onClick={()=> state.selectedItems.length !== 0?setWizardIndex(0):null}/>
-                 <Circle style={{margin: '5px'}} className={state.selectedItems.length === 0?classes.disabledIndicators:tabs[wizardIndex].name === 'Analysis Parameters'?classes.selectedIndicator:classes.indicator} onClick={()=>state.selectedItems.length !== 0?setWizardIndex(1):null}/>
-                 <Circle style={{margin: '5px'}} className={state.selectedItems.length === 0?classes.disabledIndicators:tabs[wizardIndex].name === 'Input Summary'?classes.selectedIndicator:classes.indicator} onClick={()=>state.selectedItems.length !== 0?setWizardIndex(2):null}/>
-            </Box> 
-          </Grid>
         </Grid>
-        <Grid item md={tabs[wizardIndex].name === 'Input Summary' ? 3 : 2}>
-          {tabs[wizardIndex].name !== 'Input Summary' ? (
-            <IconButton
-              onClick={() =>
-                next(wizardIndex !== 2 ? wizardIndex + 1 : 0, wizardIndex)
-              }
-              className={classes.invertedButton}
-              style={{
-                marginLeft: '10px',
-                marginTop: '5px',
-                display: 'flex'
-              }}
-              disabled={state.selectedItems.length === 0}
-            >
-              <ArrowForwardIosRounded color={state.selectedItems.length === 0?"disabled":"primary"} />
-            </IconButton>
-          ) : (
-            <Button
-              onClick={runAnalysis}
-              variant="contained"
-              color="primary"
-              disabled={
-                (state.noRegression && !state.pointSync && !state.parametric) || state.loading
-              }
-              className={
-                state.selectedItems.length === 0
-                  ? classes.disabledButton
-                  : classes.button
-              }
-              style={{
-                marginTop: '15px',
-                display: resultTab !== 'network' ? 'none' : 'flex'
-              }}
-              fullWidth
-            >
-              Run Analysis
-            </Button>
-          )}
-        </Grid>
-      </Box>
-      <Grid item md={12}>
+      </Grid>
+      <Grid container className={classes.overviewContext}>
         <Carousel
           autoPlay={false}
           animation="slide"
@@ -454,18 +377,9 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
           navButtonsAlwaysInvisible={true}
           swipe={false}
           indicators={false}
-          // indicatorContainerProps={{
-          //   style: {
-          //     zIndex: 1,
-          //     marginTop: (window.screen.availHeight / zoom) * -0.77,
-          //     position: "absolute"
-          //   }
-          // }}
-          // onChange={setWizardIndex}}
           index={wizardIndex}
           next={next}
           prev={prev}
-          height={(window.screen.availHeight / zoom) * 0.765}
         >
           <Network
             state={state}
@@ -534,80 +448,68 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
             setData={setData}
             setAnalysisDone={setAnalysisDone}
             refresh={refreshAnalysis}
-            setRefresh={(val: boolean)=>setRefreshAnalysis(val)}
+            setRefresh={(val: boolean) => setRefreshAnalysis(val)}
           />
-          <SummaryPanel visible={true} state={state} onState={onState} analysisType={analysisType}/>
+          <SummaryPanel visible={true} state={state} onState={onState} analysisType={analysisType} />
         </Carousel>
-        {/* <Box mx={5} my={2} alignItems="center" display={'flex'}>
-          
-          <Grid md={tabs[wizardIndex].name === 'Network Selection'?6:2}>
-            <Button
-              onClick={() => setWizardIndex(0)}
-              variant={"outlined"}
-              disabled = {state.selectedItems.length === 0}
-              className={
-                tabs[wizardIndex].name === 'Network Selection'
-                  ? classes.selectedButtonCircle
-                  : classes.buttonCircle
+      </Grid>
+      <Grid container className={classes.overviewFooter}>
+        <Grid item md={2}>
+          {tabs[wizardIndex].name !== 'Network Selection' ? <IconButton
+            onClick={() =>
+              prev(wizardIndex !== 0 ? wizardIndex - 1 : 2, wizardIndex)
+            }
+            className={classes.invertedButton}
+            size="small"
+          >
+            <ArrowBackIosRounded />
+          </IconButton>: <></>}
+        </Grid>
+        <Grid item md={8}>
+          <Grid item md={12}>
+            <Box display="flex" alignItems={"center"} justifyContent={"center"}>
+              <Circle style={{ margin: '5px' }} className={state.selectedItems.length === 0 ? classes.disabledSelectedIndicators : tabs[wizardIndex].name === 'Network Selection' ? classes.selectedIndicator : classes.indicator} onClick={() => state.selectedItems.length !== 0 ? setWizardIndex(0) : null} />
+              <Circle style={{ margin: '5px' }} className={state.selectedItems.length === 0 ? classes.disabledIndicators : tabs[wizardIndex].name === 'Analysis Parameters' ? classes.selectedIndicator : classes.indicator} onClick={() => state.selectedItems.length !== 0 ? setWizardIndex(1) : null} />
+              <Circle style={{ margin: '5px' }} className={state.selectedItems.length === 0 ? classes.disabledIndicators : tabs[wizardIndex].name === 'Input Summary' ? classes.selectedIndicator : classes.indicator} onClick={() => state.selectedItems.length !== 0 ? setWizardIndex(2) : null} />
+            </Box>
+          </Grid>
+        </Grid>
+        <Grid item md={2}>
+          {tabs[wizardIndex].name !== 'Input Summary' ? (
+            state.selectedItems.length !== 0 && <IconButton
+              onClick={() =>
+                next(wizardIndex !== 2 ? wizardIndex + 1 : 0, wizardIndex)
               }
-              style={{
-                display: 'flex'
-              }}
-              fullWidth
+              className={classes.invertedButton}
+              // disabled={state.selectedItems.length === 0}
+              size="small"
             >
-              {tabs[wizardIndex].name === 'Network Selection'?tabs[wizardIndex].name:'Step 1'}
-            </Button>
-          </Grid>
-          <Grid md={1}>
-            <TrendingFlatRounded color="action" style={{marginLeft: '5px'}}/> 
-          </Grid>
-          
-          <Grid md={tabs[wizardIndex].name === 'Analysis Parameters'?6:2}>
-            <Button
-              onClick={() => setWizardIndex(1)}
-              disabled={state.selectedItems.length === 0}
-              variant={"outlined"}
-              className={
-                state.selectedItems.length === 0?
-                  classes.disabledButtonCircle
-                : tabs[wizardIndex].name === 'Analysis Parameters'
-                  ? classes.selectedButtonCircle
-                  : classes.buttonCircle
-              }
-              style={{
-                display: 'flex'
-              }}
-              fullWidth
-            >
-              {tabs[wizardIndex].name === 'Analysis Parameters'?tabs[wizardIndex].name:'Step 2'}
-            </Button>
-          </Grid>
-          <Grid md={1}>
-            <TrendingFlatRounded color="action" style={{marginLeft: '5px'}}/>
-          </Grid>
-
-          <Grid md={tabs[wizardIndex].name === 'Input Summary'?6:2}>
-            <Button
-              onClick={() => setWizardIndex(2)}
-              disabled={state.selectedItems.length === 0}
-              variant={"outlined"}
-              className={
-                state.selectedItems.length === 0?
-                  classes.disabledButtonCircle
-                : tabs[wizardIndex].name === 'Input Summary'
-                  ? classes.selectedButtonCircle
-                  : classes.buttonCircle
-              }
-              style={{
-                display: 'flex'
-              }}
-              fullWidth
-            >
-              {tabs[wizardIndex].name === 'Input Summary'?tabs[wizardIndex].name:'Step 3'}
-            </Button>
-          </Grid>
-          
-        </Box> */}
+              <ArrowForwardIosRounded />
+            </IconButton>
+          ) : (<></>
+          )}
+          {/* <Button
+            onClick={runAnalysis}
+            variant="contained"
+            color="primary"
+            disabled={
+              (state.noRegression && !state.pointSync && !state.parametric) || state.loading
+            }
+            size="small"
+            // className={
+            //   state.selectedItems.length === 0
+            //     ? classes.disabledButton
+            //     : classes.button
+            // }
+            // style={{
+            //   marginTop: '15px',
+            //   display: resultTab !== 'network' ? 'none' : 'flex'
+            // }}
+            fullWidth
+          >
+            Run Analysis
+          </Button> */}
+        </Grid>
       </Grid>
     </Grid>
   );
