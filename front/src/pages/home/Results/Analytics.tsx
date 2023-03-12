@@ -13,7 +13,8 @@ import {
   Dialog,
   DialogActions,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Grid
 } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import axios from 'src/utils/axios';
@@ -50,8 +51,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     overflowX: 'hidden',
     overflowY: 'hidden',
-    padding: '5px',
-    margin: theme.spacing(5, 3, 5, 3)
   },
   hide: {
     display: 'none',
@@ -61,11 +60,52 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflowY: 'hidden',
     padding: '5px'
   },
+  overviewTitle: {
+    backgroundColor: theme.palette.border.main,
+    borderRadius: '8px 8px 0px 0px',
+  },
+  overviewContext: {
+    border: `2px solid ${theme.palette.border.main}`,
+    backgroundColor: theme.palette.background.light,
+    height: 'calc(100% - 4.5rem)',
+    overflowY: "auto"
+  },
+  overviewFooter: {
+    backgroundColor: theme.palette.border.main,
+    borderRadius: '0px 0px 8px 8px',
+    minHeight: '30px',
+    '& > div': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  },
   popoutDialog: {
     minWidth: '50vw !important',
     maxWidth: '52vw !important',
     minHeight: '75vh !important',
     maxHeight: '78vh !important'
+  },
+  subSummary: {
+    '& *': {
+      fontFamily: 'Roboto',
+      fontStyle: "normal",
+      fontSize: "26px",
+      lineHeight: "32px",
+      color: theme.palette.border.main,
+    },
+    fontFamily: 'Roboto',
+    fontStyle: "normal",
+    fontSize: "26px",
+    lineHeight: "32px",
+    display: "flex",
+    alignItems: "center",
+    color: theme.palette.border.main,
+    paddingLeft: '1rem',
+    borderBottom: `4px solid ${theme.palette.border.main}`,
+  },
+  btnUpload: {
+    color: theme.palette.background.light
   }
 }));
 
@@ -152,6 +192,7 @@ const Analytics: FC<AnalyticsProps> = ({
       setRegressionTypes([]);
       setMaxAltitude(0);
       setTraces({});
+      setSize({ width: 350, height: 200 })
     }
   }, [state.isDataLoaded]);
 
@@ -772,95 +813,66 @@ const Analytics: FC<AnalyticsProps> = ({
   };
 
   return (
-    <div ref={panelElement} className={visible ? classes.root : classes.hide}>
-      <Box display="flex" alignItems="center" mb={5}>
-        <Select
-          disableUnderline
-          value={dataType}
-          onChange={handleSelect}
-          style={{
-            border: `1px solid ${theme.palette.border.main}`,
-            borderRadius: 6,
-            marginLeft: theme.spacing(3),
-            padding: theme.spacing(0.5, 6),
-            textAlignLast: 'center',
-            backgroundColor: theme.palette.primary.main,
-            color: '#fff'
-          }}
-        >
-          <MenuItem value="coverage" style={{ textIndent: theme.spacing(5) }}>
-            RF Coverage
-          </MenuItem>
-          <MenuItem
-            value="no-coverage"
-            style={{ textIndent: theme.spacing(5) }}
-          >
-            No RF Coverage
-          </MenuItem>
-          {state.networkType === 'relay' && (
-            <MenuItem value="doppler" style={{ textIndent: theme.spacing(5) }}>
-              {'Doppler'}
-            </MenuItem>
-          )}
-          {state.networkType === 'relay' && (
-            <MenuItem
-              value="dopplerRate"
-              style={{ textIndent: theme.spacing(5) }}
+    <Grid container justifyContent="center" className={visible ? classes.root : classes.hide} style={{ padding: '0.5rem 1rem', height: '100%' }}>
+      <Grid item className={classes.overviewTitle} xs={12}>
+        <Grid container>
+          <Grid item xs={12} style={{ padding: '4px 1rem' }}>
+            <Typography
+              variant="h3"
+              component="h3"
+              style={{
+                fontWeight: 'normal',
+                color: 'white'
+              }}
             >
-              {'Doppler Rate'}
-            </MenuItem>
-          )}
-          {state.networkType === 'relay' && (
-            <MenuItem
-              value="trackingRate"
-              style={{ textIndent: theme.spacing(5) }}
-            >
-              {'Tracking Rate'}
-            </MenuItem>
-          )}
-        </Select>
-        <Box flexGrow={1} />
-        <Box mb={2}>
-          {state.pointSync ? null : (
-            <IconButton
-              id={state.parameters.isOrbital ? 'two-view-section' : 'heatmap'}
-              onClick={handleClose}
-              disabled={!state.isDataLoaded}
-            >
-              <ExitToAppIcon color="primary" />
-            </IconButton>
-          )}
-        </Box>
-        {possiblePoints.length > 0 ? (
-          <Select
-            labelId="selectParaPoint"
-            onChange={(event) => {
-              setDisplayPoint(Number(event.target.value));
-            }}
-            value={displayPoint}
-          >
-            {possiblePoints.map((point, i) => {
-              point = toOrbitalPoint(point);
-              return (
-                <MenuItem value={i} key={i}>
-                  {point.altitude}, {point.inclination}, {point.eccentricity}
+              Analytics
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item className={classes.overviewContext} xs={12}>
+        <Grid container>
+          <Grid item xs={12} style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <Typography className={classes.subSummary}>
+              <Select
+                disableUnderline
+                value={dataType}
+                onChange={handleSelect}
+              >
+                <MenuItem value="coverage" style={{ textIndent: theme.spacing(5) }}>
+                  RF Coverage
                 </MenuItem>
-              );
-            })}
-          </Select>
-        ) : null}
-      </Box>
-
-      {state.pointSync ? (
-        <ItemBox withTypography={true} theme={theme}>
-          RF Coverage ({state.networkType === 'relay' ? `%` : `min/day`}):{' '}
-          <span style={{ float: 'right' }}>
-            {!isNaN(rfVal) ? rfVal?.toFixed(2) : 'No data (run an analysis)'}
-          </span>
-        </ItemBox>
-      ) : (
-        <>
-          <Box mb={2} paddingLeft={'5%'}>
+                <MenuItem
+                  value="no-coverage"
+                  style={{ textIndent: theme.spacing(5) }}
+                >
+                  No RF Coverage
+                </MenuItem>
+                {state.networkType === 'relay' && (
+                  <MenuItem value="doppler" style={{ textIndent: theme.spacing(5) }}>
+                    {'Doppler'}
+                  </MenuItem>
+                )}
+                {state.networkType === 'relay' && (
+                  <MenuItem
+                    value="dopplerRate"
+                    style={{ textIndent: theme.spacing(5) }}
+                  >
+                    {'Doppler Rate'}
+                  </MenuItem>
+                )}
+                {state.networkType === 'relay' && (
+                  <MenuItem
+                    value="trackingRate"
+                    style={{ textIndent: theme.spacing(5) }}
+                  >
+                    {'Tracking Rate'}
+                  </MenuItem>
+                )}
+              </Select>
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
             {state.parameters.isOrbital ? (
               <TwoViewSection
                 state={[
@@ -927,85 +939,32 @@ const Analytics: FC<AnalyticsProps> = ({
                 isClickable={true}
               />
             )}
-          </Box>
-        </>
-      )}
+          </Grid>
 
-      {dataType.includes('coverage') && (
-        <Accordion expanded={expanded === 1} onChange={handleExpand(1)}>
-          <AccordionSummary>
-            {expanded === 1 ? (
-              <>
-                <Box
-                  bgcolor={theme.palette.border.main}
-                  py={2}
-                  px={3}
-                  borderRadius={6}
-                >
-                  <Typography style={{ color: '#fff' }}>
-                    Running Coverage Average
-                  </Typography>
-                </Box>
-                <Box flexGrow={1} />
-                <IconButton
-                  id="line-chart"
-                  onClick={handleClose}
-                  disabled={!state.isDataLoaded}
-                >
-                  <ExitToAppIcon color="primary" />
-                </IconButton>
-              </>
-            ) : (
-              <Typography color="textPrimary">
-                Running Coverage Average
-              </Typography>
-            )}
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box minHeight={(window.screen.availHeight / zoom) * 0.2} mx={1}>
-              <LineChartSection
-                source={
-                  traces
-                    ? traces[dataType === 'coverage' ? 'coverage' : 'gap']
-                    : null
-                }
-                metricType={dataType}
-                size={size}
-                networkType={state.networkType}
-              />
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-      )}
-      <Accordion expanded={expanded === 2} onChange={handleExpand(2)}>
-        <AccordionSummary>
-          {expanded === 2 ? (
-            <>
-              <Box
-                bgcolor={theme.palette.border.main}
-                py={2}
-                px={3}
-                borderRadius={6}
-              >
-                <Typography style={{ color: '#fff' }}>
-                  Coverage Distribution
-                </Typography>
-              </Box>
-              <Box flexGrow={1} />
-              <IconButton
-                id="histogram-chart"
-                onClick={handleClose}
-                disabled={!state.isDataLoaded}
-              >
-                <ExitToAppIcon color="primary" />
-              </IconButton>
-            </>
-          ) : (
-            <Typography color="textPrimary">Coverage Distribution</Typography>
-          )}
-        </AccordionSummary>
-        <AccordionDetails>
-          <Box minHeight={(window.screen.availHeight / zoom) * 0.2} mx={1}>
+          <Grid item xs={12} style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <Typography className={classes.subSummary}>
+              Running Coverage Average
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <LineChartSection
+              source={
+                traces
+                  ? traces[dataType === 'coverage' ? 'coverage' : 'gap']
+                  : null
+              }
+              metricType={dataType}
+              size={size}
+              networkType={state.networkType}
+            />
+          </Grid>
+          
+          <Grid item xs={12} style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <Typography className={classes.subSummary}>
+              Coverage Distribution
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
             <HistogramChartSection
               title={`<b>${
                 Object.keys(PLOT_TITLES).includes(state.networkType)
@@ -1050,38 +1009,14 @@ const Analytics: FC<AnalyticsProps> = ({
               networkType={state.networkType}
               metricType={dataType}
             />
-          </Box>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 3} onChange={handleExpand(3)}>
-        <AccordionSummary>
-          {expanded === 3 ? (
-            <>
-              <Box
-                bgcolor={theme.palette.border.main}
-                py={2}
-                px={3}
-                borderRadius={6}
-              >
-                <Typography style={{ color: '#fff' }}>
-                  Coverage Statistics
-                </Typography>
-              </Box>
-              <Box flexGrow={1} />
-              <IconButton
-                id="box-chart"
-                onClick={handleClose}
-                disabled={!state.isDataLoaded}
-              >
-                <ExitToAppIcon color="primary" />
-              </IconButton>
-            </>
-          ) : (
-            <Typography color="textPrimary">Coverage Statistics</Typography>
-          )}
-        </AccordionSummary>
-        <AccordionDetails>
-          <Box minHeight={(window.screen.availHeight / zoom) * 0.2} mx={1}>
+          </Grid>
+
+          <Grid item xs={12} style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <Typography className={classes.subSummary}>
+              Coverage Statistics
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
             <BoxChartSection
               title={`<b>Statistics</b>`}
               yAxisTitle={
@@ -1130,307 +1065,317 @@ const Analytics: FC<AnalyticsProps> = ({
                     ]
               }
             />
-          </Box>
-        </AccordionDetails>
-      </Accordion>
-      {performancePanel && (
-        <Button
-          style={{ float: 'right' }}
-          onClick={() => {
-            setSaveData(true);
-          }}
-          variant="contained"
-          color="primary"
-          disabled={(!state.pointSync && !state.parametric) || savingData}
-          fullWidth
-        >
-          {savingData ? 'Uploading Data...' : 'Upload Data'}
-        </Button>
-      )}
+          </Grid>
 
-      {saveData && (
-        <Dialog
-          open={saveData}
-          keepMounted
-          onClose={() => {
-            setSaveData(false);
-          }}
-        >
-          <DialogTitle
-            style={{
-              margin: 0,
-              padding: '16px',
-              backgroundColor: theme.palette.primary.light
-            }}
-          >
-            Are You Sure You Wish to Upload This Data?
-          </DialogTitle>
-          <DialogContent
-            style={{ backgroundColor: theme.palette.component.main }}
-          >
-            <DialogContentText>
-              By uploading the data from the results of this run, this will make
-              the data availible to all other users of the CART software. If you
-              do not wish for this to happen, or if the integrity of the data is
-              poor, we request that you do not upload the data. If you still
-              wish to upload the data anyways, press OK, otherwise press Return.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions
-            style={{ backgroundColor: theme.palette.component.main }}
-          >
+          {/* {performancePanel && (
             <Button
+              style={{ float: 'right' }}
               onClick={() => {
+                setSaveData(true);
+              }}
+              variant="contained"
+              color="primary"
+              disabled={(!state.pointSync && !state.parametric) || savingData}
+              fullWidth
+            >
+              {savingData ? 'Uploading Data...' : 'Upload Data'}
+            </Button>
+          )}
+
+          {saveData && (
+            <Dialog
+              open={saveData}
+              keepMounted
+              onClose={() => {
                 setSaveData(false);
               }}
-              color="primary"
             >
-              {`Return`}
-            </Button>
-            <Button onClick={uploadData} color="primary">
-              {`OK`}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
+              <DialogTitle
+                style={{
+                  margin: 0,
+                  padding: '16px',
+                  backgroundColor: theme.palette.primary.light
+                }}
+              >
+                Are You Sure You Wish to Upload This Data?
+              </DialogTitle>
+              <DialogContent
+                style={{ backgroundColor: theme.palette.component.main }}
+              >
+                <DialogContentText>
+                  By uploading the data from the results of this run, this will make
+                  the data availible to all other users of the CART software. If you
+                  do not wish for this to happen, or if the integrity of the data is
+                  poor, we request that you do not upload the data. If you still
+                  wish to upload the data anyways, press OK, otherwise press Return.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions
+                style={{ backgroundColor: theme.palette.component.main }}
+              >
+                <Button
+                  onClick={() => {
+                    setSaveData(false);
+                  }}
+                  color="primary"
+                >
+                  {`Return`}
+                </Button>
+                <Button onClick={uploadData} color="primary">
+                  {`OK`}
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
 
-      {open && (
-        <DialogBox
-          id={open}
-          title={'Analytics Plot'}
-          isOpen={Boolean(open)}
-          onClose={handleClose}
-          classes={{ paper: classes.popoutDialog }}
-          style={{ overflow: 'hidden' }}
-        >
-          {open === 'two-view-section' && (
-            <TwoViewSection
-              state={[
-                {
-                  ...state,
-                  parameters: {
-                    isOrbital: true,
-                    orbitState: parameters?.orbitState,
-                    altitude: parameters?.altitude,
-                    inclination: parameters?.inclination,
-                    latitude: 0,
-                    longitude: 0,
-                    raan: parameters?.raan,
-                    eccentricity: parameters?.eccentricity,
-                    argumentOfPerigee: parameters?.argumentOfPerigee,
-                    trueAnomaly: parameters?.trueAnomaly,
-                    gain: parameters?.gain,
-                    transmitterPower: parameters?.transmitterPower,
-                    eirp: parameters?.eirp,
-                    ltan: parameters?.ltan,
-                    sunSyncUseAlt: parameters?.sunSyncUseAlt
+          {open && (
+            <DialogBox
+              id={open}
+              title={'Analytics Plot'}
+              isOpen={Boolean(open)}
+              onClose={handleClose}
+              classes={{ paper: classes.popoutDialog }}
+              style={{ overflow: 'hidden' }}
+            >
+              {open === 'two-view-section' && (
+                <TwoViewSection
+                  state={[
+                    {
+                      ...state,
+                      parameters: {
+                        isOrbital: true,
+                        orbitState: parameters?.orbitState,
+                        altitude: parameters?.altitude,
+                        inclination: parameters?.inclination,
+                        latitude: 0,
+                        longitude: 0,
+                        raan: parameters?.raan,
+                        eccentricity: parameters?.eccentricity,
+                        argumentOfPerigee: parameters?.argumentOfPerigee,
+                        trueAnomaly: parameters?.trueAnomaly,
+                        gain: parameters?.gain,
+                        transmitterPower: parameters?.transmitterPower,
+                        eirp: parameters?.eirp,
+                        ltan: parameters?.ltan,
+                        sunSyncUseAlt: parameters?.sunSyncUseAlt
+                      }
+                    }
+                  ]}
+                  data={[performancePanel]}
+                  metricData={source?.plot_value}
+                  //predictedData={performancePanel?.predictedData}
+                  metricType={
+                    dataType === 'coverage'
+                      ? state.networkType === 'relay'
+                        ? 'coverage'
+                        : 'coverageMinutes'
+                      : ''
                   }
-                }
-              ]}
-              data={[performancePanel]}
-              metricData={source?.plot_value}
-              //predictedData={performancePanel?.predictedData}
-              metricType={
-                dataType === 'coverage'
-                  ? state.networkType === 'relay'
-                    ? 'coverage'
-                    : 'coverageMinutes'
-                  : ''
-              }
-              regressionTypes={regressionTypes}
-              isLegend={false}
-              minAltitude={state.networkType === 'relay' ? 0 : 300}
-              maxAltitude={maxAltitude}
-              values={[parameters?.value]}
-              isSub={false}
-              size={popoutSize}
-              yAxisLabel={
-                state.networkType === 'relay'
-                  ? dataType === 'coverage'
-                    ? 'RF Coverage (%)'
-                    : 'No RF Coverage (%)'
-                  : dataType === 'coverage'
-                  ? 'RF Coverage (min/day)'
-                  : 'No RF Coverage (min/day)'
-              }
-              plotOptions={{
-                show_surface: true,
-                show_scatter: true
-              }}
-              onClick={handleClick}
-              chartDiv="RFCoverageplotly"
-              isClickable={true}
-            />
-          )}
-          {open === 'heatmap' && (
-            <Heatmap
-              metricType={
-                dataType === 'coverage'
-                  ? state.networkType === 'relay'
-                    ? 'coverage'
-                    : 'coverageMinutes'
-                  : ''
-              }
-              isSubSection={true}
-              isEarth={false}
-              mode="heatmap"
-              size={popoutSize}
-              source={terrestrial}
-              onClick={handleClick}
-              isClickable={true}
-            />
-          )}
-          {open === 'line-chart' && (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ padding: '0 30px' }}>
-                <span style={{ float: 'right' }}>
-                  <CSVLink
-                    data={
+                  regressionTypes={regressionTypes}
+                  isLegend={false}
+                  minAltitude={state.networkType === 'relay' ? 0 : 300}
+                  maxAltitude={maxAltitude}
+                  values={[parameters?.value]}
+                  isSub={false}
+                  size={popoutSize}
+                  yAxisLabel={
+                    state.networkType === 'relay'
+                      ? dataType === 'coverage'
+                        ? 'RF Coverage (%)'
+                        : 'No RF Coverage (%)'
+                      : dataType === 'coverage'
+                      ? 'RF Coverage (min/day)'
+                      : 'No RF Coverage (min/day)'
+                  }
+                  plotOptions={{
+                    show_surface: true,
+                    show_scatter: true
+                  }}
+                  onClick={handleClick}
+                  chartDiv="RFCoverageplotly"
+                  isClickable={true}
+                />
+              )}
+              {open === 'heatmap' && (
+                <Heatmap
+                  metricType={
+                    dataType === 'coverage'
+                      ? state.networkType === 'relay'
+                        ? 'coverage'
+                        : 'coverageMinutes'
+                      : ''
+                  }
+                  isSubSection={true}
+                  isEarth={false}
+                  mode="heatmap"
+                  size={popoutSize}
+                  source={terrestrial}
+                  onClick={handleClick}
+                  isClickable={true}
+                />
+              )}
+              {open === 'line-chart' && (
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ padding: '0 30px' }}>
+                    <span style={{ float: 'right' }}>
+                      <CSVLink
+                        data={
+                          traces
+                            ? ((traces: AnalyticsPlotsData) => {
+                                if (!(traces && traces.xTraces)) return [];
+                                let csvVals = [];
+                                for (let i = 0; i < traces.xTraces.length; i++) {
+                                  csvVals.push({
+                                    xTrace: traces.xTraces[i],
+                                    yTrace: traces.yTraces
+                                      ? traces.yTraces[i]
+                                      : null,
+                                    avgTrace: traces.avgTraces
+                                      ? traces.avgTraces[i]
+                                      : null
+                                  });
+                                }
+                                return csvVals;
+                              })(
+                                traces[dataType === 'coverage' ? 'coverage' : 'gap']
+                              )
+                            : null
+                        }
+                        filename={`plot_data.csv`}
+                        target="_blank"
+                      >
+                        <Typography
+                          component="p"
+                          variant="body2"
+                          style={{ color: CART_RED }}
+                        >
+                          {'csv'}
+                        </Typography>
+                      </CSVLink>
+                    </span>
+                  </div>
+                  <LineChartSection
+                    source={
                       traces
-                        ? ((traces: AnalyticsPlotsData) => {
-                            if (!(traces && traces.xTraces)) return [];
-                            let csvVals = [];
-                            for (let i = 0; i < traces.xTraces.length; i++) {
-                              csvVals.push({
-                                xTrace: traces.xTraces[i],
-                                yTrace: traces.yTraces
-                                  ? traces.yTraces[i]
-                                  : null,
-                                avgTrace: traces.avgTraces
-                                  ? traces.avgTraces[i]
-                                  : null
-                              });
-                            }
-                            return csvVals;
-                          })(
-                            traces[dataType === 'coverage' ? 'coverage' : 'gap']
-                          )
+                        ? traces[dataType === 'coverage' ? 'coverage' : 'gap']
                         : null
                     }
-                    filename={`plot_data.csv`}
-                    target="_blank"
-                  >
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      style={{ color: CART_RED }}
-                    >
-                      {'csv'}
-                    </Typography>
-                  </CSVLink>
-                </span>
-              </div>
-              <LineChartSection
-                source={
-                  traces
-                    ? traces[dataType === 'coverage' ? 'coverage' : 'gap']
-                    : null
-                }
-                metricType={dataType}
-                size={popoutSize}
-                networkType={state.networkType}
-              />
-            </div>
-          )}
-          {open === 'histogram-chart' && (
-            <HistogramChartSection
-              title={`<b>${
-                Object.keys(PLOT_TITLES).includes(state.networkType)
-                  ? PLOT_TITLES[state.networkType][dataType]
-                  : ''
-              }</b>`}
-              yAxisTitle={
-                dataType.includes('coverage')
-                  ? `Duration (${
-                      state.networkType === 'relay' ? 'sec' : 'min'
-                    })`
-                  : PLOT_TITLES['relay'][dataType]
-              }
-              data={
-                dataType.includes('coverage')
-                  ? [
-                      {
-                        y: traces
-                          ? traces[
-                              dataType === 'coverage'
-                                ? 'coverage_histogram'
-                                : 'gap_histogram'
-                            ]?.xTraces
-                          : null,
-                        boxpoints: 'all',
-                        name: '',
-                        type: 'box'
-                      }
-                    ]
-                  : Object.keys(traces).includes('histogram')
-                  ? [
-                      {
-                        x: (traces as AnalyticsTraces).histogram.bins,
-                        y: (traces as AnalyticsTraces).histogram.count,
-                        type: 'bar',
-                        name: ''
-                      }
-                    ]
-                  : []
-              }
-              size={popoutSize}
-              networkType={state.networkType}
-              metricType={dataType}
-            />
-          )}
-          {open === 'box-chart' && (
-            <BoxChartSection
-              title={`<b>Statistics</b>`}
-              yAxisTitle={
-                dataType.includes('coverage')
-                  ? `Duration (${
-                      state.networkType === 'relay' ? 'sec' : 'min'
-                    })`
-                  : PLOT_TITLES['relay'][dataType]
-              }
-              data={
-                dataType.includes('coverage')
-                  ? [
-                      {
-                        y: traces
-                          ? traces[
-                              dataType === 'coverage'
-                                ? 'coverage_histogram'
-                                : 'gap_histogram'
-                            ]?.xTraces
-                          : null,
-                        boxpoints: 'all',
-                        name: '',
-                        type: 'box'
-                      }
-                    ]
-                  : [
-                      {
-                        mode: 'markers',
-                        type: 'box',
-                        name: '',
-                        y: Object.keys(traces).includes('boxPlot')
-                          ? [
-                              (traces as AnalyticsTraces).boxPlot.minimum,
-                              (traces as AnalyticsTraces).boxPlot.quartile1,
-                              (traces as AnalyticsTraces).boxPlot.quartile1,
-                              (traces as AnalyticsTraces).boxPlot.median,
-                              (traces as AnalyticsTraces).boxPlot.quartile3,
-                              (traces as AnalyticsTraces).boxPlot.quartile3,
-                              (traces as AnalyticsTraces).boxPlot.maximum
-                            ]
-                          : []
-                      }
-                    ]
-              }
-              size={popoutSize}
-              networkType={state.networkType}
-              metricType={dataType}
-            />
-          )}
-        </DialogBox>
-      )}
-    </div>
+                    metricType={dataType}
+                    size={popoutSize}
+                    networkType={state.networkType}
+                  />
+                </div>
+              )}
+              {open === 'histogram-chart' && (
+                <HistogramChartSection
+                  title={`<b>${
+                    Object.keys(PLOT_TITLES).includes(state.networkType)
+                      ? PLOT_TITLES[state.networkType][dataType]
+                      : ''
+                  }</b>`}
+                  yAxisTitle={
+                    dataType.includes('coverage')
+                      ? `Duration (${
+                          state.networkType === 'relay' ? 'sec' : 'min'
+                        })`
+                      : PLOT_TITLES['relay'][dataType]
+                  }
+                  data={
+                    dataType.includes('coverage')
+                      ? [
+                          {
+                            y: traces
+                              ? traces[
+                                  dataType === 'coverage'
+                                    ? 'coverage_histogram'
+                                    : 'gap_histogram'
+                                ]?.xTraces
+                              : null,
+                            boxpoints: 'all',
+                            name: '',
+                            type: 'box'
+                          }
+                        ]
+                      : Object.keys(traces).includes('histogram')
+                      ? [
+                          {
+                            x: (traces as AnalyticsTraces).histogram.bins,
+                            y: (traces as AnalyticsTraces).histogram.count,
+                            type: 'bar',
+                            name: ''
+                          }
+                        ]
+                      : []
+                  }
+                  size={popoutSize}
+                  networkType={state.networkType}
+                  metricType={dataType}
+                />
+              )}
+              {open === 'box-chart' && (
+                <BoxChartSection
+                  title={`<b>Statistics</b>`}
+                  yAxisTitle={
+                    dataType.includes('coverage')
+                      ? `Duration (${
+                          state.networkType === 'relay' ? 'sec' : 'min'
+                        })`
+                      : PLOT_TITLES['relay'][dataType]
+                  }
+                  data={
+                    dataType.includes('coverage')
+                      ? [
+                          {
+                            y: traces
+                              ? traces[
+                                  dataType === 'coverage'
+                                    ? 'coverage_histogram'
+                                    : 'gap_histogram'
+                                ]?.xTraces
+                              : null,
+                            boxpoints: 'all',
+                            name: '',
+                            type: 'box'
+                          }
+                        ]
+                      : [
+                          {
+                            mode: 'markers',
+                            type: 'box',
+                            name: '',
+                            y: Object.keys(traces).includes('boxPlot')
+                              ? [
+                                  (traces as AnalyticsTraces).boxPlot.minimum,
+                                  (traces as AnalyticsTraces).boxPlot.quartile1,
+                                  (traces as AnalyticsTraces).boxPlot.quartile1,
+                                  (traces as AnalyticsTraces).boxPlot.median,
+                                  (traces as AnalyticsTraces).boxPlot.quartile3,
+                                  (traces as AnalyticsTraces).boxPlot.quartile3,
+                                  (traces as AnalyticsTraces).boxPlot.maximum
+                                ]
+                              : []
+                          }
+                        ]
+                  }
+                  size={popoutSize}
+                  networkType={state.networkType}
+                  metricType={dataType}
+                />
+              )}
+            </DialogBox>
+          )} */}
+        </Grid>
+      </Grid>
+      <Grid item className={classes.overviewFooter} xs={12}>
+        <Grid container>
+          <Grid item xs={12}>
+            <Button className={classes.btnUpload}>
+              Upload Data
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 

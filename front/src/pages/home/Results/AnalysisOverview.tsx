@@ -344,7 +344,7 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
     onState('noRegression', false);
   };
 
-  return (
+  return resultTab === 'network' && !collapsed ? (
     <Grid container justifyContent="center" style={{ padding: '0.5rem 1rem', height: '100%' }}>
       <Grid container className={classes.overviewTitle}>
         <Grid item md={12} style={{ padding: '4px 1rem' }}>
@@ -487,7 +487,7 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
         </Grid>
       </Grid>
     </Grid>
-  );
+  ): null;
 };
 
 export default AnalysisOverview;
