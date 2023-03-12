@@ -168,7 +168,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   overviewContext: {
     border: `2px solid ${theme.palette.border.main}`,
     backgroundColor: theme.palette.background.light,
-    height: 'calc(100% - 4rem)'
+    height: 'calc(100% - 4rem)',
+    overflowY: "auto"
   },
   overviewFooter: {
     backgroundColor: theme.palette.border.main,
@@ -343,11 +344,6 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
     onState('noRegression', false);
   };
 
-  const runAnalysis = () => {
-    dispatch(updateResults());
-    onState('sync', true);
-  }
-
   return (
     <Grid container justifyContent="center" style={{ padding: '0.5rem 1rem', height: '100%' }}>
       <Grid container className={classes.overviewTitle}>
@@ -488,27 +484,6 @@ const AnalysisOverview: FC<AnalysisOverviewProps> = ({
             </IconButton>
           ) : (<></>
           )}
-          {/* <Button
-            onClick={runAnalysis}
-            variant="contained"
-            color="primary"
-            disabled={
-              (state.noRegression && !state.pointSync && !state.parametric) || state.loading
-            }
-            size="small"
-            // className={
-            //   state.selectedItems.length === 0
-            //     ? classes.disabledButton
-            //     : classes.button
-            // }
-            // style={{
-            //   marginTop: '15px',
-            //   display: resultTab !== 'network' ? 'none' : 'flex'
-            // }}
-            fullWidth
-          >
-            Run Analysis
-          </Button> */}
         </Grid>
       </Grid>
     </Grid>
