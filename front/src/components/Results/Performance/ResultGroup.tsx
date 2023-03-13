@@ -1,29 +1,39 @@
 import type { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Grid, Box, makeStyles, Theme } from '@material-ui/core';
+import { Typography, Grid, Box, makeStyles } from '@material-ui/core';
+import { Theme } from 'src/theme';
 
 interface ResultGroupProps {
-  title: string;
+  title?: string;
   children?: ReactNode;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {},
+  root: {
+    backgroundColor: theme.palette.background.light
+  },
   typography: {
     fontSize: '1.2rem',
-    marginLeft: theme.spacing(2)
-  }
+    fontFamily: 'Roboto',
+    fontStyle: "normal",
+    lineHeight: "32px",
+    display: "flex",
+    alignItems: "center",
+    color: theme.palette.border.main,
+    paddingLeft: '1rem',
+    borderBottom: `4px solid ${theme.palette.border.main}`,
+  },
 }));
 
 const ResultGroup: FC<ResultGroupProps> = ({ title, children, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <Grid item md={12}>
-      <Box color="text.primary" padding={1} marginBottom={1}>
-        <Typography component="p" className={classes.typography}>
+    <Grid item md={12} className={classes.root}>
+      <Box py={2}>
+        {title && <Typography component="p" className={classes.typography}>
           {title}
-        </Typography>
+        </Typography>}
       </Box>
       {children}
     </Grid>
