@@ -29,18 +29,16 @@ const Network: FC<NetworkProps> = ({
   const classes = useStyles();
 
   return (
-    <div className={visible?classes.root:classes.hide}>
-      <Grid container spacing = {0}>
-        <Grid item xs = {12}>
-          <NetworkPanel
-            state={state}
-            onState={onState}
-            handleClear = {handleClear}
-            onBounds = {onBounds}
-          />
-        </Grid>
+    <Grid container spacing={0} className={visible?classes.root:classes.hide}>
+      <Grid item xs={12}>
+        <NetworkPanel
+          state={state}
+          onState={onState}
+          handleClear = {handleClear}
+          onBounds = {onBounds}
+        />
       </Grid>
-    </div>
+    </Grid>
   );
 };
 

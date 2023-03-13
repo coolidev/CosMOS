@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { Typography, Box } from '@material-ui/core';
+import React, { FC } from 'react';
+import { Typography, Box, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import { Accordion, AccordionSummary } from '../Accordion';
 import type {
   PerformancePanel,
@@ -7,6 +7,16 @@ import type {
 } from 'src/types/evaluation';
 import type { State } from 'src/pages/home';
 import { getGNSSAvailability } from 'src/algorithms/nav';
+import { Theme } from 'src/theme';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  parameter: {
+    borderBottom: `1px solid ${theme.palette.background.paper}`
+  },
+  resultComponent: {
+    width: '15%'
+  }
+}))
 
 interface NavProps {
   data: PerformancePanel;
@@ -14,36 +24,44 @@ interface NavProps {
 }
 
 const NavSection: FC<NavProps> = ({ state, data }) => {
+  const classes = useStyles()  
+
   return (
-    <Box my={2} mx={4}>
-      <Accordion expanded={false}>
-        <AccordionSummary
-          aria-controls="trackingAccuracy-content"
-          id={`trackingAccuracy`}
-        >
-          <Typography style={{ width: '95%' }}>
-            Tracking Accuracy (m):{' '}
-            {state.isDataLoaded
-              ? state.networkType === 'relay'
-                ? (data?.systemParams as RelayCharacteristics)?.trackingAccuracy
-                : 'N/A'
-              : '-'}
-          </Typography>
-        </AccordionSummary>
-      </Accordion>
-      <Accordion expanded={false}>
-        <AccordionSummary
-          aria-controls="gnss-availability-content"
-          id={`gnss-availability`}
-        >
-          <Typography style={{ width: '95%' }}>
-            GNSS Availability:{' '}
-            {state.isDataLoaded
-              ? getGNSSAvailability(state.parameters.altitude)
-              : '-'}
-          </Typography>
-        </AccordionSummary>
-      </Accordion>
+    <Box>
+      <ListItem className={classes.parameter}>
+        <ListItemText
+          primary={
+            <React.Fragment>
+              <Typography
+                variant="body1"
+                component="p"
+                color="textPrimary"
+              >
+                Tracking Accuracy (m)
+              </Typography>
+            </React.Fragment>
+          }
+        />
+        <Box flexGrow={1} />
+        <Box className={classes.resultComponent}>{state.isDataLoaded ? (state.networkType === 'relay' ? (data?.systemParams as RelayCharacteristics)?.trackingAccuracy : 'N/A') : '...'}</Box>
+      </ListItem>
+      <ListItem className={classes.parameter}>
+        <ListItemText
+          primary={
+            <React.Fragment>
+              <Typography
+                variant="body1"
+                component="p"
+                color="textPrimary"
+              >
+                GNSS Availability
+              </Typography>
+            </React.Fragment>
+          }
+        />
+        <Box flexGrow={1} />
+        <Box className={classes.resultComponent}>{state.isDataLoaded ? getGNSSAvailability(state.parameters.altitude) : '...'}</Box>
+      </ListItem>
     </Box>
   );
 };

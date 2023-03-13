@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useState, useEffect } from 'react';
-import { Typography, Link, Box } from '@material-ui/core';
+import { Typography, Link, Box, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import { Accordion, AccordionSummary } from '../Accordion';
 import { useSelector } from 'src/store';
 import LinkBudget from 'src/components/Results/Performance/LinkBudget';
@@ -24,12 +24,22 @@ import {
   AntennaInputs
 } from 'src/algorithms/antennas';
 import { ANTENNA_TYPES } from 'src/utils/constants/analysis';
+import { Theme } from 'src/theme';
 
 interface AntennaProps {
     data: PerformancePanel;
     state: State;
     setLinkBudgets: (data: PerformancePanel, state: State, linkBudget: { [key: string]: LinkBudgetRow[] }) => Promise<{ eirp_dBW: number, ebNo_dB: number }>;
 };
+
+const newStyles = makeStyles((theme: Theme) => ({
+  parameter: {
+    borderBottom: `1px solid ${theme.palette.background.paper}`
+  },
+  resultComponent: {
+    width: '15%'
+  }
+}))
 
 const USER_BURDEN_FUNCS = {
   parabolicDiameter: computeParabolicDiameter,
@@ -49,6 +59,8 @@ const AntennaSection: FC<AntennaProps> = ({ state, data, setLinkBudgets }) => {
   const classes = useStyles();
   const { linkBudget } = useSelector((state) => state.results);
   const [eirp, setEirp] = useState<number>(state.results.eirp_dBW);
+
+  const newClasses = newStyles();
 
   useEffect(() => {
     if(state.results.eirp_dBW === Infinity || state.results.eirp_dBW === -Infinity){
@@ -88,21 +100,24 @@ const AntennaSection: FC<AntennaProps> = ({ state, data, setLinkBudgets }) => {
   };
 
   return (
-    <Box my={2} mx={4}>
-      <Accordion expanded={false}>
-        <AccordionSummary id={`eirp-panel`}>
-          <Typography style={{ width: '95%' }}>
-            <Link
-              id={`link-budget-link`}
-              onClick={() => handleLinkBudget()}
-              className={classes.analyzeResultLink}
-            >
-              EIRP (dBW):{' '}
-              {state.isDataLoaded ? (!state.commsSpecs.commsPayloadSpecs.minEIRPFlag)?  (state.commsSpecs.commsPayloadSpecs.eirp.toFixed(2)): eirp.toFixed(2) : '-'}
-            </Link>
-          </Typography>
-        </AccordionSummary>
-      </Accordion>
+    <Box>
+      <ListItem className={newClasses.parameter} onClick={() => handleLinkBudget()}>
+        <ListItemText
+          primary={
+            <React.Fragment>
+              <Typography
+                variant="body1"
+                component="p"
+                color="textPrimary"
+              >
+                EIRP (dBW)
+              </Typography>
+            </React.Fragment>
+          }
+        />
+        <Box flexGrow={1} />
+        <Box className={newClasses.resultComponent}>{state.isDataLoaded ? (!state.commsSpecs.commsPayloadSpecs.minEIRPFlag)?  (state.commsSpecs.commsPayloadSpecs.eirp.toFixed(2)): eirp.toFixed(2) : '...'}</Box>
+      </ListItem>
       {
       // (state.selectedItems.length <= 1 || maxEirpId) &&
         Object.keys(ANTENNA_TYPES).map((param: string) => {
@@ -144,23 +159,30 @@ const AntennaSection: FC<AntennaProps> = ({ state, data, setLinkBudgets }) => {
                 onClick={() => handleCalc(param)}
                 className={classes.analyzeResultLink}
               >
-                {isNaN(value) ? '-' : value.toFixed(2)}
+                {isNaN(value) ? '...' : value.toFixed(2)}
               </Link>
             ) : (
-              isNaN(value) ? '-' : value.toFixed(2)
+              isNaN(value) ? '...' : value.toFixed(2)
             );
 
           return (
-            <Accordion key={`${param}-accordion`} expanded={false}>
-              <AccordionSummary
-                key={`${param}-accordion-summary`}
-                id={`${param}-panel`}
-              >
-                <Typography key={`${param}-text`} style={{ width: '95%' }}>
-                  {ANTENNA_TYPES[param]}: {value}
-                </Typography>
-              </AccordionSummary>
-            </Accordion>
+            <ListItem key={`${param}-parameter`} className={newClasses.parameter}>
+              <ListItemText
+                primary={
+                  <React.Fragment>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      color="textPrimary"
+                    >
+                      {ANTENNA_TYPES[param]}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+              <Box flexGrow={1} />
+              <Box className={newClasses.resultComponent}>{value}</Box>
+            </ListItem>
           );
         })
         }

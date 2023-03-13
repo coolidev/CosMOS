@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from 'react';
-import { makeStyles, Grid } from '@material-ui/core';
+import { makeStyles, Grid, Typography } from '@material-ui/core';
 import axios from 'src/utils/axios';
 import { useDispatch, useSelector } from 'src/store';
 import { 
@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100%',
     overflowX: 'hidden',
     overflowY: 'auto'
+  },
+  title: {
+    backgroundColor: theme.palette.border.main,
+    // borderRadius: '8px 8px 0px 0px',
+    padding: '4px 1rem'
   },
   hide: {
     display: 'none',
@@ -556,38 +561,59 @@ const Performance: FC<PerformanceProps> = ({
             container
             justifyContent="flex-start"
             alignItems="flex-start"
+            style={{ padding: '0.5rem 1rem' }}
           >
-            <ResultGroup title="Performance">
-              <PerformanceSection
-                data={data}
-                state={state}
-                maxAltitude={bounds.altitude.max}
-                onState={onState}
-              />
-            </ResultGroup>
-            <ResultGroup title="User Burden: Antenna Options">
-              <AntennaSection
-                state={state}
-                data={data}
-                setLinkBudgets={updateLinkBudgets}
-              />
-            </ResultGroup>
-            {state.networkType !== 'dte' && (
-              <ResultGroup title="User Burden: Mission Impacts">
-                <PointingSection
-                  data={data}
-                  state={state}
-                  maxAltitude={bounds.altitude.max}
-                  onState={onState}
-                />
-              </ResultGroup>
-            )}
-            <ResultGroup title="Nav and Tracking">
-              <NavSection 
-                state={state}
-                data={data} 
-              />
-            </ResultGroup>
+            <Grid item md={12} style={{ border: `2px solid #E34747`, borderRadius: '8px' }}>
+              <Grid container>
+                <Grid item md={12} className={classes.title}>
+                  <Typography
+                    variant="h3"
+                    component="h3"
+                    style={{
+                      fontWeight: 'normal',
+                      color: 'white'
+                    }}
+                  >
+                    Performance
+                  </Typography>
+                </Grid>
+
+                <ResultGroup>
+                  <PerformanceSection
+                    data={data}
+                    state={state}
+                    maxAltitude={bounds.altitude.max}
+                    onState={onState}
+                  />
+                </ResultGroup>
+
+                <ResultGroup title="User Burden: Antenna Options">
+                  <AntennaSection
+                    state={state}
+                    data={data}
+                    setLinkBudgets={updateLinkBudgets}
+                  />
+                </ResultGroup>
+
+                {state.networkType !== 'dte' && (
+                  <ResultGroup title="User Burden: Mission Impacts">
+                    <PointingSection
+                      data={data}
+                      state={state}
+                      maxAltitude={bounds.altitude.max}
+                      onState={onState}
+                    />
+                  </ResultGroup>
+                )}
+
+                <ResultGroup title="Nav and Tracking">
+                  <NavSection 
+                    state={state}
+                    data={data} 
+                  />
+                </ResultGroup>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

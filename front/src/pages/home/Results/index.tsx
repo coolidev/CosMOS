@@ -1,5 +1,4 @@
 import {FC, useContext, useEffect} from 'react';
-import clsx from 'clsx';
 import {
   Box,
   Tabs,
