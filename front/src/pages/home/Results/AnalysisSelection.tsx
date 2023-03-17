@@ -112,7 +112,7 @@ const customStyles = makeStyles((theme: Theme) => ({
     }
   },
   root: {
-    overflowY: 'scroll',
+    // overflowY: 'scroll',
     overflowX: 'hidden'
   },
   box: {
@@ -139,15 +139,15 @@ const customStyles = makeStyles((theme: Theme) => ({
   },
   infoBox: {
     border: '1px solid !important',
-    borderColor: `${
-      theme.name === THEMES.DARK ? theme.palette.border.main : '#000000'
-    }`,
+    borderColor: `${theme.name === THEMES.DARK ? theme.palette.border.main : '#000000'
+      }`,
     borderRadius: 6,
     backgroundColor: theme.palette.component.main
   },
   chartBox: {
     backgroundColor: `${theme.palette.background.default}`,
-    border: `1px solid ${theme.palette.border.main} !important`
+    border: `1px solid ${theme.palette.border.main} !important`,
+    margin: '1rem'
   },
   infoText: {
     fontStyle: 'italics',
@@ -166,10 +166,10 @@ const customStyles = makeStyles((theme: Theme) => ({
     color: `${theme.palette.text.primary} !important`,
     fontFamily: 'Roboto',
     fontStyle: 'normal',
-    fontSize: '12px',
+    fontSize: '14px',
     lineHeight: '16px',
     letterSpacing: ' 0.05em',
-    display: 'flex'
+    // display: 'flex'
   },
   subtitle: {
     fontFamily: 'Roboto',
@@ -180,7 +180,7 @@ const customStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     color: theme.palette.border.main,
     paddingLeft: '.5vw',
-    borderBottom: `2px solid ${theme.palette.border.main}`
+    borderBottom: `4px solid ${theme.palette.border.main}`
     // borderLeft: `1px solid ${theme.palette.border.main}`,
     // borderRight: `1px solid ${theme.palette.border.main}`,
   },
@@ -767,1080 +767,816 @@ const AnalysisSelection: FC<AnalysisSelectionProps> = ({
   };
 
   return (
-    <div
-      className={classes.root}
-      style={{
-        minHeight: (window.screen.availHeight / zoom) * 0.765,
-        maxHeight: (window.screen.availHeight / zoom) * 0.765
-      }}
-    >
-      <Grid item md={12} />
-      <Box className={clsx(classes.box, classes.topBox)}>
-        {/* <Grid item md = {12} style={{margin:'20px'}}>
-            <Typography
-              variant="body1"
-              component="p"
-              className={classes.header}
-            >
-              {'Analysis Type'}
-            </Typography>
-          </Grid> */}
-        <Grid item md={12} style={{ margin: '0px 20px 0px 20px' }}>
+    <div>
+      <Grid container>
+        <Grid item md={12} spacing={2}>
           <FormControl fullWidth>
-            <Grid container spacing={2}>
-              <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                name="radio-buttons-group"
-                value={localAnalysisType}
-                onChange={handleChange}
-              >
-                <Box display={'flex'} overflow="hidden">
-                  <Grid
-                    item
-                    md={5}
-                    style={{ minWidth: '50%', overflow: 'hidden' }}
-                  >
-                    {' '}
-                    <FormControlLabel
-                      value="point"
-                      control={<Radio />}
-                      label="Real Time Modeling"
-                      className={classes.text}
-                      style={{ fontSize: 'small' }}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    md={7}
-                    style={{ minWidth: '53%', overflow: 'hidden' }}
-                  >
-                    {' '}
-                    <FormControlLabel
-                      value="no-point"
-                      control={<Radio />}
-                      label="Regression Estimation"
-                      className={classes.text}
-                      style={{ fontSize: 'small' }}
-                      disabled={state.parameters.inclination > 120}
-                    />
-                  </Grid>
-                </Box>
-              </RadioGroup>
-            </Grid>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              name="radio-buttons-group"
+              value={localAnalysisType}
+              onChange={handleChange}
+            >
+              <Grid container className='px-3 py-1'>
+                <Grid item xs={6}>
+                  <FormControlLabel
+                    value="point"
+                    control={<Radio />}
+                    label="Real Time Modeling"
+                    className={classes.text}
+                    style={{ fontSize: 'small' }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControlLabel
+                    value="no-point"
+                    control={<Radio />}
+                    label="Regression Estimation"
+                    className={classes.text}
+                    style={{ fontSize: 'small' }}
+                    disabled={state.parameters.inclination > 120}
+                  />
+                </Grid>
+              </Grid>
+            </RadioGroup>
           </FormControl>
         </Grid>
-        {/* <Grid item md={12} style={{margin:'0px 20px 20px 20px'}}>
-            <Box m={2} className={classes.infoBox}>
-              <Typography variant="body2" className={classes.infoText}>
-                {localAnalysisType === 'point'?REAL_TIME_MODELING_DESCRIPTION:REGRESSION_ESTIMATION_DESCRIPTION}
-              </Typography>
-            </Box>
-          </Grid> */}
+      </Grid>
+      <Grid container>
         <Grid item xs={12}>
           <Typography
             className={classes.subtitle}
-            style={{ marginTop: '10px' }}
           >
             {localAnalysisType === 'no-point'
               ? 'Data & Regression'
               : 'Analysis Time Range'}
           </Typography>
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={clsx(classes.box, classes.bottomBox)}>
-        <Grid container spacing={3}>
-          {/*The view for the regression analysis. Its a graph that displays the coverage data that we get from the RFCoverage API call
+      {/* <Box className={clsx(classes.box, classes.bottomBox)}> */}
+      <Grid container>
+        {/*The view for the regression analysis. Its a graph that displays the coverage data that we get from the RFCoverage API call
           If the data doesn't show up, a warning is displayed and this analysis type is disabled (see OK button below)*/}
-          {localAnalysisType === 'no-point' &&
-            state.selectedItems.length > 0 && (
-              <Grid container item md={12} xs={12} alignItems="center">
-                <Grid container spacing={3}>
-                  {/* <Grid item md = {12} style={{marginLeft: '20px', marginTop: '20px', marginBottom: '10px'}}>
-                <Typography
-                  variant="body1"
-                  component="p"
-                  color="textPrimary"
-                  className={classes.header}
-                >
-                  {'Orbital Statistics'}
-                </Typography>
-              </Grid> */}
-                  {/* <Grid item md = {6} style={{paddingLeft: '10px'}}>
-                <Button
-                  name="3d-view"
-                  variant={selectedGraph === '3d-view' ? 'contained' : 'outlined'}
-                  size="small"
-                  color="primary"
-                  onClick={(e) => onGraphChange(e)}
-                  style={{ borderRadius: 6 }}
-                  disabled = {state.parameters.eccentricity > 0 || (localAnalysisType === 'no-point' && data == null && analysisDone && state.selectedItems.length > 0)}
-                  fullWidth
-                >
-                  3D
-                </Button>
-              </Grid>
-              <Grid item md = {6} style={{paddingRight: '10px'}}>
-                <Button
-                  name="4d-view"
-                  variant={selectedGraph === '4d-view' ? 'contained' : 'outlined'}
-                  size="small"
-                  color="primary"
-                  onClick={(e) => onGraphChange(e)}
-                  style={{ borderRadius: 6 }}
-                  fullWidth
-                  disabled={(localAnalysisType === 'no-point' && data == null && analysisDone && state.selectedItems.length > 0)}
-                >
-                  4D
-                </Button>
-              </Grid> */}
-                  <Grid item xs={1}>
-                    <Radio
-                      name={'3d-view'}
-                      checked={selectedGraph === '3d-view'}
-                      onChange={onGraphChange}
-                      disabled={
-                        state.parameters.eccentricity > 0 ||
-                        (localAnalysisType === 'no-point' &&
+        {localAnalysisType === 'no-point' &&
+          state.selectedItems.length > 0 && (
+            <Grid item md={12} xs={12} alignItems="center">
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid container style={{ padding: '0.5rem 1rem'}}>
+                    <Grid item xs={6}>
+                      <FormControlLabel
+                        name='3d-view'
+                        checked={selectedGraph === '3d-view'}
+                        onChange={onGraphChange}
+                        control={<Radio />}
+                        disabled={
+                          state.parameters.eccentricity > 0 ||
+                          (localAnalysisType === 'no-point' &&
+                            data == null &&
+                            analysisDone &&
+                            state.selectedItems.length > 0)
+                        }
+                        label={"3D"}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControlLabel
+                        name={'4d-view'}
+                        checked={selectedGraph === '4d-view'}
+                        onChange={onGraphChange}
+                        disabled={
+                          localAnalysisType === 'no-point' &&
                           data == null &&
                           analysisDone &&
-                          state.selectedItems.length > 0)
-                      }
-                    />
+                          state.selectedItems.length > 0
+                        }
+                        control={<Radio />}
+                        label={"4D"}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={5}>
-                    <Typography
-                      className={classes.text}
-                      style={{ paddingLeft: '8px', marginTop: '14px' }}
-                    >
-                      3D
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={1}>
-                    <Radio
-                      name={'4d-view'}
-                      checked={selectedGraph === '4d-view'}
-                      onChange={onGraphChange}
-                      disabled={
-                        localAnalysisType === 'no-point' &&
-                        data == null &&
-                        analysisDone &&
-                        state.selectedItems.length > 0
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={5}>
-                    <Typography
-                      className={classes.text}
-                      style={{ paddingLeft: '8px', marginTop: '14px' }}
-                    >
-                      4D
-                    </Typography>
-                  </Grid>
-                  <Box
-                    display={'center'}
-                    mx={3}
-                    my={1}
-                    className={classes.chartBox}
-                    style={{
-                      width: '100%',
-                      height: (window.screen.availHeight / zoom) * 0.303
-                    }}
-                  >
-                    {state.parameters.eccentricity === 0 &&
-                      data != null &&
-                      !metricChanged &&
-                      state.parameters.isOrbital && (
-                        <Grid
-                          item
-                          md={12}
-                          xs={12}
+                </Grid>
+                <Box
+                  display={'center'}
+                  className={classes.chartBox}
+                  style={{
+                    width: '100%',
+                    height: (window.screen.availHeight / zoom) * 0.303
+                  }}
+                >
+                  {state.parameters.eccentricity === 0 &&
+                    data != null &&
+                    !metricChanged &&
+                    state.parameters.isOrbital && (
+                      <Grid
+                        item
+                        md={12}
+                        xs={12}
                           /*Maybe somebody with more time than me can figure out how to center this thing*/ style={{
-                            display: selectedGraph === '3d-view' ? '' : 'none'
+                          display: selectedGraph === '3d-view' ? '' : 'none'
+                        }}
+                      >
+                        <SurfacePlot
+                          state={[state]}
+                          data={[data]}
+                          metricType={metricType}
+                          regressionTypes={[state].map(
+                            (s) => s.regressionTypes[metricType]
+                          )}
+                          minAltitude={0}
+                          maxAltitude={maxAltitude}
+                          values={values}
+                          isLegend={true}
+                          isSub={false}
+                          zAxisLabel={
+                            data.modelData.orbital[metricType]
+                              ? data.modelData.orbital[metricType].label
+                              : 'placeholder'
+                          }
+                          plotOptions={{
+                            show_scatter: true,
+                            show_surface: true
                           }}
-                        >
-                          <SurfacePlot
-                            state={[state]}
-                            data={[data]}
-                            metricType={metricType}
-                            regressionTypes={[state].map(
-                              (s) => s.regressionTypes[metricType]
-                            )}
-                            minAltitude={0}
-                            maxAltitude={maxAltitude}
-                            values={values}
-                            isLegend={true}
-                            isSub={false}
-                            zAxisLabel={
-                              data.modelData.orbital[metricType]
-                                ? data.modelData.orbital[metricType].label
-                                : 'placeholder'
-                            }
-                            plotOptions={{
-                              show_scatter: true,
-                              show_surface: true
-                            }}
-                            chartDiv={metricType + 'plotly'}
-                            size={{
-                              width: (window.screen.availWidth / zoom) * 0.2,
-                              height: (window.screen.availHeight / zoom) * 0.3
-                            }}
-                            maxInclination={
-                              state.networkType === 'relay' ? 90 : 120
-                            }
-                            reset={false}
-                            forceSize={true}
-                          />
-                        </Grid>
-                      )}
-                    {data != null &&
-                      !metricChanged &&
-                      state.parameters.isOrbital && (
-                        <Grid
-                          item
-                          md={12}
-                          xs={12}
-                          style={{
-                            display: selectedGraph === '4d-view' ? '' : 'none'
+                          chartDiv={metricType + 'plotly'}
+                          size={{
+                            width: (window.screen.availWidth / zoom) * 0.2,
+                            height: (window.screen.availHeight / zoom) * 0.3
                           }}
-                          alignContent={'center'}
-                        >
-                          <Heatmap
-                            state={[state]}
-                            data={[data]}
-                            metricType={metricType}
-                            minAltitude={0}
-                            maxAltitude={maxAltitude}
-                            values={values}
-                            isLegend={true}
-                            isSub={false}
-                            plotOptions={{
-                              show_scatter: true,
-                              show_surface: false
-                            }}
-                            chartDiv={metricType + 'plotly'}
-                            size={{
-                              width: (window.screen.availWidth / zoom) * 0.2,
-                              height: (window.screen.availHeight / zoom) * 0.3
-                            }}
-                            maxInclination={
-                              state.networkType === 'relay' ? 90 : 120
-                            }
-                            reset={false}
-                            forceSize={true}
-                            title={
-                              data.modelData.orbital[metricType]
-                                ? data.modelData.orbital[metricType].label
-                                : 'placeholder'
-                            }
-                          />
-                        </Grid>
-                      )}
-                    {/*Our loading text. Please be patient, girls are praying...*/}
-                    {data == null && !analysisDone && (
-                      <Grid item md={12} className={classes.none}>
-                        <Typography align="center" variant="body1">
-                          Loading Data...
-                        </Typography>
+                          maxInclination={
+                            state.networkType === 'relay' ? 90 : 120
+                          }
+                          reset={false}
+                          forceSize={true}
+                        />
                       </Grid>
                     )}
-                    {/*Say that we don't have the regression if nothing shows up after we do the API call for the coverage data
-              This also probably means that CART is in no-regression mode*/}
-                    {localAnalysisType === 'no-point' &&
-                      data == null &&
-                      analysisDone &&
-                      state.selectedItems.length > 0 && (
-                        <Grid item md={12} className={classes.none}>
-                          <Typography align="center" variant="body1">
-                            No Regression Available For This Network
-                          </Typography>
-                        </Grid>
-
-                        // <Grid item md={12} xs={12} alignItems="center">
-                        //   <div className= {classes.alert}><i>A regression for this configuration may not exist. Either a new regression will need to be generated, or the regression analysis will be unavailible
-                        //     <br></br>For additional information, please contact the CART team.</i></div>
-                        // </Grid>
-                      )}
-                  </Box>
-                  {localAnalysisType === 'no-point' && (
-                    <Grid item xs={12}>
-                      <Typography
-                        className={classes.subtitle}
-                        style={{ borderBottom: `3px solid #E34747` }}
+                  {data != null &&
+                    !metricChanged &&
+                    state.parameters.isOrbital && (
+                      <Grid
+                        item
+                        md={12}
+                        xs={12}
+                        style={{
+                          display: selectedGraph === '4d-view' ? '' : 'none'
+                        }}
+                        alignContent={'center'}
                       >
-                        Average Coverage
+                        <Heatmap
+                          state={[state]}
+                          data={[data]}
+                          metricType={metricType}
+                          minAltitude={0}
+                          maxAltitude={maxAltitude}
+                          values={values}
+                          isLegend={true}
+                          isSub={false}
+                          plotOptions={{
+                            show_scatter: true,
+                            show_surface: false
+                          }}
+                          chartDiv={metricType + 'plotly'}
+                          size={{
+                            width: (window.screen.availWidth / zoom) * 0.2,
+                            height: (window.screen.availHeight / zoom) * 0.3
+                          }}
+                          maxInclination={
+                            state.networkType === 'relay' ? 90 : 120
+                          }
+                          reset={false}
+                          forceSize={true}
+                          title={
+                            data.modelData.orbital[metricType]
+                              ? data.modelData.orbital[metricType].label
+                              : 'placeholder'
+                          }
+                        />
+                      </Grid>
+                    )}
+                  {/*Our loading text. Please be patient, girls are praying...*/}
+                  {data == null && !analysisDone && (
+                    <Grid item md={12} className={classes.none}>
+                      <Typography align="center" variant="body1">
+                        Loading Data...
                       </Typography>
                     </Grid>
                   )}
-
-                  {theoryPointData != null ? (
-                    <>
-                      {/* <Grid item md={7}>
-                    <div style={{ padding:'10px',}}>
-                      <table style = {{ fontSize: '12px', borderCollapse:'collapse',  padding: '5px', textAlign: 'center', height: (window.screen.availHeight / zoom) * .1, width: (window.screen.availHeight / zoom)* .21}}> 
-                        <tbody>
-                          <tr>
-                            <th className = {classes.tableHead} colSpan= {100}>Average Coverage</th>
-                          </tr>
-                          <tr>
-                            <td className = {classes.tableBody}>Regression</td>
-                            <td className = {classes.tableBody}>{theoryPointData.regressionCoverage ? (<><span style={{color:THEORY_AVG_COLOR}}>{(theoryPointData.regressionCoverage*(60*24)).toFixed(1)}</span> mins/day</>) : <span style={{color:THEORY_AVG_COLOR}}>N/A</span>}</td>
-                          </tr>
-                          <tr>
-                            <td className = {classes.tableBody}>Theoretical</td>
-                            <td className = {classes.tableBody}><span style={{color:THEORY_AVG_COLOR}}>{(theoryPointData.theoryCoverage*(60*24)).toFixed(1)}</span> mins/day</td>
-                          </tr>
-                          <tr>
-                            <td colSpan= {100} className = {classes.tableBody}>Difference = {theoryPointData.regressionCoverage? <span style={{color:THEORY_AVG_COLOR}}>{((Math.abs(theoryPointData.theoryCoverage - theoryPointData.regressionCoverage)/theoryPointData.theoryCoverage)*100).toFixed(1)}%</span>: <span style={{color:THEORY_AVG_COLOR}}>N/A</span>}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      
-                    </div>
-                </Grid> */}
-                      <Grid item xs={6}>
-                        <Typography
-                          className={classes.text}
-                          style={{ paddingLeft: '8px' }}
-                        >
-                          Regression
+                  {/*Say that we don't have the regression if nothing shows up after we do the API call for the coverage data
+              This also probably means that CART is in no-regression mode*/}
+                  {localAnalysisType === 'no-point' &&
+                    data == null &&
+                    analysisDone &&
+                    state.selectedItems.length > 0 && (
+                      <Grid item md={12} className={classes.none}>
+                        <Typography align="center" variant="body1">
+                          No Regression Available For This Network
                         </Typography>
                       </Grid>
-                      <Grid item xs={6}>
-                        <Typography className={classes.text}>
-                          {theoryPointData.regressionCoverage ? (
-                            <span style={{ color: '#E34747' }}>
-                              {(
-                                theoryPointData.regressionCoverage *
-                                (60 * 24)
-                              ).toFixed(1)}{' '}
-                              mins/day
-                            </span>
-                          ) : (
-                            <span style={{ color: '#E34747' }}>N/A</span>
-                          )}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography
-                          className={classes.text}
-                          style={{ paddingLeft: '8px' }}
-                        >
-                          Theoretical
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography className={classes.text}>
-                          {theoryPointData.regressionCoverage ? (
-                            <span style={{ color: '#E34747' }}>
-                              {(
-                                theoryPointData.theoryCoverage *
-                                (60 * 24)
-                              ).toFixed(1)}{' '}
-                              mins/day
-                            </span>
-                          ) : (
-                            <span style={{ color: '#E34747' }}>N/A</span>
-                          )}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography
-                          className={classes.text}
-                          style={{ paddingLeft: '8px' }}
-                        >
-                          Difference
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography className={classes.text}>
-                          {theoryPointData.regressionCoverage ? (
-                            <span style={{ color: '#E34747' }}>
-                              {(
-                                (Math.abs(
-                                  theoryPointData.theoryCoverage -
-                                    theoryPointData.regressionCoverage
-                                ) /
-                                  theoryPointData.theoryCoverage) *
-                                100
-                              ).toFixed(1)}
-                              %
-                            </span>
-                          ) : (
-                            <span style={{ color: '#E34747' }}>N/A</span>
-                          )}
-                        </Typography>
-                      </Grid>
-                      <Grid item md={12} style={{ padding: '8px' }}>
-                        <div style={{ padding: '8px' }}>
-                          <Typography
-                            style={{ fontSize: '12px', fontWeight: 'bold' }}
-                            className={classes.text}
-                          >
-                            <Link
-                              href="#"
-                              underline="always"
-                              onClick={() => {
-                                setShowTheory(true);
-                              }}
-                            >
-                              Theoretical Value
-                            </Link>
-                          </Typography>
-                          <Typography className={classes.text}>
-                            Click above to learn more on how theoretical average
-                            is calculated.
-                          </Typography>
-                        </div>
-                      </Grid>
-                    </>
-                  ) : (
-                    <>
-                      <Grid item xs={6}>
-                        <Typography
-                          className={classes.text}
-                          style={{ paddingLeft: '8px' }}
-                        >
-                          Regression
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography className={classes.text}>
-                          <span style={{ color: '#E34747' }}>N/A</span>
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography
-                          className={classes.text}
-                          style={{ paddingLeft: '8px' }}
-                        >
-                          Theoretical
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography className={classes.text}>
-                          <span style={{ color: '#E34747' }}>N/A</span>
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography
-                          className={classes.text}
-                          style={{ paddingLeft: '8px' }}
-                        >
-                          Difference
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography className={classes.text}>
-                          <span style={{ color: '#E34747' }}>N/A</span>
-                        </Typography>
-                      </Grid>
-                      <Grid item md={12}>
-                        <div style={{ padding: '8px' }}>
-                          <Typography
-                            style={{ fontSize: '12px', fontWeight: 'bold' }}
-                            className={classes.text}
-                          >
-                            <Link
-                              href="#"
-                              underline="always"
-                              onClick={() => {
-                                setShowTheory(true);
-                              }}
-                            >
-                              Theoretical Value
-                            </Link>
-                          </Typography>
-                          <Typography className={classes.text}>
-                            Click above to learn more on how theoretical average
-                            is calculated.
-                          </Typography>
-                        </div>
-                      </Grid>
-                    </>
-                  )}
-                </Grid>
-              </Grid>
-            )}
-          {/* {(localAnalysisType === 'no-point' && state.parameters.eccentricity > 0 && analysisDone) && (
-
-            <Grid item md={9} xs={12} alignItems="center">
-              <div className= {classes.alert} style = {{textAlign: 'center'}}><i>No regressions exist for eccentricities greater than 0, so the regression analysis is not available</i></div>
-            </Grid>
-            )
-          } */}
-          {/*The view for the single point analysis.*/}
-
-          {localAnalysisType === 'point' && state.selectedItems.length > 0 && (
-            <>
-              <Box m={6}>
-                <Grid item md={12} xs={12}>
-                  {/* <Grid item md = {12}>
-              <Typography
-                variant="body1"
-                component="p"
-                className={classes.header}
-              >
-                {'Analysis Settings'}
-              </Typography>
-            </Grid> */}
-                  <Grid container alignItems="center" spacing={4}>
-                    <Grid item md={12} xs={12}>
-                      <Grid container alignItems="center" spacing={4}>
-                        {/* <Grid item md = {12} xs = {12}>
-                    <Typography variant="body1" component="p" className={classes.header} style={{marginTop: '10px'}}>
-                      {'Time Range (mm/dd/yyyy)'}
+                    )}
+                </Box>
+                {localAnalysisType === 'no-point' && (
+                  <Grid item xs={12}>
+                    <Typography
+                      className={classes.subtitle}
+                    >
+                      Average Coverage
                     </Typography>
-                  </Grid> */}
-                        <Grid item xs={5}>
-                          <Typography variant="body1" className={classes.text}>
-                            Start Date (mm/dd/yyyy)
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={7}>
-                          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label=""
-                        value={startDate}
-                        onChange={(newValue) => {
-                          setStartDate(newValue);
-                        }}
-                        renderInput={({ inputRef, inputProps, InputProps }) => (
-                          <Box sx={{ display: 'flex', alignItems: 'center' }} >
-                            <TextField {...inputRef} className = {classes.datePicker}/>
-                            {InputProps?.endAdornment}
-                          </Box>
-                        )}
-                      />
-                      </LocalizationProvider> */}
-                          <TextField
-                            size="small"
-                            fullWidth
-                            value={startDate}
-                            name="start"
-                            InputProps={{
-                              disableUnderline: true,
-                              inputProps: {
-                                className: classes.input
-                              }
-                            }}
-                            onBlur={handleDateChange}
-                            onChange={(event) =>
-                              setStartDate(event.target.value)
-                            }
-                            onKeyPress={(ev) => {
-                              if (ev.key === 'Enter') {
-                                handleDateChange(ev);
-                              }
-                            }}
-                          />
-                        </Grid>
-                        <Grid item xs={5}>
-                          <Typography variant="body1" className={classes.text}>
-                            End Date (mm/dd/yyyy)
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={7}>
-                          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          label=""
-                          value={endDate}
-                          onChange={(newValue) => {
-                            setEndDate(newValue);
-                          }}
-                          renderInput={({ inputRef, inputProps, InputProps }) => (
-                            <Box sx={{ display: 'flex', alignItems: 'center' }} >
-                              <TextField {...inputRef} className = {classes.datePicker}/>
-                              {InputProps?.endAdornment}
-                            </Box>
-                          )}
-                        />
-                        </LocalizationProvider> */}
-                          <TextField
-                            size="small"
-                            fullWidth
-                            value={endDate}
-                            name="end"
-                            InputProps={{
-                              disableUnderline: true,
-                              inputProps: {
-                                className: classes.input
-                              }
-                            }}
-                            onBlur={handleDateChange}
-                            onChange={(event) => setEndDate(event.target.value)}
-                            onKeyPress={(ev) => {
-                              if (ev.key === 'Enter') {
-                                handleDateChange(ev);
-                              }
-                            }}
-                          />
-                        </Grid>
+                  </Grid>
+                )}
 
-                        <Grid item sm={5}>
-                          <Typography variant="body1" className={classes.text}>
-                            Time Step (sec)
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={7}>
-                          <TextField
-                            size="small"
-                            fullWidth
-                            InputProps={{
-                              disableUnderline: true,
-                              inputProps: {
-                                className: classes.input
-                              }
-                            }}
-                            value={timeStep}
-                            onBlur={handleDateChange}
-                            name="step"
-                            onChange={(event) => {
-                              !isNaN(Number(event.target.value)) &&
-                                setTimeStep(Number(event.target.value));
-                            }}
-                            onKeyPress={(ev) => {
-                              if (ev.key === 'Enter') {
-                                handleDateChange(ev);
-                              }
-                            }}
-                          />
-                        </Grid>
-                      </Grid>
+                {theoryPointData != null ? (
+                  <>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography
+                        className={classes.text}
+                      >
+                        Regression
+                      </Typography>
                     </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography className={classes.text}>
+                        {theoryPointData.regressionCoverage ? (
+                          <span style={{ color: '#E34747' }}>
+                            {(
+                              theoryPointData.regressionCoverage *
+                              (60 * 24)
+                            ).toFixed(1)}{' '}
+                            mins/day
+                          </span>
+                        ) : (
+                          <span style={{ color: '#E34747' }}>N/A</span>
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography
+                        className={classes.text}
+                      >
+                        Theoretical
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography className={classes.text}>
+                        {theoryPointData.regressionCoverage ? (
+                          <span style={{ color: '#E34747' }}>
+                            {(
+                              theoryPointData.theoryCoverage *
+                              (60 * 24)
+                            ).toFixed(1)}{' '}
+                            mins/day
+                          </span>
+                        ) : (
+                          <span style={{ color: '#E34747' }}>N/A</span>
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography
+                        className={classes.text}
+                      >
+                        Difference
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography className={classes.text}>
+                        {theoryPointData.regressionCoverage ? (
+                          <span style={{ color: '#E34747' }}>
+                            {(
+                              (Math.abs(
+                                theoryPointData.theoryCoverage -
+                                theoryPointData.regressionCoverage
+                              ) /
+                                theoryPointData.theoryCoverage) *
+                              100
+                            ).toFixed(1)}
+                            %
+                          </span>
+                        ) : (
+                          <span style={{ color: '#E34747' }}>N/A</span>
+                        )}
+                      </Typography>
+                    </Grid>
+                    <Grid item md={12} style={{ padding: '1rem' }}>
+                      <Typography
+                        style={{ fontWeight: 'bold' }}
+                        className={classes.text}
+                      >
+                        Theoretical Value
+                      </Typography>
+                      <Typography className={classes.text}>
+                        {'Click '}
+                        <Link
+                          href="#"
+                          underline="always"
+                          onClick={() => {
+                            setShowTheory(true);
+                          }}
+                        >
+                          here
+                        </Link>{' '}to learn more on how theoretical average
+                        is calculated.
+                      </Typography>
+                    </Grid>
+                  </>
+                ) : (
+                  <>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography
+                        className={classes.text}
+                      >
+                        Regression
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography className={classes.text}>
+                        <span style={{ color: '#E34747' }}>N/A</span>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography
+                        className={classes.text}
+                      >
+                        Theoretical
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography className={classes.text}>
+                        <span style={{ color: '#E34747' }}>N/A</span>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography
+                        className={classes.text}
+                      >
+                        Difference
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} style={{ padding: '1rem' }}>
+                      <Typography className={classes.text}>
+                        <span style={{ color: '#E34747' }}>N/A</span>
+                      </Typography>
+                    </Grid>
+                    <Grid item md={12} style={{ padding: '1rem' }}>
+                      <Typography
+                        style={{ fontWeight: 'bold' }}
+                        className={classes.text}
+                      >
+                        Theoretical Value
+                      </Typography>
+                      <Typography className={classes.text}>
+                        {'Click '}
+                        <Link
+                          href="#"
+                          underline="always"
+                          onClick={() => {
+                            setShowTheory(true);
+                          }}
+                        >
+                          {'here'}
+                        </Link>{' '}to learn more on how theoretical average
+                        is calculated.
+                      </Typography>
+                    </Grid>
+                  </>
+                )}
+              </Grid>
+            </Grid>
+          )}
+        {/*The view for the single point analysis.*/}
+
+        {localAnalysisType === 'point' && state.selectedItems.length > 0 && (
+          <>
+            <Box p={6}>
+              <Grid item md={12} xs={12}>
+                <Grid container alignItems="center" spacing={4}>
+                  <Grid item xs={6}>
+                    <Typography variant="body1" className={classes.text}>
+                      Start Date
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      size="small"
+                      fullWidth
+                      value={startDate}
+                      name="start"
+                      InputProps={{
+                        disableUnderline: true,
+                        inputProps: {
+                          className: classes.input
+                        }
+                      }}
+                      onBlur={handleDateChange}
+                      onChange={(event) =>
+                        setStartDate(event.target.value)
+                      }
+                      onKeyPress={(ev) => {
+                        if (ev.key === 'Enter') {
+                          handleDateChange(ev);
+                        }
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body1" className={classes.text}>
+                      End Date
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      size="small"
+                      fullWidth
+                      value={endDate}
+                      name="end"
+                      InputProps={{
+                        disableUnderline: true,
+                        inputProps: {
+                          className: classes.input
+                        }
+                      }}
+                      onBlur={handleDateChange}
+                      onChange={(event) => setEndDate(event.target.value)}
+                      onKeyPress={(ev) => {
+                        if (ev.key === 'Enter') {
+                          handleDateChange(ev);
+                        }
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid item sm={6}>
+                    <Typography variant="body1" className={classes.text}>
+                      Time Step (min)
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      size="small"
+                      fullWidth
+                      InputProps={{
+                        disableUnderline: true,
+                        inputProps: {
+                          className: classes.input
+                        }
+                      }}
+                      value={timeStep}
+                      onBlur={handleDateChange}
+                      name="step"
+                      onChange={(event) => {
+                        !isNaN(Number(event.target.value)) &&
+                          setTimeStep(Number(event.target.value));
+                      }}
+                      onKeyPress={(ev) => {
+                        if (ev.key === 'Enter') {
+                          handleDateChange(ev);
+                        }
+                      }}
+                    />
                   </Grid>
                 </Grid>
-              </Box>
-              {localAnalysisType === 'point' && (
-                <Grid item xs={12}>
-                  <Typography
-                    className={classes.subtitle}
-                    style={{ borderBottom: `3px solid #E34747` }}
-                  >
-                    Analysis Run Type
-                  </Typography>
-                </Grid>
-              )}
+              </Grid>
+            </Box>
+            {localAnalysisType === 'point' && (
               <Grid item xs={12}>
-                <Box m={6}>
-                  <Grid item md={12} xs={12}>
-                    <Grid container alignItems="center" spacing={4}>
-                      <Grid item md={12} xs={12}>
-                        <FormControl style={{ width: '100%' }}>
-                          {/* <Grid item md = {12} xs = {12}>
-                    <Typography variant="body1" component="p" className={classes.header} style={{marginTop: '10px'}}>
-                      {'Analysis Run Type'}
-                    </Typography>
-                  </Grid> */}
-                          <RadioGroup
-                            aria-labelledby="modeling-type-radio-buttons-group-label"
-                            name="radio-buttons-group"
-                            value={modelType}
-                            onChange={handleSubChange}
-                            row
-                            style={{
-                              justifyContent: 'space-around'
-                            }}
-                          >
-                            <FormControlLabel
-                              value="spa"
-                              control={<Radio />}
-                              label="Single Point"
-                              className={classes.text}
-                            />
-                            <FormControlLabel
-                              value="pma"
-                              control={<Radio />}
-                              label="Parametric"
-                              disabled={disableParametric}
-                              className={classes.text}
-                            />
-                          </RadioGroup>
-                        </FormControl>
+                <Typography
+                  className={classes.subtitle}
+                >
+                  Analysis Run Type
+                </Typography>
+              </Grid>
+            )}
+            <Grid item xs={12}>
+              <Grid container>
+                <Grid item md={12} xs={12} spacing={2}>
+                  <FormControl fullWidth>
+                    <RadioGroup
+                      aria-labelledby="modeling-type-radio-buttons-group-label"
+                      name="radio-buttons-group"
+                      value={modelType}
+                      onChange={handleSubChange}
+                    >
+                      <Grid container className='px-3 py-1'>
+                        <Grid item xs={6}>
+                          <FormControlLabel
+                            value="spa"
+                            control={<Radio />}
+                            label="Single Point"
+                            className={classes.text}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <FormControlLabel
+                            value="pma"
+                            control={<Radio />}
+                            label="Parametric"
+                            disabled={disableParametric}
+                            className={classes.text}
+                          />
+                        </Grid>
                       </Grid>
-                      {modelType === 'pma' && (
-                        <>
-                          {/* Altitude step Definition */}
-                          <Grid item md={12} xs={12}>
-                            <Grid container alignItems="center" spacing={4}>
-                              {/* <Grid item md={1}/><Grid item md={3} xs={12}>
-                      <Typography variant="body1" className = {classes.text}>{modelType == 'spa' ? "Altitude (km)" : "Start"}</Typography>
-                    </Grid>
-                    <Grid item md={7} xs={12}>
-                    <TextField
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      value = {stepDef.startAltitude.toFixed(0)}
-                      onBlur = {onChangeParameters}
-                      onChange = {onEditParameters}
-                      name = {'startAltitude'}
-                      disabled = {disableMe('alt')}
-                      className = {classes.input}
-                      />
-                    </Grid>
-                    <Grid item md = {1}/> */}
-
-                              <Grid
-                                container
-                                item
-                                alignItems="center"
-                                spacing={4}
-                                xs={12}
-                                style={{
-                                  maxHeight: '300px',
-                                  overflow: 'hidden',
-                                  transition: 'max-height 0.4s linear',
-                                  paddingLeft: 0,
-                                  paddingRight: 0
-                                }}
-                              >
-                                {/* <Grid item md = {12} xs = {12}>
-                        <Typography variant="body1" component="p" className={classes.header}>
-                          {'User Altitude (km)'}
-                        </Typography>
-                      </Grid> */}
-                                <Grid item md={5} xs={12}>
-                                  <Typography className={classes.text}>
-                                    User Altitude Start (km)
-                                  </Typography>
-                                </Grid>
-                                <Grid item md={7} xs={12}>
-                                  <TextField
-                                    size="small"
-                                    fullWidth
-                                    value={stepDef.startAltitude.toFixed(0)}
-                                    onBlur={onChangeParameters}
-                                    onChange={onEditParameters}
-                                    name={'startAltitude'}
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      inputProps: {
-                                        className: classes.input
-                                      }
-                                    }}
-                                    disabled={disableMe('alt')}
-                                  />
-                                </Grid>
-                                <Grid item md={5} xs={12}>
-                                  <Typography
-                                    variant="body1"
-                                    className={classes.text}
-                                  >
-                                    User Altitude End (km)
-                                  </Typography>
-                                </Grid>
-                                <Grid item md={7} xs={12}>
-                                  <TextField
-                                    size="small"
-                                    fullWidth
-                                    value={stepDef.stopAltitude.toFixed(0)}
-                                    onBlur={onChangeParameters}
-                                    onChange={onEditParameters}
-                                    name={'stopAltitude'}
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      inputProps: {
-                                        className: classes.input
-                                      }
-                                    }}
-                                    disabled={disableMe('alt')}
-                                  />
-                                </Grid>
-
-                                <Grid item md={5} xs={12}>
-                                  <Typography
-                                    variant="body1"
-                                    className={classes.text}
-                                  >
-                                    Step Size (km)
-                                  </Typography>
-                                </Grid>
-                                <Grid item md={7} xs={12}>
-                                  <TextField
-                                    size="small"
-                                    fullWidth
-                                    value={stepDef.altitudeStep}
-                                    onBlur={onChangeParameters}
-                                    onChange={onEditParameters}
-                                    name={'altitudeStep'}
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      inputProps: {
-                                        className: classes.input
-                                      }
-                                    }}
-                                    disabled={disableMe('alt')}
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-
-                          {/* Inclination Step Definition */}
-                          <Grid item xs={12} />
-                          <Grid item md={12} xs={12}>
-                            <Grid container alignItems="center" spacing={4}>
-                              {/* <Grid item md={1}/><Grid item md={3} xs={12}>
-                      <Typography variant="body1" className = {classes.text}>{modelType == 'spa' ? "Inclination (deg)" : "Start"}</Typography>
-                    </Grid>
-                    <Grid item md={7} xs={12}>
-                    <TextField
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      value = {stepDef.startInclination}
-                      onBlur = {onChangeParameters}
-                      onChange = {onEditParameters}
-                      name = {'startInclination'}
-                      className = {classes.input}
-                      disabled = {disableMe('inc')}
-                      />
-                    </Grid>
-                    <Grid item md = {1}/> */}
-
-                              <Grid
-                                container
-                                item
-                                alignItems="center"
-                                spacing={4}
-                                xs={12}
-                                style={{
-                                  maxHeight: '300px',
-                                  overflow: 'hidden',
-                                  transition: 'max-height 0.4s linear',
-                                  paddingLeft: 0,
-                                  paddingRight: 0
-                                }}
-                              >
-                                {/* <Grid item md = {12} xs = {12}>
-                        <Typography variant="body1" component="p" className={classes.header} style={{marginTop: '10px'}}>
-                          {modelType == 'spa'?'User Inclination':'User Inclination (deg)'}
-                        </Typography>
-                      </Grid> */}
-                                <Grid item md={5} xs={12}>
-                                  <Typography
-                                    variant="body1"
-                                    className={classes.text}
-                                  >
-                                    User Inclination Start (deg)
-                                  </Typography>
-                                </Grid>
-                                <Grid item md={7} xs={12}>
-                                  <TextField
-                                    size="small"
-                                    fullWidth
-                                    value={stepDef.startInclination}
-                                    onBlur={onChangeParameters}
-                                    onChange={onEditParameters}
-                                    name={'startInclination'}
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      inputProps: {
-                                        className: classes.input
-                                      }
-                                    }}
-                                    disabled={disableMe('inc')}
-                                  />
-                                </Grid>
-                                <Grid item md={5} xs={12}>
-                                  <Typography
-                                    variant="body1"
-                                    className={classes.text}
-                                  >
-                                    User Altitude End (deg)
-                                  </Typography>
-                                </Grid>
-                                <Grid item md={7} xs={12}>
-                                  <TextField
-                                    size="small"
-                                    fullWidth
-                                    value={stepDef.stopInclination}
-                                    onBlur={onChangeParameters}
-                                    onChange={onEditParameters}
-                                    name={'stopInclination'}
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      inputProps: {
-                                        className: classes.input
-                                      }
-                                    }}
-                                    disabled={disableMe('inc')}
-                                  />
-                                </Grid>
-                                <Grid item md={5} xs={12}>
-                                  <Typography
-                                    variant="body1"
-                                    className={classes.text}
-                                  >
-                                    Step Size (deg)
-                                  </Typography>
-                                </Grid>
-                                <Grid item md={7} xs={12}>
-                                  <TextField
-                                    size="small"
-                                    fullWidth
-                                    value={stepDef.inclinationStep}
-                                    onBlur={onChangeParameters}
-                                    onChange={onEditParameters}
-                                    name={'inclinationStep'}
-                                    InputProps={{
-                                      disableUnderline: true,
-                                      inputProps: {
-                                        className: classes.input
-                                      }
-                                    }}
-                                    disabled={disableMe('inc')}
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                          <Grid item xs={12} />
-                          {/* Eccentricity Step Definition */}
-                          {!isCircular && (
-                            <Grid item md={12} xs={12}>
-                              <Grid container alignItems="center" spacing={4}>
-                                {/* <Grid item md={1}/><Grid item md={3} xs={12}>
-                      <Typography variant="body1" className = {classes.text}>{modelType == 'spa' ? "Eccentricity" : "Start"}</Typography>
-                    </Grid>
-                    <Grid item md={7} xs={12}>
-                      <TextField
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        value = {parseFloat(stepDef.startEccentricity.toString()).toFixed(2)}
-                        onBlur = {onChangeParameters}
-                        onChange = {onEditParameters}
-                        name = {'startEccentricity'}
-                        className = {classes.input}
-                        />
-                    </Grid>
-                    <Grid item md = {1}/> */}
-
-                                {/* <Tooltip
-                      title={`Stepping over eccentricity has not yet been implemented. Using start value for eccentricity.`}
-                      placement="top-start"
-                      classes={{ tooltip: classes.tooltip }}
-                    > */}
-                                <Grid
-                                  container
-                                  item
-                                  alignItems="center"
-                                  spacing={4}
-                                  xs={12}
-                                  style={{
-                                    maxHeight: '300px',
-                                    overflow: 'hidden',
-                                    transition: 'max-height 0.4s linear',
-                                    paddingLeft: 0,
-                                    paddingRight: 0
-                                  }}
-                                >
-                                  {/* <Grid item md = {12} xs = {12}>
-                          <Typography variant="body1" component="p" className={classes.header} style={{marginTop: '10px'}}>
-                            {'Eccentricity'}
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
+                {modelType === 'pma' && (
+                  <>
+                    {/* Altitude step Definition */}
+                    <Grid item md={12} xs={12}>
+                      <Grid
+                        container
+                        item
+                        alignItems="center"
+                        spacing={4}
+                        className="px-3"
+                        xs={12}
+                        style={{
+                          maxHeight: '300px',
+                          overflow: 'hidden',
+                          transition: 'max-height 0.4s linear',
+                        }}
+                      >
+                        <Grid item md={6} xs={12}>
+                          <Typography className={classes.text}>
+                            User Altitude Start (km)
                           </Typography>
-                        </Grid> */}
-                                  <Grid item md={5} xs={12}>
-                                    <Typography
-                                      variant="body1"
-                                      className={classes.text}
-                                    >
-                                      User Eccentricity Start
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item md={7} xs={12}>
-                                    <TextField
-                                      size="small"
-                                      fullWidth
-                                      value={parseFloat(
-                                        stepDef.startEccentricity.toString()
-                                      ).toFixed(2)}
-                                      onBlur={onChangeParameters}
-                                      onChange={onEditParameters}
-                                      name={'startEccentricity'}
-                                      InputProps={{
-                                        disableUnderline: true,
-                                        inputProps: {
-                                          className: classes.input
-                                        }
-                                      }}
-                                    />
-                                  </Grid>
-                                  <Grid item md={5} xs={12}>
-                                    <Typography
-                                      variant="body1"
-                                      className={classes.text}
-                                    >
-                                      User Eccentricity End
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item md={7} xs={12}>
-                                    <TextField
-                                      size="small"
-                                      fullWidth
-                                      value={parseFloat(
-                                        stepDef.stopEccentricity.toString()
-                                      ).toFixed(2)}
-                                      onBlur={onChangeParameters}
-                                      onChange={onEditParameters}
-                                      name={'stopEccentricity'}
-                                      InputProps={{
-                                        disableUnderline: true,
-                                        inputProps: {
-                                          className: classes.input
-                                        }
-                                      }}
-                                    />
-                                  </Grid>
-                                  <Grid item md={5} xs={12}>
-                                    <Typography
-                                      variant="body1"
-                                      className={classes.text}
-                                    >
-                                      Step Size
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item md={7} xs={12}>
-                                    <TextField
-                                      size="small"
-                                      fullWidth
-                                      value={parseFloat(
-                                        stepDef.eccentricityStep.toString()
-                                      ).toFixed(2)}
-                                      onBlur={onChangeParameters}
-                                      onChange={onEditParameters}
-                                      name={'eccentricityStep'}
-                                      InputProps={{
-                                        disableUnderline: true,
-                                        inputProps: {
-                                          className: classes.input
-                                        }
-                                      }}
-                                    />
-                                  </Grid>
-                                </Grid>
-                                {/* </Tooltip> */}
-                              </Grid>
-                              <Grid item xs={12} />
-                            </Grid>
-                          )}
-                        </>
-                      )}
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <TextField
+                            size="small"
+                            fullWidth
+                            value={stepDef.startAltitude.toFixed(0)}
+                            onBlur={onChangeParameters}
+                            onChange={onEditParameters}
+                            name={'startAltitude'}
+                            InputProps={{
+                              disableUnderline: true,
+                              inputProps: {
+                                className: classes.input
+                              }
+                            }}
+                            disabled={disableMe('alt')}
+                          />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <Typography
+                            variant="body1"
+                            className={classes.text}
+                          >
+                            User Altitude End (km)
+                          </Typography>
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <TextField
+                            size="small"
+                            fullWidth
+                            value={stepDef.stopAltitude.toFixed(0)}
+                            onBlur={onChangeParameters}
+                            onChange={onEditParameters}
+                            name={'stopAltitude'}
+                            InputProps={{
+                              disableUnderline: true,
+                              inputProps: {
+                                className: classes.input
+                              }
+                            }}
+                            disabled={disableMe('alt')}
+                          />
+                        </Grid>
 
-                      {/* {!containsPoint &&
+                        <Grid item md={6} xs={12}>
+                          <Typography
+                            variant="body1"
+                            className={classes.text}
+                          >
+                            Step Size (km)
+                          </Typography>
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <TextField
+                            size="small"
+                            fullWidth
+                            value={stepDef.altitudeStep}
+                            onBlur={onChangeParameters}
+                            onChange={onEditParameters}
+                            name={'altitudeStep'}
+                            InputProps={{
+                              disableUnderline: true,
+                              inputProps: {
+                                className: classes.input
+                              }
+                            }}
+                            disabled={disableMe('alt')}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+
+                    {/* Inclination Step Definition */}
+                    <Grid item md={12} xs={12}>
+                      <Grid
+                        container
+                        item
+                        alignItems="center"
+                        spacing={4}
+                        className="px-3 mt-2"
+                        xs={12}
+                        style={{
+                          maxHeight: '300px',
+                          overflow: 'hidden',
+                          transition: 'max-height 0.4s linear',
+                        }}
+                      >
+                        <Grid item md={6} xs={12}>
+                          <Typography
+                            variant="body1"
+                            className={classes.text}
+                          >
+                            User Inclination Start (deg)
+                          </Typography>
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <TextField
+                            size="small"
+                            fullWidth
+                            value={stepDef.startInclination}
+                            onBlur={onChangeParameters}
+                            onChange={onEditParameters}
+                            name={'startInclination'}
+                            InputProps={{
+                              disableUnderline: true,
+                              inputProps: {
+                                className: classes.input
+                              }
+                            }}
+                            disabled={disableMe('inc')}
+                          />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <Typography
+                            variant="body1"
+                            className={classes.text}
+                          >
+                            User Altitude End (deg)
+                          </Typography>
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <TextField
+                            size="small"
+                            fullWidth
+                            value={stepDef.stopInclination}
+                            onBlur={onChangeParameters}
+                            onChange={onEditParameters}
+                            name={'stopInclination'}
+                            InputProps={{
+                              disableUnderline: true,
+                              inputProps: {
+                                className: classes.input
+                              }
+                            }}
+                            disabled={disableMe('inc')}
+                          />
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <Typography
+                            variant="body1"
+                            className={classes.text}
+                          >
+                            Step Size (deg)
+                          </Typography>
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <TextField
+                            size="small"
+                            fullWidth
+                            value={stepDef.inclinationStep}
+                            onBlur={onChangeParameters}
+                            onChange={onEditParameters}
+                            name={'inclinationStep'}
+                            InputProps={{
+                              disableUnderline: true,
+                              inputProps: {
+                                className: classes.input
+                              }
+                            }}
+                            disabled={disableMe('inc')}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} />
+                    {/* Eccentricity Step Definition */}
+                    {!isCircular && (
+                      <Grid item md={12} xs={12}>
+                        <Grid
+                          container
+                          item
+                          alignItems="center"
+                          spacing={4}
+                          className="px-3"
+                          xs={12}
+                          style={{
+                            maxHeight: '300px',
+                            overflow: 'hidden',
+                            transition: 'max-height 0.4s linear',
+                          }}
+                        >
+                          <Grid item md={6} xs={12}>
+                            <Typography
+                              variant="body1"
+                              className={classes.text}
+                            >
+                              User Eccentricity Start
+                            </Typography>
+                          </Grid>
+                          <Grid item md={6} xs={12}>
+                            <TextField
+                              size="small"
+                              fullWidth
+                              value={parseFloat(
+                                stepDef.startEccentricity.toString()
+                              ).toFixed(2)}
+                              onBlur={onChangeParameters}
+                              onChange={onEditParameters}
+                              name={'startEccentricity'}
+                              InputProps={{
+                                disableUnderline: true,
+                                inputProps: {
+                                  className: classes.input
+                                }
+                              }}
+                            />
+                          </Grid>
+                          <Grid item md={6} xs={12}>
+                            <Typography
+                              variant="body1"
+                              className={classes.text}
+                            >
+                              User Eccentricity End
+                            </Typography>
+                          </Grid>
+                          <Grid item md={6} xs={12}>
+                            <TextField
+                              size="small"
+                              fullWidth
+                              value={parseFloat(
+                                stepDef.stopEccentricity.toString()
+                              ).toFixed(2)}
+                              onBlur={onChangeParameters}
+                              onChange={onEditParameters}
+                              name={'stopEccentricity'}
+                              InputProps={{
+                                disableUnderline: true,
+                                inputProps: {
+                                  className: classes.input
+                                }
+                              }}
+                            />
+                          </Grid>
+                          <Grid item md={6} xs={12}>
+                            <Typography
+                              variant="body1"
+                              className={classes.text}
+                            >
+                              Step Size
+                            </Typography>
+                          </Grid>
+                          <Grid item md={6} xs={12}>
+                            <TextField
+                              size="small"
+                              fullWidth
+                              value={parseFloat(
+                                stepDef.eccentricityStep.toString()
+                              ).toFixed(2)}
+                              onBlur={onChangeParameters}
+                              onChange={onEditParameters}
+                              name={'eccentricityStep'}
+                              InputProps={{
+                                disableUnderline: true,
+                                inputProps: {
+                                  className: classes.input
+                                }
+                              }}
+                            />
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={12} />
+                      </Grid>
+                    )}
+                  </>
+                )}
+
+                {/* {!containsPoint &&
                 <Grid item md={12} xs={12}>
                   <div className= {classes.alert}><i>This point doesn't exist in the database yet, a new analysis will need to be run to determine the values at this point</i></div>
                 </Grid>} */}
-                    </Grid>
-                  </Grid>
-                </Box>
               </Grid>
-            </>
-          )}
-        </Grid>
-      </Box>
+              {/* </Grid> */}
+              {/* </Box> */}
+            </Grid>
+          </>
+        )}
+      </Grid>
+      {/* </Box> */}
       <PDFViewerErgodic
         isOpen={showTheory}
         onClose={() => setShowTheory(false)}
