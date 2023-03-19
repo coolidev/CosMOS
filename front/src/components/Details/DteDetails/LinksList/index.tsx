@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import {Theme} from 'src/theme'
 import { ConnectivitySource as RelationshipSource } from "../Manager";
 import axios from "src/utils/axios";
+import { MinusSquare, PlusSquare } from "../../StyledTreeItem";
 
 interface LinksListProps {
 	networkId: number,
@@ -34,13 +35,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 		height: '50vh'
 	},
 	mainPanel: {
-		border: `1px solid ${theme.palette.text.secondary}`,
+		// border: `1px solid ${theme.palette.text.secondary}`,
 		backgroundColor: 'white',
 		padding: theme.spacing(3),
-		overflowY: 'scroll'
+		overflowY: 'auto'
 	},
 	linkItem: {
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
+		'&.MuiAccordion-root.Mui-expanded': {
+			margin: 0
+		},
+		"&:before": {
+			display: 'none',
+		}
 	},
 	accordionDetail: {
 		display: 'block',
@@ -50,9 +57,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 		paddingBottom: '0',
 	},
 	linkSummary: {
-		border: `1px solid ${theme.palette.text.secondary}`,
+		border: `1px solid #E3E3E3`,
 		padding: theme.spacing(1),
 		margin: theme.spacing(2),
+		color: "#333333",
 		minHeight: '1.5rem !important',
 		'& > div': {
 			margin: 'inherit !important',
@@ -60,10 +68,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 		}
 	},
 	activedLink: {
-		backgroundColor: '#e34747'
+		// backgroundColor: '#e34747',
+		borderBottom: '2px solid #e34747',
 	},
 	subLinkItem: {
-		border: `1px solid ${theme.palette.text.secondary}`,
+		border: `1px solid #E3E3E3`,
+		color: "#333333",
 		padding: theme.spacing(3),
 		marginTop: theme.spacing(4),
 		marginBottom: theme.spacing(4)
@@ -225,9 +235,9 @@ const LinksList: FC<LinksListProps> = ({
                   <IconLeftAccordionSummary
                     expandIcon={
                       !isExpanded ? (
-                        <PlusIcon fontSize="small" />
+                        <PlusSquare style={{ color: '#969696' }} fontSize="small" />
                       ) : (
-                        <MinusIcon fontSize="small" />
+                        <MinusSquare style={{ color: '#969696' }} fontSize="small" />
                       )
                     }
                     aria-controls="panel1bh-content"
