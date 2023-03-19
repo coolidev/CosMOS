@@ -136,10 +136,14 @@ const EngineerModels: FC<ModelsProps> = ({ networkId, networkName, isEditable })
           width="10%"
         >
           <Button
-            icon="download"
+            // icon="download"
             hint="Download Model"
             onClick={handleDownload}
-          />
+          >
+            <svg width="19" height="24" viewBox="0 0 19 24" fill="none">
+              <path d="M16.3333 0.333313H7L0 7.33331V21.3333C0 22.6166 1.05 23.6666 2.33333 23.6666H16.3333C17.6167 23.6666 18.6667 22.6166 18.6667 21.3333V2.66665C18.6667 1.38331 17.6167 0.333313 16.3333 0.333313ZM9.33333 17.8333L4.66667 13.1666H8.16667V8.52331L10.5 8.49998V13.1666H14L9.33333 17.8333Z" fill="#E34747"/>
+            </svg>
+          </Button>
         </Column>
         <Column
           dataField="filename"
