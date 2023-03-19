@@ -89,7 +89,7 @@ const banned = [STATION_KEY, ANTENNA_KEY];
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)
   },
   tree: {
@@ -429,135 +429,135 @@ const Manager: FC<ManagerProps> = ({
 
   return (
     <Grid item md={12} className={classes.root}>
-      <Box border={1}>
-        <Grid container>
-          <Grid item md={3}>
-            <TreeView
-              className={classes.tree}
-              expanded={expanded}
-              selected={selected.join('---')}
-              defaultCollapseIcon={<MinusSquare />}
-              defaultExpandIcon={<PlusSquare />}
-              onNodeSelect={handleSelect}
-              onNodeToggle={handleToggle}
-            >
-              {(connectionChangeFlag || !connectionChangeFlag) &&
-                results.map((result: Section, i: number) =>
-                  renderTree(
-                    depths[0],
-                    result.section_value,
-                    result.section_name
-                  )
+      <Grid container>
+        <Grid item md={3} style={{ paddingLeft: '2rem', paddingRight: '2rem' }} />
+        <Grid item md={9} style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
+          <Breadcrumbs aria-label="breadcrumb">
+            {selected.map((item, idx) => (
+              <div key={idx}>
+                {idx !== selected.length - 1 ? (
+                  <Link
+                    component="button"
+                    color="inherit"
+                    href=""
+                    onClick={() => handleClick(idx)}
+                    style={{ fontSize: '18px' }}
+                  >
+                    {idx === 3 ? `${item}` : idx === 2 ? `${item}` : item}
+                  </Link>
+                ) : (
+                  <Typography color="textPrimary" style={{ fontSize: '18px' }}>
+                    {idx === 3 ? `${item}` : idx === 2 ? `${item}` : item}
+                  </Typography>
                 )}
-              {isEditable && (
-                <StyledTreeItem
-                  nodeId=""
-                  labelText="Add Platform"
-                  onRowClick={handleAddStation}
-                  isRowEvent
-                />
-              )}
-              {isEditable && (
-                <Menu
-                  keepMounted
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                  getContentAnchorEl={null}
-                  anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                >
-                  {menu.add && menu.add !== '' && (
-                    <MenuItem onClick={(event) => handleMenuItem(event, false)}>
-                      Add {menu.add}
-                    </MenuItem>
-                  )}
-                  {menu.remove && menu.remove !== '' && (
-                    <MenuItem onClick={(event) => handleMenuItem(event, true)}>
-                      Remove {menu.remove}
-                    </MenuItem>
-                  )}
-                </Menu>
-              )}
-            </TreeView>
-          </Grid>
-          <Grid item md={9} className={classes.main}>
-            <Breadcrumbs aria-label="breadcrumb">
-              {selected.map((item, idx) => (
-                <div key={idx}>
-                  {idx !== selected.length - 1 ? (
-                    <Link
-                      component="button"
-                      color="inherit"
-                      href=""
-                      onClick={() => handleClick(idx)}
-                    >
-                      {idx === 3 ? `${item}` : idx === 2 ? `${item}` : item}
-                    </Link>
-                  ) : (
-                    <Typography color="textPrimary">
-                      {idx === 3 ? `${item}` : idx === 2 ? `${item}` : item}
-                    </Typography>
-                  )}
-                </div>
-              ))}
-            </Breadcrumbs>
-            <Box mt={3}>
-              <Tabs
-                dataSource={
-                  (isEditable && isAdvanced)
-                    ? [
-                        {
-                          text: 'Attributes'
-                        },
-                        {
-                          text: 'Connectivity'
-                        }
-                      ]
-                    : [
-                        {
-                          text: 'Attributes'
-                        }
-                      ]
-                }
-                selectedIndex={isEditable ? currentPanelTab : 0}
-                onOptionChanged={handlePanelChange}
-                className={classes.tabPanel}
-              />
-              {currentPanelTab === 0 && (
-                <DataTable
-                  // @ts-ignore
-                  id={dataSource.id}
-                  isAdmin={isEditable}
-                  source={source}
-                  refresh={async () => {
-                    await refresh();
-                    setSelected(new Array(dataSource.detail.system_value[0]?.section_name??null));
-                    setExpanded([]);
-                  }}
-                />
-              )}
-              {currentPanelTab === 1 && (
-                <ConnectivityPanel
-                  id={dataSource.id}
-                  selected={selected}
-                  selectedSource={source}
-                  relations={connectivitySource}
-                  updateConnectivity={updateConnectivity}
-                  updateConnectivityList={updateConnectivityList}
-                  setReloadFlag={() => setCurrentPanelTab(-1)}
-                />
-              )}
-              {/* {(source[0] != null) && (source[0].sub_key === "antenna_frequency")
-                  ?<Typography display="block" align="right" variant="caption" className="classes.note"><br></br>{DTE_NOTES}</Typography>
-                  :null
-                } */}
-            </Box>
-          </Grid>
+              </div>
+            ))}
+          </Breadcrumbs>
         </Grid>
-      </Box>
+        <Grid item md={3}>
+          <TreeView
+            className={classes.tree}
+            expanded={expanded}
+            selected={selected.join('---')}
+            defaultCollapseIcon={<MinusSquare style={{ color: '#969696' }} fontSize={ 'small' } />}
+            defaultExpandIcon={<PlusSquare style={{ color: '#969696' }} fontSize={ 'small' } />}
+            onNodeSelect={handleSelect}
+            onNodeToggle={handleToggle}
+          >
+            {(connectionChangeFlag || !connectionChangeFlag) &&
+              results.map((result: Section, i: number) =>
+                renderTree(
+                  depths[0],
+                  result.section_value,
+                  result.section_name
+                )
+              )}
+            {isEditable && (
+              <StyledTreeItem
+                nodeId=""
+                labelText="Add Platform"
+                onRowClick={handleAddStation}
+                isRowEvent
+              />
+            )}
+            {isEditable && (
+              <Menu
+                keepMounted
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                {menu.add && menu.add !== '' && (
+                  <MenuItem onClick={(event) => handleMenuItem(event, false)}>
+                    Add {menu.add}
+                  </MenuItem>
+                )}
+                {menu.remove && menu.remove !== '' && (
+                  <MenuItem onClick={(event) => handleMenuItem(event, true)}>
+                    Remove {menu.remove}
+                  </MenuItem>
+                )}
+              </Menu>
+            )}
+          </TreeView>
+        </Grid>
+        <Grid item md={9} className={classes.main}>
+          {/* <Tabs
+            dataSource={
+              (isEditable && isAdvanced)
+                ? [
+                    {
+                      text: 'Attributes'
+                    },
+                    {
+                      text: 'Connectivity'
+                    }
+                  ]
+                : [
+                    {
+                      text: 'Attributes'
+                    }
+                  ]
+            }
+            selectedIndex={isEditable ? currentPanelTab : 0}
+            onOptionChanged={handlePanelChange}
+            className={classes.tabPanel}
+          /> */}
+          {currentPanelTab === 0 && (
+            <DataTable
+              // @ts-ignore
+              id={dataSource.id}
+              isAdmin={isEditable}
+              source={source}
+              refresh={async () => {
+                await refresh();
+                setSelected(new Array(dataSource.detail.system_value[0]?.section_name??null));
+                setExpanded([]);
+              }}
+            />
+          )}
+          {currentPanelTab === 1 && (
+            <ConnectivityPanel
+              id={dataSource.id}
+              selected={selected}
+              selectedSource={source}
+              relations={connectivitySource}
+              updateConnectivity={updateConnectivity}
+              updateConnectivityList={updateConnectivityList}
+              setReloadFlag={() => setCurrentPanelTab(-1)}
+            />
+          )}
+          {/* {(source[0] != null) && (source[0].sub_key === "antenna_frequency")
+              ?<Typography display="block" align="right" variant="caption" className="classes.note"><br></br>{DTE_NOTES}</Typography>
+              :null
+            } */}
+        </Grid>
+      </Grid>
       {isEditable && (
-        <Box m={2}>
+        <>
           <AddStation
             id={dataSource.id.toString()}
             state={state}
@@ -586,7 +586,7 @@ const Manager: FC<ManagerProps> = ({
             onOpen={handleOpen}
             initialize={initialize}
           />
-        </Box>
+        </>
       )}
     </Grid>
   );
