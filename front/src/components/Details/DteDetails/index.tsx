@@ -91,7 +91,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: theme.spacing(0.5)
   },
   card: {
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.light
   },
   backBtn: {
     width: '100px',
@@ -101,8 +102,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500],
+    color: theme.palette.background.light,
     zIndex: 100
+  },
+  dialogBox: {
+    '& > div > div': {
+      border: `2px solid ${theme.palette.border.main}`,
+      borderRadius: '8px'
+    }
   }
 }));
 
@@ -122,11 +129,11 @@ const DteDetails: FC<DteDetailsProps> = ({ id, onClose, platformType, refresh })
   const [networkSource, setNetworkSource] = useState<any>();
   const [state, setState] = useState<State>(initialState);
   const [currentTab, setCurrentTab] = useState<number>(0);
-  const apiCall = platformType == 1? '/requestDTEDetails':'/requestRelayDetails';
+  const apiCall = platformType == 1 ? '/requestDTEDetails' : '/requestRelayDetails';
   const [advancedMode, setAdvancedMode] = useState<boolean>(false);
 
   const fetchData = async () => {
-    const params = { id, email, platformType: platformType};
+    const params = { id, email, platformType: platformType };
     const response = await axios.post<{
       master: Master[];
       detail: Detail;
@@ -145,10 +152,10 @@ const DteDetails: FC<DteDetailsProps> = ({ id, onClose, platformType, refresh })
   };
 
   const fetchNetworkData = async () => {
-    const params = {networkId: id}
+    const params = { networkId: id }
     const response = await axios.post('/getNetworkOverview', params);
-    if(response.data){
-      
+    if (response.data) {
+
       setNetworkSource(response.data);
     }
   }
@@ -158,7 +165,7 @@ const DteDetails: FC<DteDetailsProps> = ({ id, onClose, platformType, refresh })
     fetchNetworkData();
   }, [state.reload]);
 
-  
+
   const handleChange = (event, value) => setCurrentTab(value);
 
   const handleState = (name: string, value: string | boolean) => {
@@ -174,13 +181,15 @@ const DteDetails: FC<DteDetailsProps> = ({ id, onClose, platformType, refresh })
       maxWidth="lg"
       onClose={onClose}
       fullWidth
+      className={classes.dialogBox}
     >
       <CssBaseline />
       <DialogTitle
         style={{
           margin: 0,
           padding: '16px',
-          backgroundColor: theme.palette.primary.light
+          backgroundColor: theme.palette.border.main,
+          color: "white"
         }}
       >
         <Typography component="strong" variant="h4">
@@ -192,7 +201,7 @@ const DteDetails: FC<DteDetailsProps> = ({ id, onClose, platformType, refresh })
       </DialogTitle>
       <DialogContent
         dividers={true}
-        style={{ backgroundColor: theme.palette.component.main }}
+        style={{ backgroundColor: theme.palette.background.light }}
       >
         <Grid
           container
@@ -217,7 +226,7 @@ const DteDetails: FC<DteDetailsProps> = ({ id, onClose, platformType, refresh })
           </Grid>
           {source?.isEditable && (
             <>
-              <Grid item md={2} style={{paddingTop: 10, paddingRight: 5}}>
+              <Grid item md={2} style={{ paddingTop: 10, paddingRight: 5 }}>
                 <Typography align='right'>Advanced Mode</Typography>
               </Grid>
               <Grid item md={1}>
