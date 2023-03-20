@@ -171,7 +171,7 @@ const EngineerModels: FC<ModelsProps> = ({ networkId, networkName, isEditable })
           width="40%"
         />
       </DataGrid>
-      <a
+      {/* <a
         id="download"
         href={`/${downloadedFile}`}
         download
@@ -224,7 +224,7 @@ const EngineerModels: FC<ModelsProps> = ({ networkId, networkName, isEditable })
             </>
           )}
         </Grid>
-      </Grid>
+      </Grid> */}
     </div>
   );
 };

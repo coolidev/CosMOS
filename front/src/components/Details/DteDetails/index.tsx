@@ -16,7 +16,9 @@ import {
   makeStyles,
   useTheme,
   Switch,
-  Grid
+  Grid,
+  styled,
+  FormControlLabel
 } from '@material-ui/core';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { Close as CloseIcon } from '@material-ui/icons';
@@ -113,6 +115,47 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
+const AdvancedSwitch = styled(Switch)(({ theme }) => ({
+  width: 50,
+  height: 22,
+  padding: 0,
+  display: 'flex',
+  '&:active': {
+    '& .MuiSwitch-thumb': {
+      width: 18,
+    },
+    '& .MuiSwitch-switchBase.Mui-checked': {
+      transform: 'translateX(28px)',
+    },
+  },
+  '& .MuiSwitch-switchBase': {
+    padding: 2,
+    '&.Mui-checked': {
+      transform: 'translateX(28px)',
+      color: '#fff',
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: '#E34747',
+      },
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxShadow: '2px 2px 4px 0 rgb(0 0 0 / 10%)',
+    width: 18,
+    height: 18,
+    borderRadius: '50%',
+    transition: theme.transitions.create(['width'], {
+      duration: 200,
+    }),
+  },
+  '& .MuiSwitch-track': {
+    borderRadius: 12,
+    opacity: 1,
+    backgroundColor: 'rgba(0,0,0,.25)',
+    boxSizing: 'border-box',
+  },
+}));
+
 /**
  * DTE Network Details Panel
  *
@@ -187,7 +230,7 @@ const DteDetails: FC<DteDetailsProps> = ({ id, onClose, platformType, refresh })
       <DialogTitle
         style={{
           margin: 0,
-          padding: '16px',
+          padding: '9px 16px',
           backgroundColor: theme.palette.border.main,
           color: "white"
         }}
@@ -195,7 +238,7 @@ const DteDetails: FC<DteDetailsProps> = ({ id, onClose, platformType, refresh })
         <Typography component="strong" variant="h4">
           {title}
         </Typography>
-        <IconButton className={classes.close} onClick={onClose}>
+        <IconButton className={classes.close} onClick={onClose} size="small">
           <CloseIcon />
         </IconButton>
       </DialogTitle>
@@ -209,32 +252,33 @@ const DteDetails: FC<DteDetailsProps> = ({ id, onClose, platformType, refresh })
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Grid item md={source?.isEditable ? 9 : 12}>
+          <Grid item>
             <Tabs
               value={currentTab}
               indicatorColor="primary"
-              textColor="primary"
+              // textColor="primary"
               onChange={handleChange}
-              aria-label="disabled tabs example"
+              aria-label="network detail tabs"
             >
-              <Tab value={0} label="Overview" />
-              <Tab value={1} label="Topology" />
-              {source?.isEditable && advancedMode && <Tab value={2} label="Connection Builder" />}
-              <Tab value={3} label="Connection List" />
-              <Tab value={4} label="Engineering Models" />
+              <Tab value={0} label="Overview" style={{ fontSize: '16px' }} />
+              <Tab value={1} label="Topology" style={{ fontSize: '16px' }} />
+              {source?.isEditable && advancedMode && <Tab value={2} label="Connection Builder" style={{ fontSize: '16px' }} />}
+              <Tab value={3} label="Connection List" style={{ fontSize: '16px' }} />
+              <Tab value={4} label="Engineering Models" style={{ fontSize: '16px' }} />
             </Tabs>
           </Grid>
           {source?.isEditable && (
             <>
-              <Grid item md={2} style={{ paddingTop: 10, paddingRight: 5 }}>
-                <Typography align='right'>Advanced Mode</Typography>
-              </Grid>
-              <Grid item md={1}>
-                <Switch
-                  edge="start"
-                  name="direction"
+              <div className='ml-auto' />
+              <Grid item style={{ minHeight: '52px', padding: '2px', display: 'flex' }} alignItems="center">
+                <FormControlLabel
+                  name='direction'
                   checked={advancedMode}
                   onChange={() => setAdvancedMode(!advancedMode)}
+                  control={<AdvancedSwitch edge="start" />}
+                  labelPlacement="start"
+                  label={<Typography variant='body1' className='px-3' style={{ fontSize: '16px' }}>Advanced Mode</Typography>}
+                  style={{ fontSize: '16px' }}
                 />
               </Grid>
             </>

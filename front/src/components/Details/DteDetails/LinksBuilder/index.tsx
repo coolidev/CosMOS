@@ -4,6 +4,7 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
+	FormControlLabel,
 	Grid,
 	IconButton,
 	makeStyles,
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		color: 'white',
 	},
 	actionButton: {
-		width: '50%',
+		width: '100px',
 		margin: '0.5rem',
 	},
 	submitButton: {
@@ -96,10 +97,6 @@ const LinksBuilder: FC<LinksBuilderProps> = ({
 	const [lastLinkId, setLastLinkId] = useState<number>(0);
 
 	const classes = useStyles();
-
-	useEffect(() => {
-		console.log(relationshipSource);
-	}, [relationshipSource]);
 
 	useEffect(() => {
 		const initializeData = async () => {
@@ -361,75 +358,80 @@ const LinksBuilder: FC<LinksBuilderProps> = ({
 		<>
 			<div className={classes.root}>
 				<Grid container className={classes.mainPanel}>
-					<Grid item xs={12} sm={5}>
-						<Grid container className={classes.labelBox}>
-							<Grid style={{ paddingTop: '10px' }}>
-								<h6>Active-Unused Connections</h6>
+					<Grid item xs={11}>
+						<Grid container>
+							<Grid item xs={12} sm={5}>
+								<Grid container className={classes.labelBox}>
+									<Grid style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+										<h6>Active-Unused Connections</h6>
+									</Grid>
+									<Grid>
+										<FormControlLabel
+											name={'forwardFilter'}
+											checked={!filter}
+											onChange={() => filter && handleFilter()}
+											control={<Radio size="small" />}
+											label="Forward"
+										/>
+										<FormControlLabel
+											name={'returnFilter'}
+											checked={filter}
+											onChange={() => !filter && handleFilter()}
+											control={<Radio size="small" />}
+											label="Return"
+										/>
+									</Grid>
+								</Grid>
+								<Grid className={classes.linksComp} style={{ height: "30vh" }}>
+									{(isUpdated || !isUpdated) &&
+										renderRelationship(
+											'prelist',
+											relationshipSource,
+											establishedRelations
+										)}
+								</Grid>
 							</Grid>
-							<Grid>
-								<Radio
-									name={'forwardFilter'}
-									checked={!filter}
-									onChange={() => filter && handleFilter()}
-								/>
-								Forward
-								<Radio
-									name={'returnFilter'}
-									checked={filter}
-									onChange={() => !filter && handleFilter()}
-								/>
-								Return
+							<Grid item xs={12} sm={2}>
+								<Grid container style={{ height: '100%' }}>
+									<Grid container justifyContent="center" alignItems="flex-end" style={{ paddingTop: "50px" }}>
+										<Button
+											// style={{ float: 'right', marginRight: '1.5vh' }}
+											className={classes.actionButton}
+											onClick={handleAdd}
+											variant="contained"
+											color="primary"
+										>
+											{'Add >'}
+										</Button>
+									</Grid>
+									<Grid container justifyContent="center" alignItems="flex-start">
+										<Button
+											// style={{ float: 'right', marginRight: '1.5vh' }}
+											className={classes.actionButton}
+											onClick={handleRemove}
+											variant="contained"
+											color="primary"
+										>
+											{'< Remove'}
+										</Button>
+									</Grid>
+								</Grid>
 							</Grid>
-						</Grid>
-						<Grid className={classes.linksComp} style={{ height: "30vh" }}>
-							{(isUpdated || !isUpdated) &&
-								renderRelationship(
-									'prelist',
-									relationshipSource,
-									establishedRelations
-								)}
-						</Grid>
-					</Grid>
-					<Grid item xs={12} sm={2}>
-						<Grid container style={{ height: '100%' }}>
-							<Grid container justifyContent="center" alignItems="flex-end" style={{ paddingTop: "50px" }}>
-								<Button
-									style={{ float: 'right', marginRight: '1.5vh' }}
-									className={classes.actionButton}
-									onClick={handleAdd}
-									variant="contained"
-									color="primary"
-								>
-									{'Add >'}
-								</Button>
+							<Grid item xs={12} sm={5}>
+								<Grid container className={classes.labelBox} style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+									<h6>Established Links</h6>
+								</Grid>
+								<Grid className={classes.linksComp} style={{ height: "30vh" }}>
+									{(isUpdated || !isUpdated) &&
+										renderRelationship('established', establishedRelations, [])}
+								</Grid>
 							</Grid>
-							<Grid container justifyContent="center" alignItems="flex-start">
-								<Button
-									style={{ float: 'right', marginRight: '1.5vh' }}
-									className={classes.actionButton}
-									onClick={handleRemove}
-									variant="contained"
-									color="primary"
-								>
-									{'< Remove'}
-								</Button>
-							</Grid>
-						</Grid>
-					</Grid>
-					<Grid item xs={10} sm={4}>
-						<Grid container className={classes.labelBox} style={{ paddingTop: '10px', paddingBottom: '10px' }}>
-							<h6>Established Links</h6>
-						</Grid>
-						<Grid className={classes.linksComp} style={{ height: "30vh" }}>
-							{(isUpdated || !isUpdated) &&
-								renderRelationship('established', establishedRelations, [])}
 						</Grid>
 					</Grid>
 					<Grid item xs={1}>
 						<Grid container style={{ height: '100%' }}>
 							<Grid container justifyContent="center" alignItems="flex-end" style={{ paddingTop: "50px" }}>
 								<IconButton
-									style={{ float: 'right', marginRight: '1.5vh' }}
 									className={`${classes.rotationRight}`}
 									onClick={handleMoveUp}
 									// variant="contained"
@@ -445,7 +447,6 @@ const LinksBuilder: FC<LinksBuilderProps> = ({
 							</Grid>
 							<Grid container justifyContent="center" alignItems="flex-start">
 								<IconButton
-									style={{ float: 'right', marginRight: '1.5vh' }}
 									className={`${classes.rotationRight}`}
 									onClick={handleMoveDown}
 									// variant="contained"
