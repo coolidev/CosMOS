@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   labelText: {
     fontWeight: 'inherit',
-    flexGrow: 1
+    flexGrow: 1,
+    color: '#333333',
+    padding: '0.25rem'
   },
   labelIcon: {
     fontWeight: 'inherit', //theme.typography.fontWeightLight,
@@ -41,13 +43,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   relationIcon: {
     padding: '0.5px',
     margin: '0.5px 1.5px',
-    borderRadius: '50%'
+    borderRadius: '50%',
+    color: '#969696'
   },
   onHoldRelationIcon: {
     padding: '0.5px',
     margin: '0.5px 1.5px',
     borderRadius: '50%',
-    backgroundColor: 'black',
+    backgroundColor: '#969696',
     color: 'white'
   }
 }));

@@ -6,6 +6,16 @@ import axios from 'src/utils/axios';
 import DialogAlert from 'src/components/DialogAlert';
 import DataTagBoxLite from './DataTagBoxLite';
 import { NetworkAttr } from '.';
+import { makeStyles } from '@material-ui/core';
+import { Theme } from 'src/theme';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  dataTableStyle: {
+    '& .dx-command-edit.dx-command-edit-with-icons': {
+      textAlign: 'left !important'
+    }
+  }
+}))
 
 interface DataTableProps {
   source: NetworkAttr[];
@@ -30,6 +40,8 @@ const DataTable: FC<DataTableProps> = ({ isAdmin, source, networkId }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [prevValue, setPrevValue] = useState<any>();
 
+  const classes = useStyles()
+
   const handleRowUpdating = async (event) => {
     const params = {
       networkId: networkId,
@@ -40,6 +52,7 @@ const DataTable: FC<DataTableProps> = ({ isAdmin, source, networkId }) => {
       explanation: event.newData.explanation ?? event.oldData.explanation,
       references: event.newData.references ?? event.oldData.references
     };
+
     try {
       await axios.post('/updateNetworkAttribute', params);
     } catch {
@@ -87,6 +100,7 @@ const DataTable: FC<DataTableProps> = ({ isAdmin, source, networkId }) => {
         onRowRemoved={handleRowDeleting}
         wordWrapEnabled={true}
         columnWidth={200}
+        className={classes.dataTableStyle}
       >
         <Editing
           mode="row"
