@@ -1,4 +1,6 @@
-import { makeStyles, Theme } from "@material-ui/core";
+import { makeStyles} from "@material-ui/core";
+import { State } from "src/pages/home";
+import { Theme } from "src/theme";
 import { Status } from "src/types/comparison";
 import { ReactTableHeader } from "./ReactTableHeader";
 import { ReactTableRow } from "./ReactTableRow";
@@ -13,6 +15,7 @@ export interface IColumnType<T> {
 
 export interface IActionType {
   deleteColumn: Function;
+  markForComparison: Function;
 }
 
 interface Props<T> {
@@ -21,6 +24,7 @@ interface Props<T> {
   compressed: boolean[];
   status: Status;
   actions?: IActionType;
+  state: State
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -29,20 +33,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     // minWidth: '600px',
     borderSpacing: 0,
     '& td' : {
-      border: '1px solid white'
+      border: `1px solid ${theme.palette.border.main}`
     },
     '& th' : {
-      border: '1px solid white'
+      border: `1px solid white`,
+      borderBottom: '0px'
     },
   }
 }));
 
-export function ReactTable<T>({ data, columns, actions, compressed, status }: Props<T>): JSX.Element {
+export function ReactTable<T>({ data, columns, actions, compressed, status, state }: Props<T>): JSX.Element {
   const classes = useStyles();
   return (
     <table className={classes.root}>
       <thead>
-        <ReactTableHeader columns={columns} actions={actions} compressed={compressed} status={status} />
+        <ReactTableHeader columns={columns} actions={actions} compressed={compressed} status={status} state={state}/>
       </thead>
       <tbody>
         <ReactTableRow data={data} columns={columns} />

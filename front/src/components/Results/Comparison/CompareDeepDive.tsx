@@ -143,12 +143,12 @@ const UserBurdenModal: FC<UserBurdenModalProps> = ({
     rtnLinkFreqMHz,
     lambda,
     gOverT,
-    // cOverNo,
+    cOverNo,
     implementationLoss,
-    // polarizationLoss_dB,
-    // propagationLosses_dB,
-    // otherLosses_dB,
-    // elevationConstraint_deg
+    polarizationLoss_dB,
+    propagationLosses_dB,
+    otherLosses_dB,
+    elevationConstraint_deg
   } = state.selectedItems.length > 1 ? systemParams[maxEirpId] : systemParams;
   const A_u = state.parameters.isOrbital ? state.parameters.altitude : 0;
   const classes = useStyles();
