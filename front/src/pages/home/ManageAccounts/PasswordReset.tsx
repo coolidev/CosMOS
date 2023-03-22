@@ -91,6 +91,7 @@ const PasswordReset: FC<PasswordResetProps> = ({
             autoComplete="current-password"
             onChange={handleChange}
             fullWidth
+            size='small'
             required
           />
           <TextField
@@ -104,6 +105,7 @@ const PasswordReset: FC<PasswordResetProps> = ({
             onChange={handleChange}
             type="password"
             value={values.password}
+            size="small"
             variant="outlined"
           />
           <TextField
@@ -117,6 +119,7 @@ const PasswordReset: FC<PasswordResetProps> = ({
             onChange={handleChange}
             type="password"
             value={values.passwordConfirm}
+            size="small"
             variant="outlined"
           />
           {errors.submit && (

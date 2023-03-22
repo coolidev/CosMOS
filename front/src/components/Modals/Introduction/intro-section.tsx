@@ -1,4 +1,4 @@
-import { DialogContent, Grid, Typography } from '@material-ui/core';
+import { DialogContent, Divider, Grid, Typography } from '@material-ui/core';
 import IntroTitleSection from './intro-title-section';
 import useStyles from '../../../utils/styles';
 
@@ -15,8 +15,9 @@ function IntroSection(props) {
         {item.title}
       </IntroTitleSection>
       <DialogContent
-        dividers
+        // dividers
         className={!props.isPanel ? classes.introContent : ''}
+        style={{ backgroundColor: 'white' }}
       >
         {props.image !== '' ? (
           <Grid container justifyContent="center" spacing={6}>
@@ -32,8 +33,8 @@ function IntroSection(props) {
                 backgroundRepeat: 'no-repeat'
               }}
             />
-            <Grid item md={props.isPanel ? 8 : 7}>
-              <Typography  style={{ overflowY: 'auto', height: '45vh' }}
+            <Grid item md={props.isPanel ? 8 : 7} className={"pt-4"}>
+              <Typography style={{ overflowY: 'auto', height: '45vh' }}
                 gutterBottom
                 component="p"
                 variant="body1"
@@ -44,16 +45,17 @@ function IntroSection(props) {
         ) : (
           <Grid container spacing={2}>
             <Grid item md={12}>
-                <Typography style={{ overflowY: 'auto', height: '45vh' }}
-                  gutterBottom
-                  component="p"
-                  variant="body1"
-                  dangerouslySetInnerHTML={{ __html: item.content }}
-                />
+              <Typography style={{ overflowY: 'auto', height: '45vh' }}
+                gutterBottom
+                component="p"
+                variant="body1"
+                dangerouslySetInnerHTML={{ __html: item.content }}
+              />
             </Grid>
           </Grid>
         )}
       </DialogContent>
+      <Divider style={{ backgroundColor: '#E34747' }} />
     </>
   );
 }

@@ -1,21 +1,21 @@
 export const INTROITEMS = [
   {
-    title: '',
+    title: 'Welcome to CoSMOS!',
     content: ''
      
   },
   {
-    title: '',
+    title: 'Welcome to CoSMOS!',
     content: ''
     
   },
   {
-    title: '',
+    title: 'Welcome to CoSMOS!',
     content:''
       
   },
   {
-    title: '',
+    title: 'Welcome to CoSMOS!',
     content:''    
   }
 ];

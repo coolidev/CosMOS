@@ -70,9 +70,10 @@ const DialogBox: FC<DialogBoxProps> = ({
       <MuiDialogTitle
         style={{
           margin: 0,
-          padding: '16px',
+          padding: '8px 16px',
           backgroundColor: theme.palette.border.main,
-          color: "white"
+          color: "white",
+          alignItems: "center",
         }}
       >
         <Typography component="strong" variant="h4">
@@ -83,12 +84,13 @@ const DialogBox: FC<DialogBoxProps> = ({
           className={styles.dialogCloseBtn}
           style={{ color: theme.palette.background.light }}
           onClick={onClose}
+          size="small"
         >
           <CloseIcon />
         </IconButton>
       </MuiDialogTitle>
       <DialogContent
-        style={{ backgroundColor: theme.palette.background.paper }}
+        style={{ backgroundColor: theme.palette.background.light }}
         className={className}
         classes={classes}
         dividers={true}
