@@ -16,7 +16,6 @@ import {
   TableCell,
   TableRow,
   makeStyles,
-  Theme
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import catchErrors from 'src/utils/catch-errors';
@@ -24,6 +23,9 @@ import useStyles from 'src/utils/styles';
 import UserManagementSection from './manage-users-panel';
 import PasswordReset from './PasswordReset';
 import DialogBox from 'src/components/DialogBox';
+import { Theme } from 'src/theme';
+import { DataGrid } from 'devextreme-react';
+import { Column, Editing } from 'devextreme-react/data-grid';
 
 const INITIAL_USER = {
   email: '',
@@ -42,12 +44,37 @@ interface ManageAccountProps {
 
 const customStyles = makeStyles((theme: Theme) => ({
   card: {
-    marginBottom: theme.spacing(2),
-    padding: theme.spacing(2)
+    backgroundColor: theme.palette.background.light,
+    padding: '0.2rem',
   },
-  dialog:{
+  dialog: {
     minWidth: '50vw'
   },
+  subtitle: {
+    fontFamily: 'Roboto',
+    fontStyle: "normal",
+    fontSize: "20px",
+    lineHeight: "24px",
+    display: "flex",
+    alignItems: "center",
+    color: "#333333",
+    paddingLeft: '.5rem',
+    borderBottom: `2px solid ${theme.palette.border.main}`,
+  },
+  table: {
+    backgroundColor: theme.palette.background.light,
+  },
+  dataTableStyle: {
+    '& .dx-command-edit.dx-command-edit-with-icons': {
+      textAlign: 'right !important',
+      '& *': {
+        color: `${theme.palette.border.main} !important`,
+      }
+    },
+  },
+  submit: {
+    padding: `8px 16px`
+  }
 }));
 
 const ManageAccounts: FC<ManageAccountProps> = ({ open, onOpen }) => {
@@ -67,7 +94,7 @@ const ManageAccounts: FC<ManageAccountProps> = ({ open, onOpen }) => {
 
   useEffect(() => {
     if (email) {
-      axios.get('/getUser', { params: { email: email }}).then(res => {
+      axios.get('/getUser', { params: { email: email } }).then(res => {
         setUser(prevState => ({
           ...prevState,
           email: email,
@@ -93,19 +120,26 @@ const ManageAccounts: FC<ManageAccountProps> = ({ open, onOpen }) => {
     setUser((prevState) => ({ ...prevState, [name]: value }));
   }
 
+  const handleUpdateUser = ({ field, value }) => {
+    if (field !== '' && field !== null) {
+      setUser((prevState) => ({ ...prevState, [field]: value }));
+      setInfoChangeMode(true);
+    }
+  }
+
   const handlePasswordSubmit = (values) => {
     try {
       setLoading(true);
       setError('');
-      const payload = { 
+      const payload = {
         email: user.email,
         name: user.name,
         phone: user.phone,
         origemail: user.origemail,
         admin: user.admin,
-        engineer: user.engineer, 
+        engineer: user.engineer,
         oldpassword: values.currentPassword,
-        password: values.password 
+        password: values.password
       };
       axios.post('/change-password-with-verification', payload)
         .then((res) => {
@@ -136,11 +170,11 @@ const ManageAccounts: FC<ManageAccountProps> = ({ open, onOpen }) => {
       // eslint-disable-next-line no-useless-escape
       let emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
       //checks if the email is valid against this monster of a regex I found online
-      if(!emailRegex.test(payload.email)){
+      if (!emailRegex.test(payload.email)) {
         throw new Error('Email is not valid');
       }
       //If there are not 10 or 11 (In case of country code, but only single digit country codes) digits, the phone number is not valid
-      if(!(payload.phone.match(/\d/g).length===10) && !(payload.phone.match(/\d/g).length===11)){
+      if (!(payload.phone.match(/\d/g).length === 10) && !(payload.phone.match(/\d/g).length === 11)) {
         throw new Error('Phone number is not valid');
       }
       axios.post('/change-user-info', payload)
@@ -179,6 +213,10 @@ const ManageAccounts: FC<ManageAccountProps> = ({ open, onOpen }) => {
 
   const handlePassword = () => setPasswordChange(!passwordChange);
 
+  const renderProfileField = (data) => {
+    return <div style={{ fontWeight: 'bold' }}>{data.text}</div>;
+  }
+
   return (
     <DialogBox
       title={`Manage Account`}
@@ -188,202 +226,107 @@ const ManageAccounts: FC<ManageAccountProps> = ({ open, onOpen }) => {
     >
       <CssBaseline />
       <Card className={customClasses.card}>
-        <CardContent>
-          <Typography component="h4" variant="h4">
-            {`User Profile`}
-          </Typography>
-          {passwordUpdateSuccess ? 
-            (<Alert severity="success">Password Successfully Updated</Alert>) : null}
-          {userUpdateSuccess ? 
-            <Alert severity="success">
-              {'Account Information Successfully Updated'}
-            </Alert>
-            : <></>}
-          {infoChangeMode ? null : <br></br>}
-          {infoChangeMode ? (
-            <Grid item md={4}>
-              <form
-                className={classes.form}
-                onSubmit={handleUserSubmit}
-                onError={() => Boolean(error)}
-                onLoad={() => loading}
-                noValidate
-                autoComplete="off"
-              >
-                {error ? <Alert severity="error">{error}</Alert> : <></>}
-                <TextField
-                  id="name"
-                  name="name"
-                  value={user.name}
-                  variant="filled"
-                  margin="normal"
-                  label="Name"
-                  type="text"
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                />
-                <TextField
-                  id="email"
-                  name="email"
-                  value={user.email}
-                  variant="filled"
-                  margin="normal"
-                  label="Email Address"
-                  type="text"
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                />
-                <TextField
-                  id="phone"
-                  name="phone"
-                  value={user.phone}
-                  variant="filled"
-                  margin="normal"
-                  label="Phone Number"
-                  type="text"
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                />
-                <TextField
-                  id="oldpassword"
-                  name="oldpassword"
-                  value={user.oldpassword}
-                  variant="outlined"
-                  margin="normal"
-                  label="Confirm Password"
-                  type="password"
-                  autoComplete="current-password"
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                />
-                <Button
-                  type="submit"
-                  size="medium"
-                  variant="contained"
-                  color="primary"
-                  disabled={updateBtnDisabled || loading}
-                  className={classes.submit}
-                >
-                  {'Update'}
-                </Button>
-                &nbsp;
-                <Button
-                  size="medium"
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  onClick={() => {
-                    setInfoChangeMode(false);
-                  }}
-                >
-                  {'Cancel'}
-                </Button>
-              </form>
-            </Grid>
-          ) : (
-            <TableContainer>
-              <Table
-                style={{ width: '33%', padding: '5' }}
-                className={classes.table}
-                aria-label="sticky table"
-              >
-                <TableBody>
-                  <TableRow key={'name'}>
-                    <TableCell component="th" scope="row">
-                      <b>{'Name'}</b>
-                    </TableCell>
-                    <TableCell align="left">{user.name}</TableCell>
-                  </TableRow>
-                  <TableRow key={'email'}>
-                    <TableCell component="th" scope="row">
-                      <b>{'Email Address'}</b>
-                    </TableCell>
-                    <TableCell align="left">{user.email}</TableCell>
-                  </TableRow>
-                  <TableRow key={'phone'}>
-                    <TableCell component="th" scope="row">
-                      <b>{'Phone Number'}</b>
-                    </TableCell>
-                    <TableCell align="left">
-                      {formatPhoneNumber(user.phone)}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow key={'roles'}>
-                    <TableCell component="th" scope="row">
-                      <b>{'Roles'}</b>
-                    </TableCell>
-                    <TableCell align="left">
-                      {user.admin ? 'Administrator' : null}
-                      {user.engineer && user.admin ? ', ' : ''}
-                      {user.engineer ? 'Engineer' : null}
-                      {user.admin || user.engineer ? null : 'Standard User'}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checked}
-                    size="small"
-                    onChange={() => setChecked(!checked)}
-                    name="checkedShow"
-                    color="primary"
-                  />
-                }
-                label="Disable introduction information popup"
-                labelPlacement="end"
-              /> */}
-              {/* <br></br> */}
-              <Button
-                type="submit"
-                size="medium"
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={() => {
-                  setInfoChangeMode(true);
-                }}
-              >
-                {'Edit Info'}
-              </Button>
-              &nbsp;
-              <Button
-                type="submit"
-                size="medium"
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={() => {
-                  setPasswordChange(true);
-                }}
-              >
-                {'Reset Password'}
-              </Button>
-            </TableContainer>
-          )}
-          <br></br>
-          {passwordChange ? (
-            <Typography component="h4" variant="h4">
-              Change Password
-            </Typography>
-          ) : null}
-          {passwordChange && (
-            <Grid item md={4}>
-              <PasswordReset
-                error={passwordUpdateError}
-                onChange={handlePassword}
-                onSubmit={handlePasswordSubmit}
+        <Typography component="p" variant="body1" className={customClasses.subtitle}>
+          {`User Profile`}
+        </Typography>
+        {passwordUpdateSuccess ?
+          (<Alert severity="success">Password Successfully Updated</Alert>) : null}
+        {userUpdateSuccess ?
+          <Alert severity="success">
+            {'Account Information Successfully Updated'}
+          </Alert>
+          : <></>}
+        <Grid item md={12} style={{ boxShadow: '0 4px 14px rgba(0,0,0,10%)' }}>
+          <DataGrid
+            showColumnHeaders={false}
+            dataSource={[
+              { title: 'Name', slug: 'name', value: user.name },
+              { title: 'Email Address', slug: 'email', value: user.email },
+              { title: 'Phone Number', slug: 'phone', value: formatPhoneNumber(user.phone) },
+              { title: 'Roles', slug: '', value: `${user.admin ? 'Administrator' : ''}${user.engineer && user.admin ? ', ' : ''}${user.engineer ? 'Engineer' : ''}${user.admin || user.engineer ? '' : 'Standard User'}` },
+            ]}
+            className={customClasses.dataTableStyle}
+          >
+            <Editing
+              mode="row"
+              allowUpdating={true}
+              onChangesChange={(data) => {
+                const key = data[0].key;
+                const value = data[0].data.value;
+
+                handleUpdateUser({ field: key.slug, value: value })
+              }}
+            >
+            </Editing>
+            <Column
+              dataField="title"
+              cellRender={(data) => renderProfileField(data)}
+              allowEditing={false}
+            />
+            <Column
+              dataField="value"
+              allowEditing={true}
+            />
+          </DataGrid>
+          <Grid container md={12}>
+            {error ? <Alert severity="error">{error}</Alert> : <></>}
+          </Grid>
+          <Grid container md={12} justifyContent="flex-end" alignItems='center'>
+            {infoChangeMode && (<>
+              <TextField
+                value={user.oldpassword}
+                variant="outlined"
+                className='mr-2'
+                placeholder='Confirm password *'
+                type="password"
+                autoComplete="current-password"
+                onChange={(e) => handleUpdateUser({ field: "oldpassword", value: e.target.value })}
+                size="small"
+                required
               />
-            </Grid>
-          )}
-          <Grid item md={8} />
-          {isAdmin ? <UserManagementSection /> : null}
-        </CardContent>
+              <Button
+                size="medium"
+                variant="contained"
+                color="primary"
+                className={`${classes.submit} mr-2`}
+                onClick={(e) => {
+                  handleUserSubmit(e);
+                }}
+              >
+                {'Save Changes'}
+              </Button>
+            </>)}
+            <Button
+              type="submit"
+              size="medium"
+              variant="contained"
+              color="primary"
+              className={`${classes.submit} mr-4`}
+              onClick={() => {
+                setPasswordChange(true);
+              }}
+            >
+              {'Reset Password'}
+            </Button>
+          </Grid>
+        </Grid>
+        <br />
+        {passwordChange ? (
+          <Typography component="p" variant="body1" className={customClasses.subtitle}>
+            Change Password
+          </Typography>
+        ) : null}
+        {passwordChange && (
+          <Grid item md={12} style={{ boxShadow: '0 4px 14px rgba(0,0,0,10%)' }}>
+            <PasswordReset
+              error={passwordUpdateError}
+              onChange={handlePassword}
+              onSubmit={handlePasswordSubmit}
+            />
+          </Grid>
+        )}
+        <br />
+        {isAdmin ? <UserManagementSection /> : null}
       </Card>
     </DialogBox>
   );

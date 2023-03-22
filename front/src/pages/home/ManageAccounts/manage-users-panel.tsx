@@ -12,12 +12,17 @@ import {
   Checkbox,
   Typography,
   Button,
-  TextField
+  TextField,
+  makeStyles,
+  Grid
 } from '@material-ui/core';
 import { USER_MANAGEMENT_COLUMNS } from 'src/utils/constants/account';
 import useStyles from 'src/utils/styles';
 import catchErrors from 'src/utils/catch-errors';
 import { Alert } from '@material-ui/lab';
+import { Theme } from 'src/theme';
+import { DataGrid, Toolbar } from 'devextreme-react';
+import { Column, Editing, Item } from 'devextreme-react/data-grid';
 
 interface User {
   email: string;
@@ -35,6 +40,36 @@ const INIT_USER = {
   engineer: false
 };
 
+const customStyles = makeStyles((theme: Theme) => ({
+  subtitle: {
+    fontFamily: 'Roboto',
+    fontStyle: "normal",
+    fontSize: "20px",
+    lineHeight: "24px",
+    display: "flex",
+    alignItems: "center",
+    color: "#333333",
+    paddingLeft: '.5rem',
+    borderBottom: `2px solid ${theme.palette.border.main}`,
+  },
+  dataTableStyle: {
+    '& .dx-datagrid-header-panel': {
+      order: 3
+    },
+    '& .dx-row.dx-header-row': {
+      backgroundColor: theme.palette.background.light,
+      fontWeight: 'bold',
+      color: "#333333",
+    },
+    '& .dx-command-edit.dx-command-edit-with-icons': {
+      textAlign: 'right !important',
+      '& *': {
+        color: `${theme.palette.border.main} !important`,
+      }
+    },
+  },
+}));
+
 function UserManagementSection() {
   const [userList, setUserList] = useState(new Array<User>());
   const classes = useStyles();
@@ -45,6 +80,7 @@ function UserManagementSection() {
   const [origEmail, setOrigEmail] = useState('');
   const [userUpdateSuccess, setUserUpdateSuccess] = useState(false);
   const [error, setError] = useState('');
+  const customClasses = customStyles();
 
   useEffect(() => {
     if (editUser < 0) {
@@ -150,8 +186,8 @@ function UserManagementSection() {
       if (
         confirm(
           'Are you sure you wish to delete the account for ' +
-            userList[row]['name'] +
-            '?'
+          userList[row]['name'] +
+          '?'
         )
       ) {
         setError('');
@@ -182,14 +218,75 @@ function UserManagementSection() {
 
   return (
     <>
-      <Typography component="h4" variant="h4">
+      <Typography component="p" variant="body1" className={customClasses.subtitle}>
         {`User Management`}
       </Typography>
-      <br></br>
       {userUpdateSuccess ? (
         <Alert severity="success">User Information Successfully Updated</Alert>
       ) : null}
       {error !== '' ? <Alert severity="error">{error}</Alert> : <></>}
+      <Grid item md={12} style={{ boxShadow: '0 4px 14px rgba(0,0,0,10%)' }}>
+        <DataGrid
+          dataSource={
+            userList
+          }
+          className={customClasses.dataTableStyle}
+        >
+          <Editing
+            mode="row"
+            allowUpdating={true}
+            allowDeleting={true}
+            // allowAdding={true}
+            onChangesChange={(data) => {
+              console.log(data)
+            }}
+          >
+          </Editing>
+          <Column
+            dataField="name"
+            caption="User"
+          />
+          <Column
+            dataField="email"
+            caption="Email Address"
+          />
+          <Column
+            dataField="phone"
+            caption="Phone Number"
+            cellRender={(data) => {
+              return formatPhoneNumber(data.displayValue);
+            }}
+          />
+          <Column
+            dataField="engineer"
+            caption="Engineer"
+          />
+          <Column
+            dataField="admin"
+            caption="Admin"
+          />
+        </DataGrid>
+      </Grid>
+      <Grid container md={12} justifyContent="flex-end" alignItems='center'>
+        <Button
+          size="medium"
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          onClick={() => {
+            const newUser: User = { name: '', email: '', phone: '', engineer: false, admin: false }
+            const newList = [...userList]
+            const lastOne = newList[newList.length - 1]
+            if (lastOne.email !== '') {
+              newList.push(newUser)
+            }
+            setUserList(newList)
+          }}
+        >
+          {' + New User '}
+        </Button>
+      </Grid>
+      {/* <br />
       <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -397,7 +494,7 @@ function UserManagementSection() {
             )}
           </TableHead>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
     </>
   );
 }
