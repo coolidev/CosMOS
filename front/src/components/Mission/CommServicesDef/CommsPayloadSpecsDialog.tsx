@@ -71,13 +71,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       background: theme.name === THEMES.LIGHT ? "#FFFFFF" : "#4c4c4c",
     }
   },
-  text:{
+  text: {
     color: `${theme.palette.text.primary} !important`,
     fontFamily: 'Roboto',
     fontStyle: "normal",
     fontSize: "12px",
     lineHeight: "16px",
-    letterSpacing:" 0.05em",
+    letterSpacing: " 0.05em",
   },
   input: {
     display: "flex",
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     background: theme.name === THEMES.LIGHT ? "#FFFFFF" : "#4c4c4c",
     boxShadow: "0px 4px 14px rgba(0, 0, 0, 0.1)",
-    borderRadius:"8px",
+    borderRadius: "8px",
 
     minHeight: "3vh",
     paddingLeft: "14px"
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     borderRadius: 6,
     border: `1px solid grey`,
-    backgroundColor: theme.name !== THEMES.DARK ? theme.palette.grey[200]: theme.palette.grey[700]
+    backgroundColor: theme.name !== THEMES.DARK ? theme.palette.grey[200] : theme.palette.grey[700]
   },
   interiorBox: {
     backgroundColor: theme.palette.component.main
@@ -130,20 +130,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '25vw'
   },
   enhanceDropdown: {
-		padding: 0,
-		//boxShadow: theme.name == THEMES.DARK? '' :'3px 3px 7px #c0c0c0', --To be added back when we make shadows everywhere
-		borderRadius: '4px',
-		border: `solid 1px ${theme.palette.border.main}`,
-		color: `${theme.palette.text.primary} !important`,
-		'& .MuiSelect-iconOutlined': {
-			color: theme.palette.border.main
-		}
-	},
-	selectedEnhanceDropdown: {
-		'& .MuiAutocomplete-clearIndicator': {
-			visibility: 'inherit'
-		}
-	},
+    padding: 0,
+    //boxShadow: theme.name == THEMES.DARK? '' :'3px 3px 7px #c0c0c0', --To be added back when we make shadows everywhere
+    borderRadius: '4px',
+    border: `solid 1px ${theme.palette.border.main}`,
+    color: `${theme.palette.text.primary} !important`,
+    '& .MuiSelect-iconOutlined': {
+      color: theme.palette.border.main
+    }
+  },
+  selectedEnhanceDropdown: {
+    '& .MuiAutocomplete-clearIndicator': {
+      visibility: 'inherit'
+    }
+  },
 }));
 
 export const TxPwrCalcUI: FC<SubCalcProps> = ({ open, setOpen, setResult }) => {
@@ -207,9 +207,9 @@ function gainCalcEqn_Parabolic(vals: {
   const { freq, efficiency, diameter } = vals;
   return (
     20 *
-      Math.log10(
-        (Math.PI * freq * Math.pow(10, 9) * diameter) / (3 * Math.pow(10, 8))
-      ) +
+    Math.log10(
+      (Math.PI * freq * Math.pow(10, 9) * diameter) / (3 * Math.pow(10, 8))
+    ) +
     10 * Math.log10(efficiency / 100)
   );
 }
@@ -275,19 +275,19 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
   const [codings, setCodings] = useState<Attribute[]>([]);
   const { performancePanel, modCodOptions } = useSelector(state => state.results);
   const [selectedLength, setSelectedLength] = useState<number>(-1);
-  
-  const {coding, frequencyBands, modulation, polarization} = useSelector((state) => state.networkList);
+
+  const { coding, frequencyBands, modulation, polarization } = useSelector((state) => state.networkList);
   const [codeRateOptions_codeType, setCodingRateOptions_codeType] = useState<number[]>([]);
   const [modulationOptions_codeType, setModulationOptions_codeType] = useState<number[]>([]);
 
 
   useEffect(() => {
-    if(state.selectedItems.length !== selectedLength) {
+    if (state.selectedItems.length !== selectedLength) {
       setSelectedLength(state.selectedItems.length);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.selectedItems.length]);
-  
+
   function launchGainCalc() {
     setGainCalcOptions(false);
     if (gainCalcId === 0) {
@@ -308,32 +308,32 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
   useEffect(() => {
     updateCodingRateOptions(state.commsSpecs.commsPayloadSpecs.codingType);
     updateModulationOptions(state.commsSpecs.commsPayloadSpecs.codingType);
-  },[]);
+  }, []);
 
-  async function updateModulationOptions(codingType: number, codingRate?: number){
+  async function updateModulationOptions(codingType: number, codingRate?: number) {
     const response = await axios.get<AttrValue[]>('/getAvailableModulations', {
-      params: { 
-        codingType: codingType, 
+      params: {
+        codingType: codingType,
         codingRateId: codingRate && codingRate > 0 ? codingRate : -1
       }
     });
     //@ts-ignore
-    setModulationOptions_codeType(Array.from(new Set(response.data.map((item)=>item.modulationId))));
+    setModulationOptions_codeType(Array.from(new Set(response.data.map((item) => item.modulationId))));
   }
 
-  async function updateCodingRateOptions(codingType: number, modulation?: number){
+  async function updateCodingRateOptions(codingType: number, modulation?: number) {
     const response = await axios.get<AttrValue[]>('/getAvailableCodingRates', {
-      params: { 
-        codingType: codingType, 
+      params: {
+        codingType: codingType,
         modulationId: modulation && modulation > 0 ? modulation : -1
       }
     });
     //@ts-ignore
-    setCodingRateOptions_codeType(Array.from(new Set(response.data.map((item)=>item.codingRateId))));
+    setCodingRateOptions_codeType(Array.from(new Set(response.data.map((item) => item.codingRateId))));
   }
 
   useEffect(() => {
-    if(eirpVal !== state.commsSpecs.commsPayloadSpecs.eirp){
+    if (eirpVal !== state.commsSpecs.commsPayloadSpecs.eirp) {
       onState('commsSpecs', {
         ...state.commsSpecs,
         commsPayloadSpecs: {
@@ -343,7 +343,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[eirpVal]);
+  }, [eirpVal]);
 
   useEffect(() => {
     filterSelectionLists(filterSelectionOrder);
@@ -360,8 +360,8 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
   }, [gainCalcId]);
 
   useEffect(() => {
-    if(state.commsSpecs.commsPayloadSpecs.gainOn){
-      const newEIRP = (state.commsSpecs.commsPayloadSpecs.gain??5) + (state.commsSpecs.commsPayloadSpecs.transmitterPower??1) - (state.commsSpecs.commsPayloadSpecs.passiveLoss??0) - (state.commsSpecs.commsPayloadSpecs.otherLoss??0);
+    if (state.commsSpecs.commsPayloadSpecs.gainOn) {
+      const newEIRP = (state.commsSpecs.commsPayloadSpecs.gain ?? 5) + (state.commsSpecs.commsPayloadSpecs.transmitterPower ?? 1) - (state.commsSpecs.commsPayloadSpecs.passiveLoss ?? 0) - (state.commsSpecs.commsPayloadSpecs.otherLoss ?? 0);
       onState('commsSpecs', {
         ...state.commsSpecs,
         commsPayloadSpecs: {
@@ -371,10 +371,10 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[state.commsSpecs.commsPayloadSpecs.gain, state.commsSpecs.commsPayloadSpecs.transmitterPower, state.commsSpecs.commsPayloadSpecs.passiveLoss, state.commsSpecs.commsPayloadSpecs.otherLoss]);
+  }, [state.commsSpecs.commsPayloadSpecs.gain, state.commsSpecs.commsPayloadSpecs.transmitterPower, state.commsSpecs.commsPayloadSpecs.passiveLoss, state.commsSpecs.commsPayloadSpecs.otherLoss]);
 
   useEffect(() => {
-    if(state.commsSpecs.commsPayloadSpecs.eirp !== eirpVal){
+    if (state.commsSpecs.commsPayloadSpecs.eirp !== eirpVal) {
       setEirpVal(state.commsSpecs.commsPayloadSpecs.eirp);
     }
     onState('commsSpecs', {
@@ -385,22 +385,22 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[state.commsSpecs.commsPayloadSpecs.eirp]);
+  }, [state.commsSpecs.commsPayloadSpecs.eirp]);
 
   useEffect(() => {
-    if(state.commsSpecs.commsPayloadSpecs.minEIRPFlag){
+    if (state.commsSpecs.commsPayloadSpecs.minEIRPFlag) {
       console.log('Min EIRP Mode');
-    }else{
+    } else {
       console.log('Link Calc Mode');
     }
-  },[state.commsSpecs.commsPayloadSpecs.minEIRPFlag]);
+  }, [state.commsSpecs.commsPayloadSpecs.minEIRPFlag]);
 
   useEffect(() => {
     const fetchModulationTypeData = async () => {
       const response = await axios.get<AttrValue[]>('/getAttributeValues', {
         params: { sub_key: 'antenna_modulation' }
       });
-      const modSort = (modArr : any[]) => {
+      const modSort = (modArr: any[]) => {
         const noNumbers = modArr.filter((mod) => {
           return mod.name.match(/\d/) == null;
         });
@@ -409,15 +409,15 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
         });;
 
         return noNumbers
-          .sort((a,b) => a.name.localeCompare(b.name))
+          .sort((a, b) => a.name.localeCompare(b.name))
           .concat(
-            withNumbers.sort((modA,modB) => {
+            withNumbers.sort((modA, modB) => {
               const modASplit = modA.name.split(" ");
               const modANum = modASplit[0];
               const modBSplit = modB.name.split(" ");
               const modBNum = modBSplit[0];
-              
-              if(isNaN(Number(modANum)) && isNaN(Number(modBNum))) {
+
+              if (isNaN(Number(modANum)) && isNaN(Number(modBNum))) {
                 return 0;
               } else if (isNaN(Number(modANum))) {
                 return -1;
@@ -425,7 +425,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
                 return 1;
               } else {
                 if (Number(modANum) - Number(modBNum) === 0) {
-                  return modASplit[modASplit.length-1].localeCompare(modBSplit[modBSplit.length-1]);
+                  return modASplit[modASplit.length - 1].localeCompare(modBSplit[modBSplit.length - 1]);
                 } else {
                   return Number(modANum) - Number(modBNum);
                 }
@@ -448,7 +448,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
         params: { sub_key: 'codingTypes' }
       });
 
-      response.data && setCodingTypeOptions(response.data);      
+      response.data && setCodingTypeOptions(response.data);
       response.data && setFilteredCodingTypeOptions(response.data);
     };
 
@@ -461,7 +461,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
         params: { sub_key: 'channel_coding' }
       });
 
-      response.data && setCodingOptions(response.data.sort((a, b) => a.name.localeCompare(b.name)));      
+      response.data && setCodingOptions(response.data.sort((a, b) => a.name.localeCompare(b.name)));
       response.data && setFilteredCodingOptions(response.data.sort((a, b) => a.name.localeCompare(b.name)));
     };
 
@@ -484,59 +484,59 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
   const handleClick = (event, targetName?): void => {
     let { name, value } = event.target;
     if (targetName) name = targetName;
-    if(name === 'modulation'){
+    if (name === 'modulation') {
       let newFilterSelectionOrder = filterSelectionOrder.slice();
-      if(value === -1){
-        if(newFilterSelectionOrder.includes(FilteringSelection.MODULATION)){
+      if (value === -1) {
+        if (newFilterSelectionOrder.includes(FilteringSelection.MODULATION)) {
           let index = newFilterSelectionOrder.indexOf(FilteringSelection.MODULATION);
           newFilterSelectionOrder.splice(index, 1);
         }
       } else {
-        if(!newFilterSelectionOrder.includes(FilteringSelection.MODULATION)){
+        if (!newFilterSelectionOrder.includes(FilteringSelection.MODULATION)) {
           newFilterSelectionOrder.push(FilteringSelection.MODULATION);
         }
         updateCodingRateOptions(state.commsSpecs.commsPayloadSpecs.codingType, value);
       }
       setFilterSelectionOrder(newFilterSelectionOrder);
     }
-    if(name === 'codingType'){
+    if (name === 'codingType') {
       let newFilterSelectionOrder = filterSelectionOrder.slice();
-      if(value === -1){
-        if(newFilterSelectionOrder.includes(FilteringSelection.CODING_TYPE)){
+      if (value === -1) {
+        if (newFilterSelectionOrder.includes(FilteringSelection.CODING_TYPE)) {
           let index = newFilterSelectionOrder.indexOf(FilteringSelection.CODING_TYPE);
-          newFilterSelectionOrder.splice(index, 1);        
+          newFilterSelectionOrder.splice(index, 1);
         }
       } else {
-        if(!newFilterSelectionOrder.includes(FilteringSelection.CODING_TYPE)){
+        if (!newFilterSelectionOrder.includes(FilteringSelection.CODING_TYPE)) {
           newFilterSelectionOrder.push(FilteringSelection.CODING_TYPE);
         }
       }
       setFilterSelectionOrder(newFilterSelectionOrder);
     }
-    if(name === 'coding'){
+    if (name === 'coding') {
       let newFilterSelectionOrder = filterSelectionOrder.slice();
-      if(value === -1){
-        if(newFilterSelectionOrder.includes(FilteringSelection.CODING_RATE)){
+      if (value === -1) {
+        if (newFilterSelectionOrder.includes(FilteringSelection.CODING_RATE)) {
           let index = newFilterSelectionOrder.indexOf(FilteringSelection.CODING_RATE);
-          newFilterSelectionOrder.splice(index, 1);        
+          newFilterSelectionOrder.splice(index, 1);
         }
       } else {
-        if(!newFilterSelectionOrder.includes(FilteringSelection.CODING_RATE)){
+        if (!newFilterSelectionOrder.includes(FilteringSelection.CODING_RATE)) {
           newFilterSelectionOrder.push(FilteringSelection.CODING_RATE);
         }
         updateModulationOptions(state.commsSpecs.commsPayloadSpecs.codingType, value);
       }
       setFilterSelectionOrder(newFilterSelectionOrder);
     }
-    if(name === 'polarizationType'){
+    if (name === 'polarizationType') {
       let newFilterSelectionOrder = filterSelectionOrder.slice();
-      if(value === -1){
-        if(newFilterSelectionOrder.includes(FilteringSelection.POLARIZATION)){
+      if (value === -1) {
+        if (newFilterSelectionOrder.includes(FilteringSelection.POLARIZATION)) {
           let index = newFilterSelectionOrder.indexOf(FilteringSelection.POLARIZATION);
-          newFilterSelectionOrder.splice(index, 1);        
+          newFilterSelectionOrder.splice(index, 1);
         }
       } else {
-        if(!newFilterSelectionOrder.includes(FilteringSelection.POLARIZATION)){
+        if (!newFilterSelectionOrder.includes(FilteringSelection.POLARIZATION)) {
           newFilterSelectionOrder.push(FilteringSelection.POLARIZATION);
         }
       }
@@ -558,7 +558,8 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
       commsPayloadSpecs: {
         ...state.commsSpecs.commsPayloadSpecs,
         coding: -1
-      }})
+      }
+    })
   }, [state.commsSpecs.commsPayloadSpecs.codingType])
   // const refreshModCodList = () => {
   //   if(state.networkType === "relay" && state.selectedItems.length > 0){
@@ -679,41 +680,41 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
 
   const filterSelectionLists = (filterSelectionOrder: FilteringSelection[]) => {
     //Polarization Section
-    let data = {frequencyBands: frequencyBands, polarization: polarization, modulation: modulation, coding: coding}
-      let newFilteredPolarizationList = polarizationOptions.slice();
-      newFilteredPolarizationList.forEach((option) => {
-        if(data.polarization.includes(option.id)){
-          option.disabled = false;
-        } else {
-          option.disabled = true;
-        }
-      });
-      setFilteredPolarizationList(newFilteredPolarizationList);
+    let data = { frequencyBands: frequencyBands, polarization: polarization, modulation: modulation, coding: coding }
+    let newFilteredPolarizationList = polarizationOptions.slice();
+    newFilteredPolarizationList.forEach((option) => {
+      if (data.polarization.includes(option.id)) {
+        option.disabled = false;
+      } else {
+        option.disabled = true;
+      }
+    });
+    setFilteredPolarizationList(newFilteredPolarizationList);
     //Modulation Section
-      let newFilteredModulationList = modulationOptions.slice();
-      newFilteredModulationList.forEach((option) => {
-        if(data.modulation.includes(option.id) && modulationOptions_codeType.includes(option.id)){
-          option.disabled = false;
-        } else {
-          option.disabled = true;
-        }
-      });
-      setFilteredModList(newFilteredModulationList);
+    let newFilteredModulationList = modulationOptions.slice();
+    newFilteredModulationList.forEach((option) => {
+      if (data.modulation.includes(option.id) && modulationOptions_codeType.includes(option.id)) {
+        option.disabled = false;
+      } else {
+        option.disabled = true;
+      }
+    });
+    setFilteredModList(newFilteredModulationList);
     //Coding Section
-      let newFilteredCodingList = codingOptions.slice();
-      newFilteredCodingList.forEach((option) => {
-        if(data.coding.includes(option.id) && codeRateOptions_codeType.includes(option.id)){
-          option.disabled = false;
-        } else {
-          option.disabled = true;
-        }
-      });
-      setFilteredCodingOptions(newFilteredCodingList);
+    let newFilteredCodingList = codingOptions.slice();
+    newFilteredCodingList.forEach((option) => {
+      if (data.coding.includes(option.id) && codeRateOptions_codeType.includes(option.id)) {
+        option.disabled = false;
+      } else {
+        option.disabled = true;
+      }
+    });
+    setFilteredCodingOptions(newFilteredCodingList);
   }
 
   const makePolarizationList = () => {
     return filteredPolarizationList.map((option, idx) => {
-      return <MenuItem key={idx} value={option.id} disabled = {option.disabled}>{option.name}</MenuItem>;
+      return <MenuItem key={idx} value={option.id} disabled={option.disabled}>{option.name}</MenuItem>;
     })
   }
 
@@ -724,26 +725,26 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
 
   const getPolarizationValue = () => {
     let option = polarizationOptions.filter((value) => value.id === state.commsSpecs.commsPayloadSpecs.polarizationType)[0];
-    if(option){
+    if (option) {
       return option
     } else {
-      return {id: state.commsSpecs.commsPayloadSpecs.polarizationType, name: "", disabled: false}
+      return { id: state.commsSpecs.commsPayloadSpecs.polarizationType, name: "", disabled: false }
     }
   }
   const getCodingRateValue = () => {
     let option = codingOptions.filter((value) => value.id === state.commsSpecs.commsPayloadSpecs.coding)[0];
-    if(option){
+    if (option) {
       return option
     } else {
-      return {id: state.commsSpecs.commsPayloadSpecs.coding, name: "", disabled: false}
+      return { id: state.commsSpecs.commsPayloadSpecs.coding, name: "", disabled: false }
     }
   }
   const getModulationValue = () => {
     let option = modulationOptions.filter((value) => value.id === state.commsSpecs.commsPayloadSpecs.modulation)[0];
-    if(option){
+    if (option) {
       return option
     } else {
-      return {id: state.commsSpecs.commsPayloadSpecs.modulation, name: "", disabled: false}
+      return { id: state.commsSpecs.commsPayloadSpecs.modulation, name: "", disabled: false }
     }
   }
   const updateThroughput = (modulation: string, coding: string) => {
@@ -752,15 +753,15 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
     if (performancePanel && modCodOptions) {
       let maxAchievableDataRate_kbps: number;
       if (performancePanel.systemParams.multipleAccess === 'TDMA') {
-        const option: ModCodOption = performancePanel.systemParams.modCodOptions.find(opt => 
+        const option: ModCodOption = performancePanel.systemParams.modCodOptions.find(opt =>
           opt.modulation === modulation && opt.coding === coding);
         if (!option) return;
         maxAchievableDataRate_kbps = option.dataRate_kbps;
       } else {
         maxAchievableDataRate_kbps = calculateMaxAchievableDataRate(
           performancePanel.systemParams.R_kbps as number,
-          performancePanel.systemParams.bandwidthMHz as number, 
-          performancePanel.linkParams.modCodTable, 
+          performancePanel.systemParams.bandwidthMHz as number,
+          performancePanel.linkParams.modCodTable,
           modulation,
           coding
         );
@@ -807,7 +808,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
         }
 
         if (
-          newCodings.filter(cod => cod.id === option.codingId).length === 0 && 
+          newCodings.filter(cod => cod.id === option.codingId).length === 0 &&
           validCodings.includes(option.coding)
         ) {
           newCodings.push({
@@ -930,7 +931,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
         // Check whether the selected modulation is in the list
         // of valid options. If not, select a new modulation. 
         modulationId = state.selectedItems.find(item => item.id === state.radioButtonSelectionId)?.modulationId;
-      
+
         if (!currentModCodOptions.map(option => option.modulationId).includes(modulationId)) {
           modulationId = currentModCodOptions[0].modulationId;
         }
@@ -960,7 +961,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
         });
       }
       if (
-        validCodings.filter(validCod => validCod.id === option.codingId).length === 0 && 
+        validCodings.filter(validCod => validCod.id === option.codingId).length === 0 &&
         filteredCodings.includes(option.coding)
       ) {
         validCodings.push({
@@ -1003,7 +1004,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
     }
 
     const coding = currentModCodOptions.find(coding => coding.codingId === codingId)?.coding;
-    
+
     setModuls(validModulations);
     setCodings(validCodings);
     setModCods(newModCodOptions);
@@ -1091,7 +1092,7 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
     onState('isMarkedForComparison', false);
   };
 
-   // This function is called when the Optimized Modulation and Coding checkbox
+  // This function is called when the Optimized Modulation and Coding checkbox
   // is checked (or unchecked). The modulation and coding values are also
   // updated accordingly.
   const handleCheck = (event): void => {
@@ -1114,276 +1115,276 @@ const CommsPayloadSpecDialog: FC<CommsPayloadSpecsDialogProps> = ({
 
   return (
     <>
-    <Box className = {classes.box}>
-      <Grid
-        container
-        alignItems="center"
-        spacing={2}
-        style={{ paddingTop: '10px' }}
-      >
-        <Grid item md={6}>
-          <Tooltip title={TooltipList.EIRP}>
-            <Typography
-              className={classes.text}
-            >
-              {'EIRP (dBW)'}
-            </Typography>
-          </Tooltip>
-        </Grid>
-        <Grid item md={6}>
-          <FormControl variant='filled' className={classes.input}>
+      <Box className={classes.box}>
+        <Grid
+          container
+          alignItems="center"
+          spacing={2}
+          style={{ paddingTop: '10px' }}
+        >
+          <Grid item md={6}>
+            <Tooltip title={TooltipList.EIRP}>
+              <Typography
+                className={classes.text}
+              >
+                {'EIRP (dBW)'}
+              </Typography>
+            </Tooltip>
+          </Grid>
+          <Grid item md={6}>
+            <FormControl variant='filled' className={classes.input}>
+              <TextField
+                name="eirp"
+                value={isNull(eirpVal) || isNaN(eirpVal) ? '' : eirpVal}
+                onBlur={(ev) => ev.target.value.length > 0 && ev.target.value !== '' ? (!state.isDataLoaded ? setEirpVal(parseFloat(ev.target.value)) : null) : (!state.isDataLoaded ? setEirpVal(null) : null)}
+                fullWidth
+                placeholder={isNull(eirpVal) || isNaN(eirpVal) ? "Calculated" : ""}
+                InputProps={{
+                  inputComponent: CustomNumberFormat,
+                  disableUnderline: true,
+                  inputProps: {
+                    // className: classes.input,
+                    min: -999999,
+                    max: 999999
+                  },
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <Tooltip
+                        title={'EIRP Calculator'}
+                        placement="top-start"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          size="small"
+                          onClick={() => setEirpCalc(true)}
+                          disabled={
+                            state.loading
+                          }
+                        >
+                          <Icon
+                            style={{
+                              textAlign: 'center',
+                              overflow: 'visible'
+                            }}
+                          >
+                            <img
+                              alt="calculate"
+                              src="/static/icons/calculator.svg"
+                              style={{
+                                height: (window.screen.availHeight / zoom) * 0.032,
+                                paddingBottom: '12px',
+                              }}
+                            />
+                          </Icon>
+                        </IconButton>
+                      </Tooltip>
+                    </InputAdornment>
+                  )
+                }}
+                disabled={
+                  state.loading
+                }
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item md={6}>
+            <Tooltip title={TooltipList.polarizationType}>
+              <Typography className={classes.text}>
+                {'Polarization Type'}
+              </Typography>
+            </Tooltip>
+          </Grid>
+          <Grid item md={6}>
+            <Autocomplete
+              options={polarizationOptions}
+              getOptionDisabled={(option) => option.disabled}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => <TextField {...params} placeholder="---" variant="outlined" />}
+              color="primary"
+              size='small'
+              value={getPolarizationValue()}
+              className={`${classes.noOutline} ${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.polarizationType !== -2 && classes.selectedEnhanceDropdown}`}
+              forcePopupIcon={state.commsSpecs.commsPayloadSpecs.polarizationType !== -2 ? false : true}
+              style={{ textAlign: 'center' }}
+              //@ts-ignore
+              onChange={(e, newVal) => { handleClick({ target: { name: "polarizationType", value: (newVal ? newVal.id : -1) } }) }}
+              openOnFocus={true}
+            />
+          </Grid>
+          <Grid item md={6}>
+            <Tooltip title={TooltipList.polarizationLoss}>
+              <Typography className={classes.text}>
+                {'Polarization Loss (dB)'}
+              </Typography>
+            </Tooltip>
+          </Grid>
+          <Grid item md={6}>
             <TextField
-              name="eirp"
-              value={isNull(eirpVal) || isNaN(eirpVal)?'':eirpVal}
-              onBlur={(ev) => ev.target.value.length>0 && ev.target.value !== '' ? (!state.isDataLoaded?setEirpVal(parseFloat(ev.target.value)): null): (!state.isDataLoaded?setEirpVal(null):null)}
+              name="polarizationLoss"
+              value={state.commsSpecs.commsPayloadSpecs.polarizationLoss}
+              onBlur={(e) => { handleClick(e) }}
               fullWidth
-              placeholder={isNull(eirpVal) || isNaN(eirpVal) ? "Calculated": ""}
               InputProps={{
                 inputComponent: CustomNumberFormat,
                 disableUnderline: true,
                 inputProps: {
-                  // className: classes.input,
-                  min: -999999,
-                  max: 999999
-                },
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <Tooltip
-                      title={'EIRP Calculator'}
-                      placement="top-start"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        size="small"
-                        onClick={() => setEirpCalc(true)}
-                        disabled={
-                          state.loading
-                        }
-                      >
-                        <Icon
-                          style={{
-                            textAlign: 'center',
-                            overflow: 'visible'
-                          }}
-                        >
-                          <img
-                            alt="calculate"
-                            src="/static/icons/calculator.svg"
-                            style={{
-                              height: (window.screen.availHeight / zoom) * 0.032,
-                              paddingBottom: '12px',
-                            }}
-                          />
-                        </Icon>
-                      </IconButton>
-                    </Tooltip>
-                  </InputAdornment>
-                )
+                  className: classes.input,
+                  min: bounds.polarizationLoss.min,
+                  max: bounds.polarizationLoss.max
+                }
               }}
-              disabled={
-                state.loading
-              }
+              disabled={state.loading}
+              onKeyPress={(ev) => {
+                if (ev.key === 'Enter') {
+                  handleClick(ev);
+                }
+              }}
             />
-          </FormControl>
-        </Grid>
-
-        <Grid item md={6}>
-          <Tooltip title={TooltipList.polarizationType}>
-            <Typography className={classes.text}>
-              {'Polarization Type'}
-            </Typography>
-          </Tooltip>
-        </Grid>
-        <Grid item md={6}>
-          <Autocomplete
-            options={polarizationOptions}
-            getOptionDisabled = {(option) => option.disabled}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => <TextField {...params} placeholder="---" variant="outlined"/>}
-            color="primary"
-            size='small'
-            value={getPolarizationValue()}
-            className={`${classes.noOutline} ${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.polarizationType !== -2 && classes.selectedEnhanceDropdown}`}
-            forcePopupIcon={state.commsSpecs.commsPayloadSpecs.polarizationType !== -2 ? false : true}
-            style={{ textAlign: 'center' }}
-            //@ts-ignore
-            onChange={(e, newVal)=>{handleClick({target: {name: "polarizationType", value: (newVal? newVal.id : -1)}})}}
-            openOnFocus={true}
-          />
-        </Grid>
-        <Grid item md={6}>
-          <Tooltip title={TooltipList.polarizationLoss}>
-            <Typography className = {classes.text}>
-              {'Polarization Loss (dB)'}
-            </Typography>
-          </Tooltip>
-        </Grid>
-        <Grid item md={6}>
-          <TextField
-            name="polarizationLoss"
-            value={state.commsSpecs.commsPayloadSpecs.polarizationLoss}
-            onBlur={(e) => {handleClick(e)}}
-            fullWidth
-            InputProps={{
-              inputComponent: CustomNumberFormat,
-              disableUnderline: true,
-              inputProps: {
-                className: classes.input,
-                min: bounds.polarizationLoss.min,
-                max: bounds.polarizationLoss.max
-              }
-            }}
-            disabled={state.loading}
-            onKeyPress={(ev) => {
-              if (ev.key === 'Enter') {
-                handleClick(ev);
-              }
-            }}
-          />
-        </Grid>
-        <Grid item md={6}>
-          <Tooltip title={TooltipList.pointingLoss}>
-            <Typography className = {classes.text}>
-              {'Pointing Loss (dB)'}
-            </Typography>
-          </Tooltip>
-          <Typography color="textSecondary"></Typography>
-        </Grid>
-        <Grid item md={6}>
-          <TextField
-            name="pointingLoss"
-            value={state.commsSpecs.commsPayloadSpecs.pointingLoss}
-            onBlur={(e) => {handleClick(e)}}
-            fullWidth
-            InputProps={{
-              inputComponent: CustomNumberFormat,
-              disableUnderline: true,
-              inputProps: {
-                className: classes.input,
-                min: bounds.pointingLoss.min,
-                max: bounds.pointingLoss.max
-              }
-            }}
-            disabled={state.loading}
-            onKeyPress={(ev) => {
-              if (ev.key === 'Enter') {
-                handleClick(ev);
-              }
-            }}
-          />
-        </Grid>
-        <Grid item md={6}>
-          <Tooltip title={TooltipList.otherLosses}>
-            <Typography className = {classes.text}>
-              {'Other Losses (dB)'}
-            </Typography>
-          </Tooltip>
-        </Grid>
-        <Grid item md={6}>
-          <TextField
-            name="otherLoss"
-            value={state.commsSpecs.commsPayloadSpecs.otherLoss}
-            onBlur={(e) => {handleClick(e)}}
-            fullWidth
-            InputProps={{
-              inputComponent: CustomNumberFormat,
-              disableUnderline: true,
-              inputProps: {
-                className: classes.input,
-                min: bounds.otherLoss.min,
-                max: bounds.otherLoss.max
-              }
-            }}
-            disabled={state.loading}
-            onKeyPress={(ev) => {
-              if (ev.key === 'Enter') {
-                handleClick(ev);
-              }
-            }}
-          />
-        </Grid>
-        {/* {state.selectedItems.length <= 0 
+          </Grid>
+          <Grid item md={6}>
+            <Tooltip title={TooltipList.pointingLoss}>
+              <Typography className={classes.text}>
+                {'Pointing Loss (dB)'}
+              </Typography>
+            </Tooltip>
+            <Typography color="textSecondary"></Typography>
+          </Grid>
+          <Grid item md={6}>
+            <TextField
+              name="pointingLoss"
+              value={state.commsSpecs.commsPayloadSpecs.pointingLoss}
+              onBlur={(e) => { handleClick(e) }}
+              fullWidth
+              InputProps={{
+                inputComponent: CustomNumberFormat,
+                disableUnderline: true,
+                inputProps: {
+                  className: classes.input,
+                  min: bounds.pointingLoss.min,
+                  max: bounds.pointingLoss.max
+                }
+              }}
+              disabled={state.loading}
+              onKeyPress={(ev) => {
+                if (ev.key === 'Enter') {
+                  handleClick(ev);
+                }
+              }}
+            />
+          </Grid>
+          <Grid item md={6}>
+            <Tooltip title={TooltipList.otherLosses}>
+              <Typography className={classes.text}>
+                {'Other Losses (dB)'}
+              </Typography>
+            </Tooltip>
+          </Grid>
+          <Grid item md={6}>
+            <TextField
+              name="otherLoss"
+              value={state.commsSpecs.commsPayloadSpecs.otherLoss}
+              onBlur={(e) => { handleClick(e) }}
+              fullWidth
+              InputProps={{
+                inputComponent: CustomNumberFormat,
+                disableUnderline: true,
+                inputProps: {
+                  className: classes.input,
+                  min: bounds.otherLoss.min,
+                  max: bounds.otherLoss.max
+                }
+              }}
+              disabled={state.loading}
+              onKeyPress={(ev) => {
+                if (ev.key === 'Enter') {
+                  handleClick(ev);
+                }
+              }}
+            />
+          </Grid>
+          {/* {state.selectedItems.length <= 0 
         ?*/}
-         <> 
-         <Grid item md={6}>
-            <Tooltip title={TooltipList.modulation}>
-              <Typography className = {classes.text}>
-                {'Modulation'}
-              </Typography>
-            </Tooltip>
-          </Grid>
-          <Grid item md={6}>
-            <Autocomplete
-              options={filteredModList}
-              getOptionDisabled = {(option) => option.disabled}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => <TextField {...params} placeholder="---" variant="outlined"/>}
-              color="primary"
-              size='small'
-              value={getModulationValue()}
-              className={`${classes.noOutline} ${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.modulation !== -2 && classes.selectedEnhanceDropdown}`}
-              forcePopupIcon={state.commsSpecs.commsPayloadSpecs.modulation !== -2 ? false : true}
-              style={{ textAlign: 'center' }}
-              //@ts-ignore
-              onChange={(e, newVal)=>{handleClick({target: {name: "modulation", value: (newVal? newVal.id : -1)}})}}
-              openOnFocus={true}
-            />
-          </Grid>
-         <Grid item md={6}>
-            <Tooltip title={TooltipList.coding}>
-              <Typography className = {classes.text}>
-                {'Coding Type'}
-              </Typography>
-            </Tooltip>
-          </Grid>
-          <Grid item md={6}>
-            <FormControl variant="filled" size="small" fullWidth className={classes.select}>
-              <Select
-                className={`${classes.noOutline}`}
-                name="codingType"
-                variant="outlined"
-                data-filter-network="true"
+          <>
+            <Grid item md={6}>
+              <Tooltip title={TooltipList.modulation}>
+                <Typography className={classes.text}>
+                  {'Modulation'}
+                </Typography>
+              </Tooltip>
+            </Grid>
+            <Grid item md={6}>
+              <Autocomplete
+                options={filteredModList}
+                getOptionDisabled={(option) => option.disabled}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => <TextField {...params} placeholder="---" variant="outlined" />}
                 color="primary"
-                value={state.commsSpecs.commsPayloadSpecs.codingType}
-                onChange={(e) => {handleClick(e)}}
-                disabled={state.loading}
-                fullWidth
-              >
-                {filteredCodingTypeOptions.map((option, idx) => {
-                  return <MenuItem key={idx} value={option.id} disabled = {option.disabled}>{option.name}</MenuItem>;
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item md={6}>
-            <Tooltip title={TooltipList.coding}>
-              <Typography className = {classes.text}>
-                {'Coding Rate'}
-              </Typography>
-            </Tooltip>
-          </Grid>
-          <Grid item md={6}>
-            <Autocomplete
-              options={filteredCodingOptions}
-              getOptionDisabled = {(option) => option.disabled}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => <TextField {...params} placeholder="---" variant="outlined"/>}
-              color="primary"
-              size='small'
-              value={getCodingRateValue()}
-              className={`${classes.noOutline} ${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.coding !== -2 && classes.selectedEnhanceDropdown}`}
-              forcePopupIcon={state.commsSpecs.commsPayloadSpecs.coding !== -2 ? false : true}
-              style={{ textAlign: 'center' }}
-              //@ts-ignore
-              onChange={(e, newVal)=>{handleClick({target: {name: "coding", value: (newVal? newVal.id : -1)}})}}
-              openOnFocus={true}
-            />
-          </Grid>
-        </>
-    </Grid>
-    </Box>
+                size='small'
+                value={getModulationValue()}
+                className={`${classes.noOutline} ${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.modulation !== -2 && classes.selectedEnhanceDropdown}`}
+                forcePopupIcon={state.commsSpecs.commsPayloadSpecs.modulation !== -2 ? false : true}
+                style={{ textAlign: 'center' }}
+                //@ts-ignore
+                onChange={(e, newVal) => { handleClick({ target: { name: "modulation", value: (newVal ? newVal.id : -1) } }) }}
+                openOnFocus={true}
+              />
+            </Grid>
+            <Grid item md={6}>
+              <Tooltip title={TooltipList.coding}>
+                <Typography className={classes.text}>
+                  {'Coding Type'}
+                </Typography>
+              </Tooltip>
+            </Grid>
+            <Grid item md={6}>
+              <FormControl variant="filled" size="small" fullWidth className={classes.select}>
+                <Select
+                  className={`${classes.noOutline}`}
+                  name="codingType"
+                  variant="outlined"
+                  data-filter-network="true"
+                  color="primary"
+                  value={state.commsSpecs.commsPayloadSpecs.codingType}
+                  onChange={(e) => { handleClick(e) }}
+                  disabled={state.loading}
+                  fullWidth
+                >
+                  {filteredCodingTypeOptions.map((option, idx) => {
+                    return <MenuItem key={idx} value={option.id} disabled={option.disabled}>{option.name}</MenuItem>;
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item md={6}>
+              <Tooltip title={TooltipList.coding}>
+                <Typography className={classes.text}>
+                  {'Coding Rate'}
+                </Typography>
+              </Tooltip>
+            </Grid>
+            <Grid item md={6}>
+              <Autocomplete
+                options={filteredCodingOptions}
+                getOptionDisabled={(option) => option.disabled}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => <TextField {...params} placeholder="---" variant="outlined" />}
+                color="primary"
+                size='small'
+                value={getCodingRateValue()}
+                className={`${classes.noOutline} ${classes.enhanceDropdown} ${state.commsSpecs.commsPayloadSpecs.coding !== -2 && classes.selectedEnhanceDropdown}`}
+                forcePopupIcon={state.commsSpecs.commsPayloadSpecs.coding !== -2 ? false : true}
+                style={{ textAlign: 'center' }}
+                //@ts-ignore
+                onChange={(e, newVal) => { handleClick({ target: { name: "coding", value: (newVal ? newVal.id : -1) } }) }}
+                openOnFocus={true}
+              />
+            </Grid>
+          </>
+        </Grid>
+      </Box>
 
-     
+
 
       {/*****************************************************************************************************/}
       {/***************************************  Calculators  ***********************************************/}

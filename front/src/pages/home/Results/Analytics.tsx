@@ -958,7 +958,7 @@ const Analytics: FC<AnalyticsProps> = ({
               networkType={state.networkType}
             />
           </Grid>
-          
+
           <Grid item xs={12} style={{ marginTop: '20px', marginBottom: '20px' }}>
             <Typography className={classes.subSummary}>
               Coverage Distribution
@@ -966,36 +966,34 @@ const Analytics: FC<AnalyticsProps> = ({
           </Grid>
           <Grid item xs={12}>
             <HistogramChartSection
-              title={`<b>${
-                Object.keys(PLOT_TITLES).includes(state.networkType)
+              title={`<b>${Object.keys(PLOT_TITLES).includes(state.networkType)
                   ? PLOT_TITLES[state.networkType][dataType]
                   : ''
-              }</b>`}
+                }</b>`}
               yAxisTitle={
                 dataType.includes('coverage')
-                  ? `Duration (${
-                      state.networkType === 'relay' ? 'sec' : 'min'
-                    })`
+                  ? `Duration (${state.networkType === 'relay' ? 'sec' : 'min'
+                  })`
                   : PLOT_TITLES['relay'][dataType]
               }
               data={
                 dataType.includes('coverage')
                   ? [
-                      {
-                        y: traces
-                          ? traces[
-                              dataType === 'coverage'
-                                ? 'coverage_histogram'
-                                : 'gap_histogram'
-                            ]?.xTraces
-                          : null,
-                        boxpoints: 'all',
-                        name: '',
-                        type: 'box'
-                      }
-                    ]
+                    {
+                      y: traces
+                        ? traces[
+                          dataType === 'coverage'
+                            ? 'coverage_histogram'
+                            : 'gap_histogram'
+                        ]?.xTraces
+                        : null,
+                      boxpoints: 'all',
+                      name: '',
+                      type: 'box'
+                    }
+                  ]
                   : Object.keys(traces).includes('histogram')
-                  ? [
+                    ? [
                       {
                         x: (traces as AnalyticsTraces).histogram.bins,
                         y: (traces as AnalyticsTraces).histogram.count,
@@ -1003,7 +1001,7 @@ const Analytics: FC<AnalyticsProps> = ({
                         name: ''
                       }
                     ]
-                  : []
+                    : []
               }
               size={size}
               networkType={state.networkType}
@@ -1021,9 +1019,8 @@ const Analytics: FC<AnalyticsProps> = ({
               title={`<b>Statistics</b>`}
               yAxisTitle={
                 dataType.includes('coverage')
-                  ? `Duration (${
-                      state.networkType === 'relay' ? 'sec' : 'min'
-                    })`
+                  ? `Duration (${state.networkType === 'relay' ? 'sec' : 'min'
+                  })`
                   : PLOT_TITLES['relay'][dataType]
               }
               size={size}
@@ -1032,42 +1029,42 @@ const Analytics: FC<AnalyticsProps> = ({
               data={
                 dataType.includes('coverage')
                   ? [
-                      {
-                        y: traces
-                          ? traces[
-                              dataType === 'coverage'
-                                ? 'coverage_histogram'
-                                : 'gap_histogram'
-                            ]?.xTraces
-                          : null,
-                        boxpoints: 'all',
-                        name: '',
-                        type: 'box'
-                      }
-                    ]
+                    {
+                      y: traces
+                        ? traces[
+                          dataType === 'coverage'
+                            ? 'coverage_histogram'
+                            : 'gap_histogram'
+                        ]?.xTraces
+                        : null,
+                      boxpoints: 'all',
+                      name: '',
+                      type: 'box'
+                    }
+                  ]
                   : [
-                      {
-                        mode: 'markers',
-                        type: 'box',
-                        name: '',
-                        y: Object.keys(traces).includes('boxPlot')
-                          ? [
-                              (traces as AnalyticsTraces).boxPlot.minimum,
-                              (traces as AnalyticsTraces).boxPlot.quartile1,
-                              (traces as AnalyticsTraces).boxPlot.quartile1,
-                              (traces as AnalyticsTraces).boxPlot.median,
-                              (traces as AnalyticsTraces).boxPlot.quartile3,
-                              (traces as AnalyticsTraces).boxPlot.quartile3,
-                              (traces as AnalyticsTraces).boxPlot.maximum
-                            ]
-                          : []
-                      }
-                    ]
+                    {
+                      mode: 'markers',
+                      type: 'box',
+                      name: '',
+                      y: Object.keys(traces).includes('boxPlot')
+                        ? [
+                          (traces as AnalyticsTraces).boxPlot.minimum,
+                          (traces as AnalyticsTraces).boxPlot.quartile1,
+                          (traces as AnalyticsTraces).boxPlot.quartile1,
+                          (traces as AnalyticsTraces).boxPlot.median,
+                          (traces as AnalyticsTraces).boxPlot.quartile3,
+                          (traces as AnalyticsTraces).boxPlot.quartile3,
+                          (traces as AnalyticsTraces).boxPlot.maximum
+                        ]
+                        : []
+                    }
+                  ]
               }
             />
           </Grid>
 
-          {/* {performancePanel && (
+          {performancePanel && (
             <Button
               style={{ float: 'right' }}
               onClick={() => {
@@ -1184,8 +1181,8 @@ const Analytics: FC<AnalyticsProps> = ({
                         ? 'RF Coverage (%)'
                         : 'No RF Coverage (%)'
                       : dataType === 'coverage'
-                      ? 'RF Coverage (min/day)'
-                      : 'No RF Coverage (min/day)'
+                        ? 'RF Coverage (min/day)'
+                        : 'No RF Coverage (min/day)'
                   }
                   plotOptions={{
                     show_surface: true,
@@ -1222,23 +1219,23 @@ const Analytics: FC<AnalyticsProps> = ({
                         data={
                           traces
                             ? ((traces: AnalyticsPlotsData) => {
-                                if (!(traces && traces.xTraces)) return [];
-                                let csvVals = [];
-                                for (let i = 0; i < traces.xTraces.length; i++) {
-                                  csvVals.push({
-                                    xTrace: traces.xTraces[i],
-                                    yTrace: traces.yTraces
-                                      ? traces.yTraces[i]
-                                      : null,
-                                    avgTrace: traces.avgTraces
-                                      ? traces.avgTraces[i]
-                                      : null
-                                  });
-                                }
-                                return csvVals;
-                              })(
-                                traces[dataType === 'coverage' ? 'coverage' : 'gap']
-                              )
+                              if (!(traces && traces.xTraces)) return [];
+                              let csvVals = [];
+                              for (let i = 0; i < traces.xTraces.length; i++) {
+                                csvVals.push({
+                                  xTrace: traces.xTraces[i],
+                                  yTrace: traces.yTraces
+                                    ? traces.yTraces[i]
+                                    : null,
+                                  avgTrace: traces.avgTraces
+                                    ? traces.avgTraces[i]
+                                    : null
+                                });
+                              }
+                              return csvVals;
+                            })(
+                              traces[dataType === 'coverage' ? 'coverage' : 'gap']
+                            )
                             : null
                         }
                         filename={`plot_data.csv`}
@@ -1268,36 +1265,34 @@ const Analytics: FC<AnalyticsProps> = ({
               )}
               {open === 'histogram-chart' && (
                 <HistogramChartSection
-                  title={`<b>${
-                    Object.keys(PLOT_TITLES).includes(state.networkType)
+                  title={`<b>${Object.keys(PLOT_TITLES).includes(state.networkType)
                       ? PLOT_TITLES[state.networkType][dataType]
                       : ''
-                  }</b>`}
+                    }</b>`}
                   yAxisTitle={
                     dataType.includes('coverage')
-                      ? `Duration (${
-                          state.networkType === 'relay' ? 'sec' : 'min'
-                        })`
+                      ? `Duration (${state.networkType === 'relay' ? 'sec' : 'min'
+                      })`
                       : PLOT_TITLES['relay'][dataType]
                   }
                   data={
                     dataType.includes('coverage')
                       ? [
-                          {
-                            y: traces
-                              ? traces[
-                                  dataType === 'coverage'
-                                    ? 'coverage_histogram'
-                                    : 'gap_histogram'
-                                ]?.xTraces
-                              : null,
-                            boxpoints: 'all',
-                            name: '',
-                            type: 'box'
-                          }
-                        ]
+                        {
+                          y: traces
+                            ? traces[
+                              dataType === 'coverage'
+                                ? 'coverage_histogram'
+                                : 'gap_histogram'
+                            ]?.xTraces
+                            : null,
+                          boxpoints: 'all',
+                          name: '',
+                          type: 'box'
+                        }
+                      ]
                       : Object.keys(traces).includes('histogram')
-                      ? [
+                        ? [
                           {
                             x: (traces as AnalyticsTraces).histogram.bins,
                             y: (traces as AnalyticsTraces).histogram.count,
@@ -1305,7 +1300,7 @@ const Analytics: FC<AnalyticsProps> = ({
                             name: ''
                           }
                         ]
-                      : []
+                        : []
                   }
                   size={popoutSize}
                   networkType={state.networkType}
@@ -1317,45 +1312,44 @@ const Analytics: FC<AnalyticsProps> = ({
                   title={`<b>Statistics</b>`}
                   yAxisTitle={
                     dataType.includes('coverage')
-                      ? `Duration (${
-                          state.networkType === 'relay' ? 'sec' : 'min'
-                        })`
+                      ? `Duration (${state.networkType === 'relay' ? 'sec' : 'min'
+                      })`
                       : PLOT_TITLES['relay'][dataType]
                   }
                   data={
                     dataType.includes('coverage')
                       ? [
-                          {
-                            y: traces
-                              ? traces[
-                                  dataType === 'coverage'
-                                    ? 'coverage_histogram'
-                                    : 'gap_histogram'
-                                ]?.xTraces
-                              : null,
-                            boxpoints: 'all',
-                            name: '',
-                            type: 'box'
-                          }
-                        ]
+                        {
+                          y: traces
+                            ? traces[
+                              dataType === 'coverage'
+                                ? 'coverage_histogram'
+                                : 'gap_histogram'
+                            ]?.xTraces
+                            : null,
+                          boxpoints: 'all',
+                          name: '',
+                          type: 'box'
+                        }
+                      ]
                       : [
-                          {
-                            mode: 'markers',
-                            type: 'box',
-                            name: '',
-                            y: Object.keys(traces).includes('boxPlot')
-                              ? [
-                                  (traces as AnalyticsTraces).boxPlot.minimum,
-                                  (traces as AnalyticsTraces).boxPlot.quartile1,
-                                  (traces as AnalyticsTraces).boxPlot.quartile1,
-                                  (traces as AnalyticsTraces).boxPlot.median,
-                                  (traces as AnalyticsTraces).boxPlot.quartile3,
-                                  (traces as AnalyticsTraces).boxPlot.quartile3,
-                                  (traces as AnalyticsTraces).boxPlot.maximum
-                                ]
-                              : []
-                          }
-                        ]
+                        {
+                          mode: 'markers',
+                          type: 'box',
+                          name: '',
+                          y: Object.keys(traces).includes('boxPlot')
+                            ? [
+                              (traces as AnalyticsTraces).boxPlot.minimum,
+                              (traces as AnalyticsTraces).boxPlot.quartile1,
+                              (traces as AnalyticsTraces).boxPlot.quartile1,
+                              (traces as AnalyticsTraces).boxPlot.median,
+                              (traces as AnalyticsTraces).boxPlot.quartile3,
+                              (traces as AnalyticsTraces).boxPlot.quartile3,
+                              (traces as AnalyticsTraces).boxPlot.maximum
+                            ]
+                            : []
+                        }
+                      ]
                   }
                   size={popoutSize}
                   networkType={state.networkType}
@@ -1363,7 +1357,7 @@ const Analytics: FC<AnalyticsProps> = ({
                 />
               )}
             </DialogBox>
-          )} */}
+          )}
         </Grid>
       </Grid>
       <Grid item className={classes.overviewFooter} xs={12}>
