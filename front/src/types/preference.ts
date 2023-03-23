@@ -115,6 +115,7 @@ export interface CommsSpecs {
     codingType: number;
     gainOn: boolean;
   }
+  usingDataRate?: boolean;
 }
 
 export interface NetworkFilters {

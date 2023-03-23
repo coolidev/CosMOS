@@ -2,19 +2,30 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 
-export interface ComparisonResult{
+export interface ComparisonResult {
   name: string,
   id?: number,
   parameters: {
-      altitude: number,
-      inclination: number,
-      eccentricity: number,
-      frequencyBand: number,
-      modulation: number,
-      coding: number,
-      standardsCompliance: number,
-      latitude: number,
-      longitude: number,
+    altitude: number,
+    inclination: number,
+    eccentricity: number,
+    frequencyBand: number,
+    modulation: number,
+    coding: number,
+    standardsCompliance: number,
+    latitude: number,
+    longitude: number,
+    dataVolume_GBday?: number
+    dataRate_Mbps?: number
+    EIRP?: number
+    polarizationType?: number
+    pointingLoss_dB?: number
+    polarizationLoss_dB?: number
+    otherLosses_dB?: number
+    codRate?: number
+    avgContactsPerOrbit?: number
+    avgRfContactDurMin?: number
+    maxGapDurMin?: number
   },
   performance: {
     rfCoverage: number,
@@ -76,14 +87,14 @@ const slice = createSlice({
 export const reducer = slice.reducer;
 
 export const updatePinnedResults =
-(pinnedResults: ComparisonResult[]): AppThunk =>
-  async (dispatch) => {
-    dispatch(slice.actions.updatePinnedResults({ pinnedResults: pinnedResults }));
-  };
+  (pinnedResults: ComparisonResult[]): AppThunk =>
+    async (dispatch) => {
+      dispatch(slice.actions.updatePinnedResults({ pinnedResults: pinnedResults }));
+    };
 
 export const updateComparisonIds =
   (comparisonIds: string[]): AppThunk =>
-  async (dispatch) => {
-    dispatch(slice.actions.updateComparisonIds({ comparisonIds: comparisonIds }));
-  };
+    async (dispatch) => {
+      dispatch(slice.actions.updateComparisonIds({ comparisonIds: comparisonIds }));
+    };
 export default slice;
