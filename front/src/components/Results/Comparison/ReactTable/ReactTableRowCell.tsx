@@ -1,8 +1,10 @@
-import { makeStyles, Theme } from "@material-ui/core";
+import { makeStyles} from "@material-ui/core";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { ContextMenu } from "devextreme-react";
 import lodash from "lodash";
 import { useEffect, useState } from "react";
+import { Theme } from "src/theme";
+import { THEMES } from "src/utils/constants/general";
 
 import { IColumnType } from "./ReactTable";
 
@@ -28,14 +30,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
   },
   rowField: {
-    backgroundColor: 'rgb(207,213,234)'
+    backgroundColor: theme.palette.grey[700]
   },
   inputCell: {
     color: 'white',
-    backgroundColor: 'rgb(68,114,196)',
+    backgroundColor: `${theme.palette.border.main}`,
+    border: `1px solid white`,
+    minWidth: '5vw'
   },
   outputCell: {
-    backgroundColor: 'rgb(255,255,0)'
+    backgroundColor: 'white',
+    minWidth: '5vw'
   }
 }));
 
@@ -45,13 +50,13 @@ export function ReactTableRowCell<T>({ item, column, index }: Props<T>): JSX.Ele
   const [contextItems, setContextItems] = useState<IContextItem[]>([])
   const [isRowHeader, setIsRowHeader] = useState<boolean>(false)
   const value = lodash.get(item, column.key);
-  const input = lodash.get<typeof item, string>(item, `input_${column.key}`)
-  const output = lodash.get<typeof item, string>(item, `output_${column.key}`)
-  const isCompressed = lodash.get<typeof item, string>(item, `isCompressed_${column.key}`)
+  const input = lodash.get(item, `input_${column.key}`)
+  const output = lodash.get(item, `output_${column.key}`)
+  const isCompressed = lodash.get(item, `isCompressed_${column.key}`)
   
   useEffect(() => {
     if (column.key === 'comparison') {
-      const rowBreakdownOptions = lodash.get<typeof item, string>(item, 'rowBreakdownOptions');
+      const rowBreakdownOptions = lodash.get(item, 'rowBreakdownOptions');
       setOptions(rowBreakdownOptions)
       setIsRowHeader(true)
     }
@@ -89,7 +94,7 @@ export function ReactTableRowCell<T>({ item, column, index }: Props<T>): JSX.Ele
         colSpan={lodash.get(item, `isGroup_${column.key}`) === true ? 11 : 0}
         style={{
           fontSize: lodash.get(item, `isGroup_${column.key}`) === true ? '1.25rem' : '0.875rem',
-          backgroundColor: lodash.get(item, `isGroup_${column.key}`) === true ? 'white' : 'rgb(207,213,234)',
+          backgroundColor: lodash.get(item, `isGroup_${column.key}`) === true ? 'rgb(220, 220, 220)' : 'white',
         }}>
           {column.render ? column.render(column, item) : value}
           {contextItems.length > 0 && <>
