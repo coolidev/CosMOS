@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { 
+import {
   Grid,
   IconButton,
   makeStyles,
@@ -9,7 +9,7 @@ import {
   Typography
 } from '@material-ui/core';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
-import type { 
+import type {
   PerformancePanel
 } from 'src/types/evaluation';
 import { QUALITY_INDICATORS } from 'src/utils/constants/regressions';
@@ -86,7 +86,7 @@ const Regression: FC<RegressionProps> = ({
   const [plotOptions, setPlotOptions] = useState(initialPlotOptions);
   const [subOpen, setSubOpen] = useState(false);
   const [reset, setReset] = useState(false);
-  const [viewMethod, setViewMethod] = useState(state.length === 1 && state[0].noRegression ? '4d_view': '2d_view');
+  const [viewMethod, setViewMethod] = useState(state.length === 1 && state[0].noRegression ? '4d_view' : '2d_view');
   const history = useHistory();
   const zAxisLabel = data[0].modelData.orbital[metricType].label;
   const { zoom } = useSelector((state) => state.zoom);
@@ -115,7 +115,7 @@ const Regression: FC<RegressionProps> = ({
 
   const handleClick = (event: any) => {
     if (
-      event && 
+      event &&
       (metricType === 'coverage' || metricType === 'coverageMinutes') &&
       state.length === 1
     ) {
@@ -141,7 +141,7 @@ const Regression: FC<RegressionProps> = ({
 
   let qualityClass = classes.none;
   let qualityState = state.length === 1 ? QUALITY_INDICATORS[state[0].qualityIndicators[metricType]] : '';
-  switch (qualityState){
+  switch (qualityState) {
     case 'Low':
       qualityClass = classes.low;
       break;
@@ -155,12 +155,12 @@ const Regression: FC<RegressionProps> = ({
 
   return (
     <Grid container justifyContent="center" alignItems="center" className="mb-4">
-      <Grid item md={9}/>
+      <Grid item md={9} />
       {state.length === 1 && <Grid item md={1}>
         <Typography component="p">
-        <Tooltip id='quality' title={`Regression Quality: ${QUALITY_INDICATORS[state[0].qualityIndicators[metricType]]}`}>
-          <div className={qualityClass}>{(qualityState === 'High')?<CheckCircleIcon className={qualityClass}/>:(qualityState === 'Medium'?<FontAwesomeIcon icon={faMinusCircle as IconProp} className={qualityClass} size={'lg'}/>:(qualityState === 'Low'?<CancelIcon className={qualityClass}/>:<HelpCircle className={qualityClass}/>))}</div>
-        </Tooltip>
+          <Tooltip id='quality' title={`Regression Quality: ${QUALITY_INDICATORS[state[0].qualityIndicators[metricType]]}`}>
+            <div className={qualityClass}>{(qualityState === 'High') ? <CheckCircleIcon className={qualityClass} /> : (qualityState === 'Medium' ? <FontAwesomeIcon icon={faMinusCircle as IconProp} className={qualityClass} size={'lg'} /> : (qualityState === 'Low' ? <CancelIcon className={qualityClass} /> : <HelpCircle className={qualityClass} />))}</div>
+          </Tooltip>
         </Typography>
       </Grid>}
       <Grid item md={1}>
@@ -172,25 +172,25 @@ const Regression: FC<RegressionProps> = ({
           <ExitToAppRoundedIcon color='primary' />
         </IconButton>
       </Grid>
-      <Grid item md={1}/>
+      <Grid item md={1} />
       {viewMethod === '4d_view' && (
-        <Heatmap 
-          state={state} 
-          data={data} 
-          minAltitude={minAltitude} 
-          maxInclination={maxInclination} 
-          metricType={metricType} 
-          values={values} 
-          isLegend={false} 
-          isSub={false} 
+        <Heatmap
+          state={state}
+          data={data}
+          minAltitude={minAltitude}
+          maxInclination={maxInclination}
+          metricType={metricType}
+          values={values}
+          isLegend={false}
+          isSub={false}
           size={{
             width: (window.screen.availHeight / zoom) * 0.3,
             height: (window.screen.availHeight / zoom) * 0.25
-          }} 
-          plotOptions={plotOptions} 
-          chartDiv={chartDiv} 
-          reset={false} 
-          title={zAxisLabel}          
+          }}
+          plotOptions={plotOptions}
+          chartDiv={chartDiv}
+          reset={false}
+          title={zAxisLabel}
         />
       )}
       {viewMethod === '3d_view' && (
@@ -214,7 +214,7 @@ const Regression: FC<RegressionProps> = ({
             height: (window.screen.availHeight / zoom) * 0.25
           }}
         />
-      )} 
+      )}
       {viewMethod === '2d_view' && (
         <TwoViewSection
           state={state}

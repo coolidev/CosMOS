@@ -1134,228 +1134,232 @@ const Analytics: FC<AnalyticsProps> = ({
               classes={{ paper: classes.popoutDialog }}
               style={{ overflow: 'hidden' }}
             >
-              {open === 'two-view-section' && (
-                <TwoViewSection
-                  state={[
-                    {
-                      ...state,
-                      parameters: {
-                        isOrbital: true,
-                        orbitState: parameters?.orbitState,
-                        altitude: parameters?.altitude,
-                        inclination: parameters?.inclination,
-                        latitude: 0,
-                        longitude: 0,
-                        raan: parameters?.raan,
-                        eccentricity: parameters?.eccentricity,
-                        argumentOfPerigee: parameters?.argumentOfPerigee,
-                        trueAnomaly: parameters?.trueAnomaly,
-                        gain: parameters?.gain,
-                        transmitterPower: parameters?.transmitterPower,
-                        eirp: parameters?.eirp,
-                        ltan: parameters?.ltan,
-                        sunSyncUseAlt: parameters?.sunSyncUseAlt
+              <Grid className='px-2 py-2 mx-2 my-2' style={{
+                boxShadow: '0 4px 14px rgba(0,0,0,10%)'
+              }}>
+                {open === 'two-view-section' && (
+                  <TwoViewSection
+                    state={[
+                      {
+                        ...state,
+                        parameters: {
+                          isOrbital: true,
+                          orbitState: parameters?.orbitState,
+                          altitude: parameters?.altitude,
+                          inclination: parameters?.inclination,
+                          latitude: 0,
+                          longitude: 0,
+                          raan: parameters?.raan,
+                          eccentricity: parameters?.eccentricity,
+                          argumentOfPerigee: parameters?.argumentOfPerigee,
+                          trueAnomaly: parameters?.trueAnomaly,
+                          gain: parameters?.gain,
+                          transmitterPower: parameters?.transmitterPower,
+                          eirp: parameters?.eirp,
+                          ltan: parameters?.ltan,
+                          sunSyncUseAlt: parameters?.sunSyncUseAlt
+                        }
                       }
+                    ]}
+                    data={[performancePanel]}
+                    metricData={source?.plot_value}
+                    //predictedData={performancePanel?.predictedData}
+                    metricType={
+                      dataType === 'coverage'
+                        ? state.networkType === 'relay'
+                          ? 'coverage'
+                          : 'coverageMinutes'
+                        : ''
                     }
-                  ]}
-                  data={[performancePanel]}
-                  metricData={source?.plot_value}
-                  //predictedData={performancePanel?.predictedData}
-                  metricType={
-                    dataType === 'coverage'
-                      ? state.networkType === 'relay'
-                        ? 'coverage'
-                        : 'coverageMinutes'
-                      : ''
-                  }
-                  regressionTypes={regressionTypes}
-                  isLegend={false}
-                  minAltitude={state.networkType === 'relay' ? 0 : 300}
-                  maxAltitude={maxAltitude}
-                  values={[parameters?.value]}
-                  isSub={false}
-                  size={popoutSize}
-                  yAxisLabel={
-                    state.networkType === 'relay'
-                      ? dataType === 'coverage'
-                        ? 'RF Coverage (%)'
-                        : 'No RF Coverage (%)'
-                      : dataType === 'coverage'
-                        ? 'RF Coverage (min/day)'
-                        : 'No RF Coverage (min/day)'
-                  }
-                  plotOptions={{
-                    show_surface: true,
-                    show_scatter: true
-                  }}
-                  onClick={handleClick}
-                  chartDiv="RFCoverageplotly"
-                  isClickable={true}
-                />
-              )}
-              {open === 'heatmap' && (
-                <Heatmap
-                  metricType={
-                    dataType === 'coverage'
-                      ? state.networkType === 'relay'
-                        ? 'coverage'
-                        : 'coverageMinutes'
-                      : ''
-                  }
-                  isSubSection={true}
-                  isEarth={false}
-                  mode="heatmap"
-                  size={popoutSize}
-                  source={terrestrial}
-                  onClick={handleClick}
-                  isClickable={true}
-                />
-              )}
-              {open === 'line-chart' && (
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ padding: '0 30px' }}>
-                    <span style={{ float: 'right' }}>
-                      <CSVLink
-                        data={
-                          traces
-                            ? ((traces: AnalyticsPlotsData) => {
-                              if (!(traces && traces.xTraces)) return [];
-                              let csvVals = [];
-                              for (let i = 0; i < traces.xTraces.length; i++) {
-                                csvVals.push({
-                                  xTrace: traces.xTraces[i],
-                                  yTrace: traces.yTraces
-                                    ? traces.yTraces[i]
-                                    : null,
-                                  avgTrace: traces.avgTraces
-                                    ? traces.avgTraces[i]
-                                    : null
-                                });
-                              }
-                              return csvVals;
-                            })(
-                              traces[dataType === 'coverage' ? 'coverage' : 'gap']
-                            )
-                            : null
-                        }
-                        filename={`plot_data.csv`}
-                        target="_blank"
-                      >
-                        <Typography
-                          component="p"
-                          variant="body2"
-                          style={{ color: CART_RED }}
-                        >
-                          {'csv'}
-                        </Typography>
-                      </CSVLink>
-                    </span>
-                  </div>
-                  <LineChartSection
-                    source={
-                      traces
-                        ? traces[dataType === 'coverage' ? 'coverage' : 'gap']
-                        : null
-                    }
-                    metricType={dataType}
+                    regressionTypes={regressionTypes}
+                    isLegend={false}
+                    minAltitude={state.networkType === 'relay' ? 0 : 300}
+                    maxAltitude={maxAltitude}
+                    values={[parameters?.value]}
+                    isSub={false}
                     size={popoutSize}
-                    networkType={state.networkType}
+                    yAxisLabel={
+                      state.networkType === 'relay'
+                        ? dataType === 'coverage'
+                          ? 'RF Coverage (%)'
+                          : 'No RF Coverage (%)'
+                        : dataType === 'coverage'
+                          ? 'RF Coverage (min/day)'
+                          : 'No RF Coverage (min/day)'
+                    }
+                    plotOptions={{
+                      show_surface: true,
+                      show_scatter: true
+                    }}
+                    onClick={handleClick}
+                    chartDiv="RFCoverageplotly"
+                    isClickable={true}
                   />
-                </div>
-              )}
-              {open === 'histogram-chart' && (
-                <HistogramChartSection
-                  title={`<b>${Object.keys(PLOT_TITLES).includes(state.networkType)
-                      ? PLOT_TITLES[state.networkType][dataType]
-                      : ''
-                    }</b>`}
-                  yAxisTitle={
-                    dataType.includes('coverage')
-                      ? `Duration (${state.networkType === 'relay' ? 'sec' : 'min'
-                      })`
-                      : PLOT_TITLES['relay'][dataType]
-                  }
-                  data={
-                    dataType.includes('coverage')
-                      ? [
-                        {
-                          y: traces
-                            ? traces[
-                              dataType === 'coverage'
-                                ? 'coverage_histogram'
-                                : 'gap_histogram'
-                            ]?.xTraces
-                            : null,
-                          boxpoints: 'all',
-                          name: '',
-                          type: 'box'
-                        }
-                      ]
-                      : Object.keys(traces).includes('histogram')
+                )}
+                {open === 'heatmap' && (
+                  <Heatmap
+                    metricType={
+                      dataType === 'coverage'
+                        ? state.networkType === 'relay'
+                          ? 'coverage'
+                          : 'coverageMinutes'
+                        : ''
+                    }
+                    isSubSection={true}
+                    isEarth={false}
+                    mode="heatmap"
+                    size={popoutSize}
+                    source={terrestrial}
+                    onClick={handleClick}
+                    isClickable={true}
+                  />
+                )}
+                {open === 'line-chart' && (
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ padding: '0 30px' }}>
+                      <span style={{ float: 'right' }}>
+                        <CSVLink
+                          data={
+                            traces
+                              ? ((traces: AnalyticsPlotsData) => {
+                                if (!(traces && traces.xTraces)) return [];
+                                let csvVals = [];
+                                for (let i = 0; i < traces.xTraces.length; i++) {
+                                  csvVals.push({
+                                    xTrace: traces.xTraces[i],
+                                    yTrace: traces.yTraces
+                                      ? traces.yTraces[i]
+                                      : null,
+                                    avgTrace: traces.avgTraces
+                                      ? traces.avgTraces[i]
+                                      : null
+                                  });
+                                }
+                                return csvVals;
+                              })(
+                                traces[dataType === 'coverage' ? 'coverage' : 'gap']
+                              )
+                              : null
+                          }
+                          filename={`plot_data.csv`}
+                          target="_blank"
+                        >
+                          <Typography
+                            component="p"
+                            variant="body2"
+                            style={{ color: CART_RED }}
+                          >
+                            {'csv'}
+                          </Typography>
+                        </CSVLink>
+                      </span>
+                    </div>
+                    <LineChartSection
+                      source={
+                        traces
+                          ? traces[dataType === 'coverage' ? 'coverage' : 'gap']
+                          : null
+                      }
+                      metricType={dataType}
+                      size={popoutSize}
+                      networkType={state.networkType}
+                    />
+                  </div>
+                )}
+                {open === 'histogram-chart' && (
+                  <HistogramChartSection
+                    title={`<b>${Object.keys(PLOT_TITLES).includes(state.networkType)
+                        ? PLOT_TITLES[state.networkType][dataType]
+                        : ''
+                      }</b>`}
+                    yAxisTitle={
+                      dataType.includes('coverage')
+                        ? `Duration (${state.networkType === 'relay' ? 'sec' : 'min'
+                        })`
+                        : PLOT_TITLES['relay'][dataType]
+                    }
+                    data={
+                      dataType.includes('coverage')
                         ? [
                           {
-                            x: (traces as AnalyticsTraces).histogram.bins,
-                            y: (traces as AnalyticsTraces).histogram.count,
-                            type: 'bar',
-                            name: ''
+                            y: traces
+                              ? traces[
+                                dataType === 'coverage'
+                                  ? 'coverage_histogram'
+                                  : 'gap_histogram'
+                              ]?.xTraces
+                              : null,
+                            boxpoints: 'all',
+                            name: '',
+                            type: 'box'
                           }
                         ]
-                        : []
-                  }
-                  size={popoutSize}
-                  networkType={state.networkType}
-                  metricType={dataType}
-                />
-              )}
-              {open === 'box-chart' && (
-                <BoxChartSection
-                  title={`<b>Statistics</b>`}
-                  yAxisTitle={
-                    dataType.includes('coverage')
-                      ? `Duration (${state.networkType === 'relay' ? 'sec' : 'min'
-                      })`
-                      : PLOT_TITLES['relay'][dataType]
-                  }
-                  data={
-                    dataType.includes('coverage')
-                      ? [
-                        {
-                          y: traces
-                            ? traces[
-                              dataType === 'coverage'
-                                ? 'coverage_histogram'
-                                : 'gap_histogram'
-                            ]?.xTraces
-                            : null,
-                          boxpoints: 'all',
-                          name: '',
-                          type: 'box'
-                        }
-                      ]
-                      : [
-                        {
-                          mode: 'markers',
-                          type: 'box',
-                          name: '',
-                          y: Object.keys(traces).includes('boxPlot')
-                            ? [
-                              (traces as AnalyticsTraces).boxPlot.minimum,
-                              (traces as AnalyticsTraces).boxPlot.quartile1,
-                              (traces as AnalyticsTraces).boxPlot.quartile1,
-                              (traces as AnalyticsTraces).boxPlot.median,
-                              (traces as AnalyticsTraces).boxPlot.quartile3,
-                              (traces as AnalyticsTraces).boxPlot.quartile3,
-                              (traces as AnalyticsTraces).boxPlot.maximum
-                            ]
-                            : []
-                        }
-                      ]
-                  }
-                  size={popoutSize}
-                  networkType={state.networkType}
-                  metricType={dataType}
-                />
-              )}
+                        : Object.keys(traces).includes('histogram')
+                          ? [
+                            {
+                              x: (traces as AnalyticsTraces).histogram.bins,
+                              y: (traces as AnalyticsTraces).histogram.count,
+                              type: 'bar',
+                              name: ''
+                            }
+                          ]
+                          : []
+                    }
+                    size={popoutSize}
+                    networkType={state.networkType}
+                    metricType={dataType}
+                  />
+                )}
+                {open === 'box-chart' && (
+                  <BoxChartSection
+                    title={`<b>Statistics</b>`}
+                    yAxisTitle={
+                      dataType.includes('coverage')
+                        ? `Duration (${state.networkType === 'relay' ? 'sec' : 'min'
+                        })`
+                        : PLOT_TITLES['relay'][dataType]
+                    }
+                    data={
+                      dataType.includes('coverage')
+                        ? [
+                          {
+                            y: traces
+                              ? traces[
+                                dataType === 'coverage'
+                                  ? 'coverage_histogram'
+                                  : 'gap_histogram'
+                              ]?.xTraces
+                              : null,
+                            boxpoints: 'all',
+                            name: '',
+                            type: 'box'
+                          }
+                        ]
+                        : [
+                          {
+                            mode: 'markers',
+                            type: 'box',
+                            name: '',
+                            y: Object.keys(traces).includes('boxPlot')
+                              ? [
+                                (traces as AnalyticsTraces).boxPlot.minimum,
+                                (traces as AnalyticsTraces).boxPlot.quartile1,
+                                (traces as AnalyticsTraces).boxPlot.quartile1,
+                                (traces as AnalyticsTraces).boxPlot.median,
+                                (traces as AnalyticsTraces).boxPlot.quartile3,
+                                (traces as AnalyticsTraces).boxPlot.quartile3,
+                                (traces as AnalyticsTraces).boxPlot.maximum
+                              ]
+                              : []
+                          }
+                        ]
+                    }
+                    size={popoutSize}
+                    networkType={state.networkType}
+                    metricType={dataType}
+                  />
+                )}
+              </Grid>
             </DialogBox>
           )}
         </Grid>

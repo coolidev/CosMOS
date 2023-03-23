@@ -80,7 +80,7 @@ const myStyles = makeStyles((theme: Theme) => ({
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500]
+    color: theme.palette.background.light
   },
   medium: {
     color: '#E5A001',
@@ -93,6 +93,46 @@ const myStyles = makeStyles((theme: Theme) => ({
   none: {
     color: '#808080',
     textAlign: "right"
+  },
+  dialogStyle: {
+    '& > div > div': {
+      border: `2px solid ${theme.palette.border.main}`,
+      borderRadius: '8px',
+      backgroundColor: theme.palette.background.light
+    }
+  },
+  title: {
+    margin: 0,
+    padding: theme.spacing(2, 4),
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+    display: 'flex',
+    alignItems: 'center'
+  },
+  activeBtnView: {
+  },
+  btnView: {
+    color: theme.palette.grey[700],
+  },
+  defaultBtnView: {
+    border: 'none',
+    boxShadow: '0 4px 14px rgba(0,0,0,10%)',
+    borderRadius: '8px',
+    fontSize: '1rem',
+    padding: '4px 12px',
+    marginTop: '4px',
+    marginBottom: '4px',
+    '&:hover': {
+      border: 'none',
+    }
+  },
+  defaultSelectBox: {
+    border: 'none',
+    boxShadow: '0 4px 14px rgba(0,0,0,10%)',
+    borderRadius: '8px',
+    '& fieldset': {
+      border: 'none'
+    }
   }
 }));
 
@@ -127,7 +167,7 @@ const PlotDialog: FC<PlotDialogProps> = ({
 
   let qualityClass = myClasses.none;
   let qualityState = state.length === 1 ? QUALITY_INDICATORS[state[0].qualityIndicators[metricType]] : '';
-  switch (qualityState){
+  switch (qualityState) {
     case 'Low':
       qualityClass = myClasses.low;
       break;
@@ -146,14 +186,11 @@ const PlotDialog: FC<PlotDialogProps> = ({
       onClose={() => onChartClose()}
       maxWidth="md"
       fullWidth
+      className={myClasses.dialogStyle}
     >
       <CssBaseline />
       <DialogTitle
-        style={{
-          margin: 0,
-          padding: '16px',
-          backgroundColor: theme.palette.primary.light
-        }}
+        disableTypography className={myClasses.title}
       >
         <Typography component="strong" variant="h4">
           {label}
@@ -162,6 +199,7 @@ const PlotDialog: FC<PlotDialogProps> = ({
           aria-label="Close"
           className={myClasses.closeButton}
           onClick={() => onChartClose()}
+          size="small"
         >
           <CloseIcon />
         </IconButton>
@@ -178,7 +216,7 @@ const PlotDialog: FC<PlotDialogProps> = ({
           <Grid
             item
             md={3}
-            style={{ backgroundColor: theme.palette.background.paper }}
+            style={{ backgroundColor: theme.palette.background.light }}
           >
             <Box
               p={5}
@@ -187,77 +225,75 @@ const PlotDialog: FC<PlotDialogProps> = ({
               display="flex"
               flexDirection="column"
             >
-                            <Box>
+              <Box>
                 <Box mb={2}>
                   <Typography variant="body1" component="p" color="textPrimary">
                     View
                   </Typography>
                 </Box>
-                {(state.length === 1 && state[0].noRegression)? 
+                {(state.length === 1 && state[0].noRegression) ?
                   <Button
                     name="4d_view"
                     variant={'contained'}
                     size="small"
                     color="primary"
                     onClick={(e) => onViewChange(e)}
-                    style={{ borderRadius: 0 }}
-                    fullWidth
-                >
-                  4D
-                </Button>
-                :
-                <>
-                  <Button
-                    name="2d_view"
-                    variant={viewMethod === '2d_view' ? 'contained' : 'outlined'}
-                    size="small"
-                    color="primary"
-                    onClick={(e) => onViewChange(e)}
-                    style={{ borderRadius: 0 }}
+                    className={myClasses.defaultBtnView}
                     fullWidth
                   >
-                    2D
+                    4D
                   </Button>
-                  <Button
-                    name="3d_view"
-                    variant={viewMethod === '3d_view' ? 'contained' : 'outlined'}
-                    size="small"
-                    color="primary"
-                    onClick={(e) => onViewChange(e)}
-                    style={{ borderRadius: 0 }}
-                    fullWidth
-                  >
-                    3D
-                  </Button>
-                </>
-              }
+                  :
+                  <>
+                    <Button
+                      name="2d_view"
+                      variant={viewMethod === '2d_view' ? 'contained' : 'outlined'}
+                      size="small"
+                      color="primary"
+                      onClick={(e) => onViewChange(e)}
+                      className={`${viewMethod === '2d_view' ? myClasses.activeBtnView : myClasses.btnView} ${myClasses.defaultBtnView}`}
+                      fullWidth
+                    >
+                      2D
+                    </Button>
+                    <Button
+                      name="3d_view"
+                      variant={viewMethod === '3d_view' ? 'contained' : 'outlined'}
+                      size="small"
+                      color="primary"
+                      onClick={(e) => onViewChange(e)}
+                      className={`${viewMethod === '3d_view' ? myClasses.activeBtnView : myClasses.btnView} ${myClasses.defaultBtnView}`}
+                      fullWidth
+                    >
+                      3D
+                    </Button>
+                  </>
+                }
               </Box>
               <Box>
-              {(state.length === 1 && !state[0].noRegression) && (<><Box mb={2} mt={6}>
-                  <Typography variant="body1" component="p" color="textPrimary">
-                    Regression Type
-                  </Typography>
-                </Box>
-                <FormControl variant="filled" size="small" fullWidth>
-                  <Select
-                    fullWidth
-                    name="regressionType"
-                    variant="outlined"
-                    value={state[0].regressionTypes[metricType]}
-                    onChange={event => onState('regressionTypes', { ...state[0].regressionTypes, [metricType]: event.target.value.toString() })}
-                    style={{
-                      backgroundColor: theme.palette.background.light,
-                      border: `1px solid ${theme.palette.border.main}`
-                    }}
-                  >
-                    <MenuItem value="" disabled>
-                      <em>{`None`}</em>
-                    </MenuItem>
-                    <MenuItem value="gam">GAM</MenuItem>
-                    {Object.keys(data[0].predictedData.coefficients).length >
-                      0 && <MenuItem value="glm">GLM</MenuItem>}
-                  </Select>
-                </FormControl></>)}
+                {(state.length === 1 && !state[0].noRegression) && (<>
+                  <Box mb={2} mt={6}>
+                    <Typography variant="body1" component="p" color="textPrimary">
+                      Regression Type
+                    </Typography>
+                  </Box>
+                  <FormControl variant="filled" size="small" fullWidth>
+                    <Select
+                      fullWidth
+                      name="regressionType"
+                      variant="outlined"
+                      value={state[0].regressionTypes[metricType]}
+                      onChange={event => onState('regressionTypes', { ...state[0].regressionTypes, [metricType]: event.target.value.toString() })}
+                      className={myClasses.defaultSelectBox}
+                    >
+                      <MenuItem value="" disabled>
+                        <em>{`None`}</em>
+                      </MenuItem>
+                      <MenuItem value="gam">GAM</MenuItem>
+                      {Object.keys(data[0].predictedData.coefficients).length > 0 && <MenuItem value="glm">GLM</MenuItem>}
+                    </Select>
+                  </FormControl>
+                </>)}
               </Box>
               <Box my={10}>
                 <FormControlLabel
@@ -284,7 +320,7 @@ const PlotDialog: FC<PlotDialogProps> = ({
                     />
                   }
                   label="Show Data"
-                />      
+                />
               </Box>
               <Box flexGrow={1} />
               <Box mt={7}>
@@ -302,13 +338,13 @@ const PlotDialog: FC<PlotDialogProps> = ({
                   placement="top-start"
                   classes={{ tooltip: classes.tooltip }}
                 >
-                                    <span>
+                  <span>
                     <Button
                       name="Reset"
                       variant="contained"
                       color="primary"
                       onClick={onReset}
-                      fullWidth
+                      // fullWidth
                     >
                       Reset
                     </Button>
@@ -318,23 +354,27 @@ const PlotDialog: FC<PlotDialogProps> = ({
             </Box>
           </Grid>
           <Grid item md={9} style={{ position: 'relative' }}>
-            <Box display="flex" justifyContent="center" p={2}>
-              <Box>
+            <Box display="flex" justifyContent="center" alignItems="center" p={2} style={{
+              height: '100%'
+            }}>
+              <Box style={{
+                boxShadow: '0 4px 14px rgba(0,0,0,10%)'
+              }}>
                 {viewMethod === '4d_view' && (
-                  <Heatmap 
-                    state={state} 
-                    data={data} 
-                    minAltitude={minAltitude} 
-                    maxInclination={maxInclination} 
-                    metricType={metricType} 
-                    values={values} 
-                    isLegend={false} 
-                    isSub={false} 
-                    size={size} 
-                    plotOptions={plotOptions} 
-                    chartDiv={chartDiv} 
-                    reset={false} 
-                    title={zAxisLabel}          
+                  <Heatmap
+                    state={state}
+                    data={data}
+                    minAltitude={minAltitude}
+                    maxInclination={maxInclination}
+                    metricType={metricType}
+                    values={values}
+                    isLegend={false}
+                    isSub={false}
+                    size={size}
+                    plotOptions={plotOptions}
+                    chartDiv={chartDiv}
+                    reset={false}
+                    title={zAxisLabel}
                   />
                 )}
                 {viewMethod === '3d_view' && (
@@ -373,36 +413,35 @@ const PlotDialog: FC<PlotDialogProps> = ({
                     isClickable={isClickable}
                     size={size}
                   />
-                    )}
-                  </Box>
-                  {state.length === 1 && <Tooltip
-                    id="quality"
-                    title={`Regression Quality: ${
-                      QUALITY_INDICATORS[state[0].qualityIndicators[metricType]]
-                    }`}
-                    style={{ position: 'absolute', top: 20, right: 20 }}
-                  >
-                    <div className={qualityClass}>
-                      {qualityState === 'High' ? (
-                        <CheckCircleIcon className={qualityClass} />
-                      ) : qualityState === 'Medium' ? (
-                        <FontAwesomeIcon
-                          icon={faMinusCircle as IconProp}
-                          className={qualityClass}
-                          size={'lg'}
-                        />
-                      ) : qualityState === 'Low' ? (
-                        <CancelIcon className={qualityClass} />
-                      ) : (
-                        <HelpCircle className={qualityClass} />
-                      )}
-                    </div>
-                  </Tooltip>}
-                </Box>
+                )}
+              </Box>
+              {state.length === 1 && <Tooltip
+                id="quality"
+                title={`Regression Quality: ${QUALITY_INDICATORS[state[0].qualityIndicators[metricType]]
+                  }`}
+                style={{ position: 'absolute', top: 20, right: 20 }}
+              >
+                <div className={qualityClass}>
+                  {qualityState === 'High' ? (
+                    <CheckCircleIcon className={qualityClass} />
+                  ) : qualityState === 'Medium' ? (
+                    <FontAwesomeIcon
+                      icon={faMinusCircle as IconProp}
+                      className={qualityClass}
+                      size={'lg'}
+                    />
+                  ) : qualityState === 'Low' ? (
+                    <CancelIcon className={qualityClass} />
+                  ) : (
+                    <HelpCircle className={qualityClass} />
+                  )}
+                </div>
+              </Tooltip>}
+            </Box>
           </Grid>
         </Grid>
-    </DialogContent>
-  </Dialog>
+      </DialogContent>
+    </Dialog>
   );
 }
 
