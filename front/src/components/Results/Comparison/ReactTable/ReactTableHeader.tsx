@@ -1,7 +1,7 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faThumbtack } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Badge, IconButton, makeStyles, Tooltip } from "@material-ui/core";
+import { Badge, Box, IconButton, makeStyles, Tooltip } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useEffect, useState } from "react";
 import { State } from "src/pages/home";
@@ -82,11 +82,21 @@ export function ReactTableHeader<T>({ columns, actions, compressed, status, stat
             </> : isCompressedView && !compressed[columnIndex] ? <>
                 <th style={{ width: columnWidth }}></th>
                 <th style={{ width: columnWidth, textAlign: 'center' }}>
-                  {column.name}{column.removeEnabled && (status.page === 1 && columnIndex === 1 && performancePanel? renderPinIcon() : <DeleteIcon onClick={() => {actions?.deleteColumn(column.key)}} className={classes.removeBtn} style = {{color: 'white', float: 'right'}}/>)}
+                  <Box flex={true} textAlign={'center'} justifyContent={'center'} alignItems={'center'}>
+                    {column.name}
+                    {column.removeEnabled && (status.page === 1 && columnIndex === 1 && performancePanel ?
+                      renderPinIcon() :
+                      <DeleteIcon onClick={() => {actions?.deleteColumn(column.key)}} className={classes.removeBtn} style = {{color: 'white'}}/>)}
+                  </Box>
                 </th>
               </> : <>
                 <th colSpan={isCompressedView ? 1 : 2} style={{ width: columnWidth, textAlign: 'center' }}>
-                  {column.name}{column.removeEnabled && (status.page === 1 && columnIndex === 1 && performancePanel? renderPinIcon() : <DeleteIcon onClick={() => {actions?.deleteColumn(column.key)}} className={classes.removeBtn} style = {{color: 'white', float: 'right'}}/>)}
+                  <Box flex={true} textAlign={'center'} justifyContent={'center'} alignItems={'center'}>
+                    {column.name}
+                    {column.removeEnabled && (status.page === 1 && columnIndex === 1 && performancePanel ?
+                      renderPinIcon() :
+                      <DeleteIcon onClick={() => {actions?.deleteColumn(column.key)}} className={classes.removeBtn} style = {{color: 'white'}}/>)}
+                  </Box>
                 </th>
               </>}
           </React.Fragment>)
