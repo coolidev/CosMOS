@@ -145,6 +145,10 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
   }, [])
 
   useEffect(() => {
+    setPageLoaded(false);
+  }, [status])
+
+  useEffect(() => {
     if (!pageLoaded && initialData !== undefined) {
       const buffer = {
         tableStructure: initialData.tableStructure,
@@ -152,9 +156,9 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
         columnSequence: initialData.columnSequence
       }
       setSource(buffer)
+      setPageLoaded(false);
     }
-    setPageLoaded(false);
-  }, [initialData, status, pageLoaded])
+  }, [initialData, pageLoaded])
 
   useEffect(() => {
     if (source?.columnData.length) {
