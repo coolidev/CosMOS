@@ -10,10 +10,10 @@ interface Props<T> {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     height: '3rem',
-    borderBottom: '1px solid red',
-    '& > td:first-child': {
-      fontWeight: "bold",
-    },
+    // borderBottom: '1px solid red',
+    // '& > td:first-child': {
+    //   fontWeight: "bold",
+    // },
   }
 }));
 

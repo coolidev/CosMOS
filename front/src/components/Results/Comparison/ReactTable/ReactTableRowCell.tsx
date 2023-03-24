@@ -29,19 +29,14 @@ interface IContextItem {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
   },
-  rowField: {
-    backgroundColor: theme.palette.grey[700]
+  groupField: {
+    backgroundColor: 'rgb(220, 220, 220)',
+    fontSize: '1rem',
   },
-  inputCell: {
-    color: 'white',
-    backgroundColor: `${theme.palette.border.main}`,
-    border: `1px solid white`,
-    minWidth: '5vw'
-  },
-  outputCell: {
+  normalField: {
     backgroundColor: 'white',
-    minWidth: '5vw'
-  }
+    fontSize: '0.875rem',
+  },
 }));
 
 export function ReactTableRowCell<T>({ item, column, index }: Props<T>): JSX.Element {
@@ -53,6 +48,7 @@ export function ReactTableRowCell<T>({ item, column, index }: Props<T>): JSX.Ele
   const input = lodash.get(item, `input_${column.key}`)
   const output = lodash.get(item, `output_${column.key}`)
   const isCompressed = lodash.get(item, `isCompressed_${column.key}`)
+  const isGroup = lodash.get(item, `isGroup_comparison`)
   
   useEffect(() => {
     if (column.key === 'comparison') {
@@ -90,12 +86,8 @@ export function ReactTableRowCell<T>({ item, column, index }: Props<T>): JSX.Ele
     {isRowHeader ? (
       <td
         id={`context-menu-${index}`}
-        // className={classes.rowField}
-        colSpan={lodash.get(item, `isGroup_${column.key}`) === true ? 11 : 0}
-        style={{
-          fontSize: lodash.get(item, `isGroup_${column.key}`) === true ? '1.25rem' : '0.875rem',
-          backgroundColor: lodash.get(item, `isGroup_${column.key}`) === true ? 'rgb(220, 220, 220)' : 'white',
-        }}>
+        className={isGroup ? classes.groupField : classes.normalField}
+      >
           {column.render ? column.render(column, item) : value}
           {contextItems.length > 0 && <>
             <ArrowDropDownIcon />
@@ -108,12 +100,33 @@ export function ReactTableRowCell<T>({ item, column, index }: Props<T>): JSX.Ele
             />
           </>}
       </td>) : (<>
-          {!isCompressed && input ? <td className={classes.inputCell}>
-            {input}
-          </td> : <></>}
-          {output && <td className={classes.outputCell}>
-            {output}
-          </td>}
+          {isCompressed ?
+            (isGroup ?
+              (<>
+                <td className={`${classes.groupField} row-group text-center`}>Output</td>
+              </>) :
+              (<>
+                {output && <td className={`${classes.normalField} text-center`}>
+                  {output}
+                </td>}
+              </>)) :
+            (isGroup ?
+              (<>
+                <td className={`${classes.groupField} row-group text-center`} style={{ borderRight: 'none' }}>Input</td>
+                <td className={`${classes.groupField} row-group text-center`} style={{ borderLeft: 'none' }}>Output</td>
+              </>) :
+              (<>
+                {input ? <td className={`${classes.normalField} text-center`} style={{ borderRight: 'none' }}>
+                  {input}
+                </td> : <td className={`${classes.normalField} text-center`} style={{ borderRight: 'none' }}>
+                    - -
+                  </td>}
+                {output ? <td className={`${classes.normalField} text-center`} style={{ borderLeft: 'none' }}>
+                  {output}
+                </td> : <td className={`${classes.normalField} text-center`} style={{ borderLeft: 'none' }}>
+                    - -
+                  </td>}
+              </>))}
         </>
       )}
     </>

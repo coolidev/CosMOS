@@ -77,9 +77,9 @@ const CompareHeader: FC<CompareHeaderProps> = ({
       >
         Rank
       </Button>
-      <Box flexGrow={1} />
+      <Box flexGrow={10} />
       <Box>
-        <FormControlLabel control={<Switch color="primary" value={isCompressedView} onChange={(e, v) => {setIsCompressedView(v)}} />} label="Compress View" />
+        <FormControlLabel control={<Switch color="primary" value={isCompressedView} onChange={(e, v) => {setIsCompressedView(v)}} />} labelPlacement="start" label="Compress View" />
       </Box>
       <Box flexGrow={1} />
       <Box>

@@ -107,8 +107,8 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
   const [columnSequence, setColumnSequence] = useState<string[]>([]);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
 
-  const {performancePanel} = useSelector((state) => state.results);
-  const {pinnedResults, comparisonIds} = useSelector((state) => state.pinnedResults);
+  const { performancePanel } = useSelector((state) => state.results);
+  const { pinnedResults, comparisonIds } = useSelector((state) => state.pinnedResults);
 
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -117,14 +117,14 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
     const initializeData = async () => {
       try {
         const params = {
-          email: localStorage.getItem('email'), 
-          projectId: String(localStorage.getItem('project')), 
+          email: localStorage.getItem('email'),
+          projectId: String(localStorage.getItem('project')),
           withData: false
         }
         // Todo here: fetching data
         const fetchInitialData = await axios.post('/pinnedResults', params);
         dispatch(updateComparisonIds(fetchInitialData.data));
-        const response = await axios.post("/getResultsForAnalyses", {resultIds: fetchInitialData.data});
+        const response = await axios.post("/getResultsForAnalyses", { resultIds: fetchInitialData.data });
         setInitialPins(response.data.results);
         let formatedResponse = formatForComparison(response.data.results);
         setInitialData(formatedResponse);
@@ -158,8 +158,8 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
       setSource(buffer)
       setPageLoaded(false);
     }
-  }, [initialData, status])
-  
+  }, [initialData, pageLoaded])
+
   useEffect(() => {
     if (source?.columnData.length) {
       setPageLoaded(true)
@@ -176,43 +176,43 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
       });
       setColumnSequence(buffer);
     }
-  
+
     handleColumnSequence();
   }, [sortString])
 
   useEffect(() => {
-    if(performancePanel){
+    if (performancePanel) {
       const KEYS = {
-        coverage: state.networkType === "relay"? "coverage" : "coverageMinutes",
-        mean_contacts: state.networkType === "relay"? "mean_contacts" : "contactsPerDay",
-        mean_coverage_duration: state.networkType === "relay"? "mean_coverage_duration" : "averageCoverageDuration",
-        average_gap: state.networkType === "relay"? "average_gap" : "averageGapDuration",
-        max_gap: state.networkType === "relay"? "max_gap" : "maxGapDuration",
-        mean_response_time: state.networkType === "relay"? "mean_response_time" : "meanResponseTime",
-        availability: state.networkType === "relay"? "availability" : "availability_gap"
+        coverage: state.networkType === "relay" ? "coverage" : "coverageMinutes",
+        mean_contacts: state.networkType === "relay" ? "mean_contacts" : "contactsPerDay",
+        mean_coverage_duration: state.networkType === "relay" ? "mean_coverage_duration" : "averageCoverageDuration",
+        average_gap: state.networkType === "relay" ? "average_gap" : "averageGapDuration",
+        max_gap: state.networkType === "relay" ? "max_gap" : "maxGapDuration",
+        mean_response_time: state.networkType === "relay" ? "mean_response_time" : "meanResponseTime",
+        availability: state.networkType === "relay" ? "availability" : "availability_gap"
       }
 
       let currentComparison: ComparisonResult = {
         name: "Current Analysis",
         id: -1,
         parameters: {
-          altitude: state.parameters.isOrbital? state.parameters.altitude: null,
-          inclination: state.parameters.isOrbital? state.parameters.inclination: null,
-          eccentricity: state.parameters.isOrbital? state.parameters.eccentricity: null,
-          frequencyBand: state.commsSpecs.freqBand !== 0 ? state.commsSpecs.freqBand: null,
-          modulation: state.commsSpecs.commsPayloadSpecs.modulation !== -1? state.commsSpecs.commsPayloadSpecs.modulation: null, //might be stored somewhere different, if buggy check this 
-          coding: state.commsSpecs.commsPayloadSpecs.codingType !== -1? state.commsSpecs.commsPayloadSpecs.codingType: null, //might be stored somewhere different, if buggy check this
-          standardsCompliance: state.commsSpecs.standardsCompliance !== 0? state.commsSpecs.standardsCompliance: null, //might be stored somewhere different, if buggy check this
-          latitude: !state.parameters.isOrbital? state.parameters.latitude: null,
-          longitude: !state.parameters.isOrbital? state.parameters.longitude: null,
-          dataVolume_GBday: !state.commsSpecs.usingDataRate? state.commsSpecs.dataVolumeGb_day: null,
-          dataRate_Mbps: state.commsSpecs.usingDataRate? state.commsSpecs.dataRateKbps*1000: null,
+          altitude: state.parameters.isOrbital ? state.parameters.altitude : null,
+          inclination: state.parameters.isOrbital ? state.parameters.inclination : null,
+          eccentricity: state.parameters.isOrbital ? state.parameters.eccentricity : null,
+          frequencyBand: state.commsSpecs.freqBand !== 0 ? state.commsSpecs.freqBand : null,
+          modulation: state.commsSpecs.commsPayloadSpecs.modulation !== -1 ? state.commsSpecs.commsPayloadSpecs.modulation : null, //might be stored somewhere different, if buggy check this 
+          coding: state.commsSpecs.commsPayloadSpecs.codingType !== -1 ? state.commsSpecs.commsPayloadSpecs.codingType : null, //might be stored somewhere different, if buggy check this
+          standardsCompliance: state.commsSpecs.standardsCompliance !== 0 ? state.commsSpecs.standardsCompliance : null, //might be stored somewhere different, if buggy check this
+          latitude: !state.parameters.isOrbital ? state.parameters.latitude : null,
+          longitude: !state.parameters.isOrbital ? state.parameters.longitude : null,
+          dataVolume_GBday: !state.commsSpecs.usingDataRate ? state.commsSpecs.dataVolumeGb_day : null,
+          dataRate_Mbps: state.commsSpecs.usingDataRate ? state.commsSpecs.dataRateKbps * 1000 : null,
           EIRP: state.commsSpecs.commsPayloadSpecs.eirp,
-          polarizationType: state.commsSpecs.commsPayloadSpecs.polarizationType !== -1? state.commsSpecs.commsPayloadSpecs.polarizationType: null,
+          polarizationType: state.commsSpecs.commsPayloadSpecs.polarizationType !== -1 ? state.commsSpecs.commsPayloadSpecs.polarizationType : null,
           pointingLoss_dB: state.commsSpecs.commsPayloadSpecs.pointingLoss,
           polarizationLoss_dB: state.commsSpecs.commsPayloadSpecs.polarizationLoss,
           otherLosses_dB: state.commsSpecs.commsPayloadSpecs.otherLoss,
-          codRate: state.commsSpecs.commsPayloadSpecs.coding !== -1? state.commsSpecs.commsPayloadSpecs.coding: null,
+          codRate: state.commsSpecs.commsPayloadSpecs.coding !== -1 ? state.commsSpecs.commsPayloadSpecs.coding : null,
           avgContactsPerOrbit: state.commsSpecs.coverageMetrics.meanNumContacts,
           avgRfContactDurMin: state.commsSpecs.coverageMetrics.meanContactDur,
           maxGapDurMin: state.commsSpecs.coverageMetrics.maxGap
@@ -224,12 +224,12 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
           averageGap: getResultsFromPerfromancePanel(KEYS.average_gap),
           maxGap: getResultsFromPerfromancePanel(KEYS.max_gap),
           meanResponseTime: getResultsFromPerfromancePanel(KEYS.mean_response_time),
-          effectiveCommsTime: !isNaN(getResultsFromPerfromancePanel(KEYS.availability))? getResultsFromPerfromancePanel(KEYS.availability): 0, //See header for why this one doesnt work
-          dataRate: (state.results.dataRate_kbps/1000),
-          throughput: (state.results.maxThroughput_Gb_Day/8)
+          effectiveCommsTime: !isNaN(getResultsFromPerfromancePanel(KEYS.availability)) ? getResultsFromPerfromancePanel(KEYS.availability) : 0, //See header for why this one doesnt work
+          dataRate: (state.results.dataRate_kbps / 1000),
+          throughput: (state.results.maxThroughput_Gb_Day / 8)
         },
         antennaOptions: {
-          eirp: (!state.commsSpecs.commsPayloadSpecs.minEIRPFlag)?  (state.commsSpecs.commsPayloadSpecs.eirp): state.results.eirp_dBW,
+          eirp: (!state.commsSpecs.commsPayloadSpecs.minEIRPFlag) ? (state.commsSpecs.commsPayloadSpecs.eirp) : state.results.eirp_dBW,
           parabolicAntennaDiameter: getAntennaResults("parabolicDiameter"),
           parabolicAntennaMass: getAntennaResults("parabolicMass"),
           electronicAntennaSize: getAntennaResults("steerableSize"),
@@ -238,22 +238,22 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
           dipoleAntennaSize: getAntennaResults("dipoleSize")
         },
         navAndTracking: {
-          trackingAccuracy: 
+          trackingAccuracy:
             state.networkType === 'relay'
-            ? (performancePanel.systemParams as RelayCharacteristics)?.trackingAccuracy.toString()
-            : "N/A",
+              ? (performancePanel.systemParams as RelayCharacteristics)?.trackingAccuracy.toString()
+              : "N/A",
           gnssAvailability: getGNSSAvailability(state.parameters.altitude)
         }
       }
-      const newComp = {...initialData}
+      const newComp = { ...initialData }
       newComp.columnData.unshift(formatForComparison([currentComparison]).columnData[0]);
       setInitialData(newComp);
       setSource(newComp);
     } else {
-      const sourceBuf = {...initialData};
+      const sourceBuf = { ...initialData };
       const columnDataBuf = (sourceBuf.columnData.filter((column) => column.key.toString() !== '-1'));
       sourceBuf.columnData = columnDataBuf;
-      setStatus({...status});
+      setStatus({ ...status });
       setSource(sourceBuf);
       setInitialData(sourceBuf);
     }
@@ -265,22 +265,22 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
   }, [pinnedResults])
 
   const deleteColumn = (columnKey: string) => {
-    const sourceBuf = {...initialData};
+    const sourceBuf = { ...initialData };
     const columnDataBuf = (sourceBuf.columnData.filter((column) => column.key !== columnKey));
     sourceBuf.columnData = columnDataBuf;
     setInitialData(sourceBuf);
     setSource(sourceBuf);
-    setStatus({...status});
+    setStatus({ ...status });
     const params = {
-      email: localStorage.getItem('email'), 
-      projectId: String(localStorage.getItem('project')), 
+      email: localStorage.getItem('email'),
+      projectId: String(localStorage.getItem('project')),
       resultId: columnKey
-    } 
+    }
     axios.post('/deleteAnalysisResults', params);
   }
 
   const sortColumn = () => {
-    const tData = {...initialData}
+    const tData = { ...initialData }
     const columnsBuffer = [...initialData.columnData];
     const sortedColumns = columnsBuffer.sort((column1, column2) => {
       const idx1 = columnSequence.indexOf(column1.key)
@@ -289,12 +289,12 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
     })
     tData.columnData = sortedColumns
     setInitialData(tData)
-    setStatus({...status})
+    setStatus({ ...status })
   }
 
   const getResultsFromPerfromancePanel = (key: string) => {
     let value;
-    if(state.pointSync || state.parametric){
+    if (state.pointSync || state.parametric) {
       let data = performancePanel.modelData
       value = getOrbitalModelValue(
         state.parameters.altitude,
@@ -302,7 +302,7 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
         key,
         data,
         ''
-        );
+      );
     } else {
       let data = performancePanel.predictedData
       value = getValue(
@@ -328,13 +328,13 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
 
   const getAntennaResults = (key: string) => {
     let wavelength_m =
-       (
+      (
         performancePanel.systemParams as
-          | RelayCharacteristics
-          | GroundStationCharacteristics
+        | RelayCharacteristics
+        | GroundStationCharacteristics
       )?.lambda
-      //This is kinda altered from the code that I took it from, so if there is a problem with user-defined networks this would be the place to look first
-      //I'm not really sure why the part from the user defined networks is written like it is so im just omitting it for the time being.
+    //This is kinda altered from the code that I took it from, so if there is a problem with user-defined networks this would be the place to look first
+    //I'm not really sure why the part from the user defined networks is written like it is so im just omitting it for the time being.
 
     const antennaInputs: AntennaInputs = {
       wavelength: wavelength_m,
@@ -377,28 +377,28 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
     //This entire preliminary setting thing is basically hard coding all of the columns into the comparison panel
     //We can think of another way of doing this later if we want, but for now if we want to add another column to the comparison
     //panel, this is where it needs to go.
-    let comparisonFormat: IComparisonType = state.parameters.isOrbital? COMPARISON_TABLE_ORBITAL: COMPARISON_TABLE_TERRESTRIAL;
+    let comparisonFormat: IComparisonType = state.parameters.isOrbital ? COMPARISON_TABLE_ORBITAL : COMPARISON_TABLE_TERRESTRIAL;
     //This confusing hunk is supposed to get the column data without it being a huge mess everywhere
     let columnData = []
     pinnedResults.forEach((comparison, index) => {
-        let column = {
-          name: comparison.name,
-          key: comparison.id?? index,
-          data:[]
-        };
-        let subcolumnData = [];
-        comparisonFormat.tableStructure.group.forEach((section) => {
-          section.items.forEach((column) => {
-            let dataPoint = {
-              key: column.key,
-              input: pinnedResults[index]['parameters'][column.key] ? parseFloat(pinnedResults[index]['parameters'][column.key]).toFixed(2): '---',
-              output: pinnedResults[index][section.key][column.key] ? parseFloat(pinnedResults[index][section.key][column.key]).toFixed(2): '---'
-            };
-            subcolumnData.push(dataPoint);
-          })
+      let column = {
+        name: comparison.name,
+        key: comparison.id ?? index,
+        data: []
+      };
+      let subcolumnData = [];
+      comparisonFormat.tableStructure.group.forEach((section) => {
+        section.items.forEach((column) => {
+          let dataPoint = {
+            key: column.key,
+            input: pinnedResults[index]['parameters'][column.key] ? parseFloat(pinnedResults[index]['parameters'][column.key]).toFixed(2) : '---',
+            output: pinnedResults[index][section.key][column.key] ? parseFloat(pinnedResults[index][section.key][column.key]).toFixed(2) : '---'
+          };
+          subcolumnData.push(dataPoint);
         })
-        column.data = subcolumnData;
-        columnData.push(column);
+      })
+      column.data = subcolumnData;
+      columnData.push(column);
     })
     comparisonFormat.columnData = columnData;
     return comparisonFormat;
@@ -408,35 +408,35 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
 
   const markForComparison = async (name: string) => {
     const KEYS = {
-      coverage: state.networkType === "relay"? "coverage" : "coverageMinutes",
-      mean_contacts: state.networkType === "relay"? "mean_contacts" : "contactsPerDay",
-      mean_coverage_duration: state.networkType === "relay"? "mean_coverage_duration" : "averageCoverageDuration",
-      average_gap: state.networkType === "relay"? "average_gap" : "averageGapDuration",
-      max_gap: state.networkType === "relay"? "max_gap" : "maxGapDuration",
-      mean_response_time: state.networkType === "relay"? "mean_response_time" : "meanResponseTime",
-      availability: state.networkType === "relay"? "availability" : "availability_gap"
+      coverage: state.networkType === "relay" ? "coverage" : "coverageMinutes",
+      mean_contacts: state.networkType === "relay" ? "mean_contacts" : "contactsPerDay",
+      mean_coverage_duration: state.networkType === "relay" ? "mean_coverage_duration" : "averageCoverageDuration",
+      average_gap: state.networkType === "relay" ? "average_gap" : "averageGapDuration",
+      max_gap: state.networkType === "relay" ? "max_gap" : "maxGapDuration",
+      mean_response_time: state.networkType === "relay" ? "mean_response_time" : "meanResponseTime",
+      availability: state.networkType === "relay" ? "availability" : "availability_gap"
     }
 
     let newComparison: ComparisonResult = {
       name: name,
       parameters: {
-        altitude: state.parameters.isOrbital? state.parameters.altitude: null,
-        inclination: state.parameters.isOrbital? state.parameters.inclination: null,
-        eccentricity: state.parameters.isOrbital? state.parameters.eccentricity: null,
-        frequencyBand: state.commsSpecs.freqBand !== 0 ? state.commsSpecs.freqBand: null,
-        modulation: state.commsSpecs.commsPayloadSpecs.modulation !== -1? state.commsSpecs.commsPayloadSpecs.modulation: null, //might be stored somewhere different, if buggy check this 
-        coding: state.commsSpecs.commsPayloadSpecs.codingType !== -1? state.commsSpecs.commsPayloadSpecs.codingType: null, //might be stored somewhere different, if buggy check this
+        altitude: state.parameters.isOrbital ? state.parameters.altitude : null,
+        inclination: state.parameters.isOrbital ? state.parameters.inclination : null,
+        eccentricity: state.parameters.isOrbital ? state.parameters.eccentricity : null,
+        frequencyBand: state.commsSpecs.freqBand !== 0 ? state.commsSpecs.freqBand : null,
+        modulation: state.commsSpecs.commsPayloadSpecs.modulation !== -1 ? state.commsSpecs.commsPayloadSpecs.modulation : null, //might be stored somewhere different, if buggy check this 
+        coding: state.commsSpecs.commsPayloadSpecs.codingType !== -1 ? state.commsSpecs.commsPayloadSpecs.codingType : null, //might be stored somewhere different, if buggy check this
         standardsCompliance: state.commsSpecs.standardsCompliance, //might be stored somewhere different, if buggy check this
-        latitude: !state.parameters.isOrbital? state.parameters.latitude: null,
-        longitude: !state.parameters.isOrbital? state.parameters.longitude: null,
-        dataVolume_GBday: !state.commsSpecs.usingDataRate? state.commsSpecs.dataVolumeGb_day: null,
-        dataRate_Mbps: state.commsSpecs.usingDataRate? state.commsSpecs.dataRateKbps*1000: null,
+        latitude: !state.parameters.isOrbital ? state.parameters.latitude : null,
+        longitude: !state.parameters.isOrbital ? state.parameters.longitude : null,
+        dataVolume_GBday: !state.commsSpecs.usingDataRate ? state.commsSpecs.dataVolumeGb_day : null,
+        dataRate_Mbps: state.commsSpecs.usingDataRate ? state.commsSpecs.dataRateKbps * 1000 : null,
         EIRP: state.commsSpecs.commsPayloadSpecs.eirp,
-        polarizationType: state.commsSpecs.commsPayloadSpecs.polarizationType !== -1 ? state.commsSpecs.commsPayloadSpecs.polarizationType: null,
+        polarizationType: state.commsSpecs.commsPayloadSpecs.polarizationType !== -1 ? state.commsSpecs.commsPayloadSpecs.polarizationType : null,
         pointingLoss_dB: state.commsSpecs.commsPayloadSpecs.pointingLoss,
         polarizationLoss_dB: state.commsSpecs.commsPayloadSpecs.polarizationLoss,
         otherLosses_dB: state.commsSpecs.commsPayloadSpecs.otherLoss,
-        codRate: state.commsSpecs.commsPayloadSpecs.coding !== -1? state.commsSpecs.commsPayloadSpecs.coding: null,
+        codRate: state.commsSpecs.commsPayloadSpecs.coding !== -1 ? state.commsSpecs.commsPayloadSpecs.coding : null,
         avgContactsPerOrbit: state.commsSpecs.coverageMetrics.meanNumContacts,
         avgRfContactDurMin: state.commsSpecs.coverageMetrics.meanContactDur,
         maxGapDurMin: state.commsSpecs.coverageMetrics.maxGap
@@ -448,12 +448,12 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
         averageGap: getResultsFromPerfromancePanel(KEYS.average_gap),
         maxGap: getResultsFromPerfromancePanel(KEYS.max_gap),
         meanResponseTime: getResultsFromPerfromancePanel(KEYS.mean_response_time),
-        effectiveCommsTime: !isNaN(getResultsFromPerfromancePanel(KEYS.availability))? getResultsFromPerfromancePanel(KEYS.availability): 0, //This one cant seem to get a value, so for the time being it will be null. This is a known gap
-        dataRate: (state.results.dataRate_kbps/1000),
-        throughput: (state.results.maxThroughput_Gb_Day/8)
+        effectiveCommsTime: !isNaN(getResultsFromPerfromancePanel(KEYS.availability)) ? getResultsFromPerfromancePanel(KEYS.availability) : 0, //This one cant seem to get a value, so for the time being it will be null. This is a known gap
+        dataRate: (state.results.dataRate_kbps / 1000),
+        throughput: (state.results.maxThroughput_Gb_Day / 8)
       },
       antennaOptions: {
-        eirp: (!state.commsSpecs.commsPayloadSpecs.minEIRPFlag)?  (state.commsSpecs.commsPayloadSpecs.eirp): state.results.eirp_dBW,
+        eirp: (!state.commsSpecs.commsPayloadSpecs.minEIRPFlag) ? (state.commsSpecs.commsPayloadSpecs.eirp) : state.results.eirp_dBW,
         parabolicAntennaDiameter: getAntennaResults("parabolicDiameter"),
         parabolicAntennaMass: getAntennaResults("parabolicMass"),
         electronicAntennaSize: getAntennaResults("steerableSize"),
@@ -462,24 +462,25 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
         dipoleAntennaSize: getAntennaResults("dipoleSize")
       },
       navAndTracking: {
-        trackingAccuracy: 
+        trackingAccuracy:
           state.networkType === 'relay'
-          ? (performancePanel.systemParams as RelayCharacteristics)?.trackingAccuracy.toString()
-          : "N/A",
+            ? (performancePanel.systemParams as RelayCharacteristics)?.trackingAccuracy.toString()
+            : "N/A",
         gnssAvailability: getGNSSAvailability(state.parameters.altitude)
-      },      
+      },
     }
     const response = await axios.post('/saveAnalysisResults', {
       name: newComparison.name,
       parameters: newComparison.parameters,
       performance: newComparison.performance,
       antennaOptions: newComparison.antennaOptions,
-      navAndTracking: newComparison.navAndTracking, 
-      email: localStorage.getItem('email'), 
-      projectId: String(localStorage.getItem('project')) });
+      navAndTracking: newComparison.navAndTracking,
+      email: localStorage.getItem('email'),
+      projectId: String(localStorage.getItem('project'))
+    });
 
 
-    const sourceBuf = {...initialData};
+    const sourceBuf = { ...initialData };
     const columnDataBuf = (sourceBuf.columnData.filter((column) => column.key.toString() !== '-1'));
     columnDataBuf.unshift(formatForComparison([newComparison]).columnData[0]);
     sourceBuf.columnData = columnDataBuf;
@@ -498,17 +499,17 @@ const Comparison: FC<ComparisonProps> = ({ state, onState, visible }) => {
       <CompareTable
         state={state}
         status={status}
-        source={source} 
-        action={{deleteColumn: deleteColumn, markForComparison: setIsComparisonOpen}}      
+        source={source}
+        action={{ deleteColumn: deleteColumn, markForComparison: setIsComparisonOpen }}
       />
       <ComparisonModal
-              open={isComparisonOpen}
-              onOpen={() => setIsComparisonOpen(!isComparisonOpen)}
-              markForComparison={markForComparison}
-              selectedItems={state.selectedItems}
+        open={isComparisonOpen}
+        onOpen={() => setIsComparisonOpen(!isComparisonOpen)}
+        markForComparison={markForComparison}
+        selectedItems={state.selectedItems}
       />
     </div>
-      
+
   );
 };
 
