@@ -20,8 +20,10 @@ interface CompareTableProps {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     margin: theme.spacing(3),
+    borderRadius: '16px 16px 0 0',
+    border: `2px solid ${theme.palette.border.main}`,
     overflowY: 'hidden',
-    overflowX: 'scroll'
+    overflowX: 'hidden',
   },
   table: {
     '& .MuiTableCell-root': {
@@ -206,8 +208,9 @@ const CompareTable: FC<CompareTableProps> = ({
           return row.filter((cell) => cell.key === rowKey.key)[0]
         })
       }).map((row, idx) => {
-        // may have an issue here
-        return row.map((col, index) => ({ ...col, isCompressed: compInPage[index] }))
+        return row.map((col, index) => {
+          return ({ ...col, isCompressed: compInPage[index], colKey: columns[index].key })
+        })
       }).map((row) => {
         let grouped = {}
         row.filter(cell => cell !== undefined).map((cell) => {
@@ -230,7 +233,7 @@ const CompareTable: FC<CompareTableProps> = ({
       setCellData(processed)
       setPageLoaded(true)
     }
-    if (source !== undefined && !pageLoaded) {
+    if (source !== undefined && !pageLoaded && columns.length > 0 && rowNames.length > 0) {
       handleData()
     }
   }, [columns, rowNames, rowBreakdownOptions, cellData, pageLoaded, compInPage])
