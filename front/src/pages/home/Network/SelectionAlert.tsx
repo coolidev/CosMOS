@@ -85,11 +85,11 @@ const SelectionAlert: FC<SelectionAlertProps> = ({
         </IconButton>
       </DialogTitle>
       <DialogContent style={{ backgroundColor: theme.palette.component.main }}>
-        <Grid container className='py-2 px-2 text-left'>
-          <Grid item xs={3} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <WarningIcon style={{ color: theme.palette.border.main, width: '100%', height: '8rem' }} />
+        <Grid container className='py-2 text-left'>
+          <Grid item xs={2} style={{ display: 'flex', justifyContent: 'center' }}>
+            <WarningIcon style={{ color: theme.palette.border.main, width: '100%', height: '6rem' }} />
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={10}>
             <DialogContentText style={{ color: theme.palette.text.primary }}>
               {message.message}
             </DialogContentText>
