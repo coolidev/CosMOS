@@ -89,7 +89,11 @@ const SelectionAlert: FC<SelectionAlertProps> = ({
           <Grid item xs={3} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <WarningIcon style={{ color: theme.palette.border.main, width: '100%', height: '8rem' }} />
           </Grid>
-          <Grid item xs={9}>{message.message}</Grid>
+          <Grid item xs={9}>
+            <DialogContentText>
+              {message.message}
+            </DialogContentText>
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions style={{ backgroundColor: theme.palette.component.main, padding: theme.spacing(2, 4) }}>
