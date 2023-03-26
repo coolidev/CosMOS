@@ -90,7 +90,7 @@ const SelectionAlert: FC<SelectionAlertProps> = ({
             <WarningIcon style={{ color: theme.palette.border.main, width: '100%', height: '8rem' }} />
           </Grid>
           <Grid item xs={9}>
-            <DialogContentText>
+            <DialogContentText style={{ color: theme.palette.text.primary }}>
               {message.message}
             </DialogContentText>
           </Grid>
