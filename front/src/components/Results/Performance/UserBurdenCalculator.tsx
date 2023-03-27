@@ -209,7 +209,7 @@ const UserBurdenCalculator: FC<UserBurdenCalculatorProps> = ({
 
 		setTex(latex[parameter]);
 	}, [inputs]);
-	
+
 	const row = (
 		eqn: string,
 		val: string,

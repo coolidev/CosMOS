@@ -153,7 +153,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: '10px'
   },
   dialog: {
-    minWidth: '60vw'
+    minWidth: '60vw',
+    '& .paper': {
+      padding: '0'
+    }
   }
 }));
 

@@ -208,12 +208,12 @@ const StationLibrary: FC<StationLibraryProps> = ({
   }
   const handleFilter = (values): void => setFilters(values);
 
-  const print = (toPrint): boolean => {console.log('data.id',toPrint); return true;}
+  const print = (toPrint): boolean => { console.log('data.id', toPrint); return true; }
 
   useEffect(() => {
 
     let newFilter = new Filterer([]);
-    let filters : Map<string,Filter> = myFilterer.getFilters();
+    let filters: Map<string, Filter> = myFilterer.getFilters();
     filters.forEach((filterFunc, filterName) => {
       newFilter.addFilter(filterName, filterFunc);
     });
@@ -222,17 +222,17 @@ const StationLibrary: FC<StationLibraryProps> = ({
   }, [source]);
 
   const handleFilterChange = (): void => {
-    let l : any [] = myFilterer.getFilteredList();
+    let l: any[] = myFilterer.getFilteredList();
     setResults(l);
   };
 
   const handleclear = (): void => {
     myFilterer.clearFilters();
-    setFilters({name : [], networks: [], operationalYear: '', supportedFrequencies: 'none', location: 'none', scanAgreement: 'none' });
+    setFilters({ name: [], networks: [], operationalYear: '', supportedFrequencies: 'none', location: 'none', scanAgreement: 'none' });
     handleFilterChange();
     setFilterSource([]);
   };
-  
+
   return (
     <div className={/*visible ? */classes.root /*: classes.hide*/}>
       <DataGrid
@@ -244,6 +244,7 @@ const StationLibrary: FC<StationLibraryProps> = ({
         scrolling={{ mode: 'infinite' }}
         wordWrapEnabled={true}
         onCellClick={handleCellClick}
+        showColumnHeaders={false}
       >
         <Column
           dataField="picture"
@@ -257,7 +258,6 @@ const StationLibrary: FC<StationLibraryProps> = ({
               className={
                 classes.image
               }
-            
             />
             :
             <img
@@ -267,7 +267,6 @@ const StationLibrary: FC<StationLibraryProps> = ({
                 classes.image
               }
             />
-            
           )}
           alignment="center"
         />
@@ -279,38 +278,38 @@ const StationLibrary: FC<StationLibraryProps> = ({
           cellRender={(data) => <div className={classes.bold}>{data.text}</div>}
           headerCellRender={(data) => <div className={classes.header}>{data.column.caption}</div>}
         />
-        <Column dataField="networks" alignment="center" headerCellRender={(data) => <div className={classes.header}>{data.column.caption}</div>}/>
+        <Column dataField="networks" alignment="left" headerCellRender={(data) => <div className={classes.header}>{data.column.caption}</div>} />
         <Column
           dataField="numAntennas"
           caption="Number of Antennas"
-          alignment="center"
+          alignment="left"
           width="18%"
           headerCellRender={(data) => <div className={classes.header}>{data.column.caption}</div>}
         />
         <Column
           dataField="supportedFrequencies"
           caption="Supported Frequencies"
-          alignment="center"
+          alignment="left"
           width="20%"
           headerCellRender={(data) => <div className={classes.header}>{data.column.caption}</div>}
         />
-        <Column
+        {/* <Column
           dataField="location"
           caption="Location"
           alignment="center"
           width="20%"
           headerCellRender={(data) => <div className={classes.header}>{data.column.caption}</div>}
-        />
+        /> */}
         <Column
           alignment="center"
           width="5%"
-          headerCellRender={() => 
-          <FontAwesomeIcon 
-            icon={faFilter as IconProp} 
-            style={{
-              color: theme.palette.primary.main
-            }}
-          />}
+          headerCellRender={() =>
+            <FontAwesomeIcon
+              icon={faFilter as IconProp}
+              style={{
+                color: theme.palette.primary.main
+              }}
+            />}
         />
       </DataGrid>
     </div>
