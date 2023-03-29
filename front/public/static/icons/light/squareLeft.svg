@@ -1,0 +1,14 @@
+<svg height="135.467mm" viewBox="0 0 13547 13547" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+   <defs>
+      <style type="text/css">
+         <![CDATA[
+            .fil0 {fill:none}
+            .fil1 {fill:#e14748}
+         ]]>
+      </style>
+   </defs>
+   <g>
+      <polygon class="fil0" points="0,0 13547,0 13547,13547 0,13547 "/>
+      <path class="fil1" d="M10266 7938l-3493 0 0 -2328 3493 0 0 2328zm-3493 2328l-3493 -3493 3493 -3493 0 6985zm-6059 2566l12118 0 0 -12117 -12118 0 0 12117z"/>
+   </g>
+</svg>

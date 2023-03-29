@@ -247,8 +247,8 @@ const SideBar: FC<SideBarProps> = ({ currentTab, onCurrentTab }) => {
                   >
                     <img
                       alt="tools"
-                      style={{ height: '90%' }}
-                      src={'/static/icons/light/tool-selected.svg'}
+                      style={{ height: '90%', borderRadius: `${12 / zoom}px` }}
+                      src={'/static/icons/light/squareLeft.svg'}
                     />
                   </Icon>
                 </IconButton>
