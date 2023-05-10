@@ -45,14 +45,14 @@ export function ReactTableRowCell<T>({ item, column, index }: Props<T>): JSX.Ele
   const [contextItems, setContextItems] = useState<IContextItem[]>([])
   const [isRowHeader, setIsRowHeader] = useState<boolean>(false)
   const value = lodash.get(item, column.key);
-  const input = lodash.get(item, `input_${column.key}`)
-  const output = lodash.get(item, `output_${column.key}`)
+  const input = lodash.get<typeof item, string>(item, `input_${column.key}`)
+  const output = lodash.get<typeof item, string>(item, `output_${column.key}`)
   const isCompressed = lodash.get(item, `isCompressed_${column.key}`)
   const isGroup = lodash.get(item, `isGroup_comparison`)
   
   useEffect(() => {
     if (column.key === 'comparison') {
-      const rowBreakdownOptions = lodash.get(item, 'rowBreakdownOptions');
+      const rowBreakdownOptions = lodash.get<typeof item, string>(item, 'rowBreakdownOptions');
       setOptions(rowBreakdownOptions)
       setIsRowHeader(true)
     }
